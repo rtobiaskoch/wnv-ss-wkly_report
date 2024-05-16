@@ -1,0 +1,63 @@
+---
+title: "wnv-s_weekly_reports"
+format: html
+editor: visual
+---
+
+## Weekly Data Report
+
+Code Below:\
+- clears environment\
+- unloads packages\
+- loads necessary packages\
+- creates setting for plots
+
+```{r}
+source("scripts/config.R")
+
+```
+
+\
+Update trap locations?\
+-will look to see if the trap_col names exist, remove them then merge with trap_coord and overwrite all_data_fn
+
+```{r}
+#update_trap in config.R
+if(update_trap == "YES") {
+  source("scripts/trap_update.R")
+}
+```
+
+Code Below:\
+- checks if only one file is present in data_input/new_data folder\
+- checks if it is a csv\
+- if both true reads in data if not prints and error
+
+```{r}
+source("scripts/read_data.R")
+```
+
+Code Below:\
+- data input:\
+\-- data_input file and trap coordinates (if not in data_input)
+
+```{r}
+source('scripts/abundance.R')
+```
+
+Code Below:\
+- calculates pooled Infection Rate and Vector Index
+
+Data Input: \
+-output from abundance.R\
+-data_input file:
+
+```{r}
+source("scripts/pIR_VI.R")
+
+```
+
+```{r}
+source("scripts/data_viz.R")
+
+```
