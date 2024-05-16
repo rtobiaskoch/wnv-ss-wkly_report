@@ -4,13 +4,20 @@ rm(list = ls())
 
 if (!require("pacman")) install.packages("pacman")
 pacman::p_unload()
-pacman::p_load(tidyverse, janitor, lubridate, PooledInfRate, ggpubr)
+pacman::p_load(tidyverse, janitor, lubridate, PooledInfRate, ggpubr, rio)
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#FUNCTIONS
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+source("scripts/check_read_fun.R")
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #DATA FILTER PARAMETERS##
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-year_filter = 2000:2024
-week_filter = 1:52
+year_filter = 2023
+week_filter = 34
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -59,7 +66,7 @@ if(length(week_filter) > 1){ #if looking at multiple years then create YYYY-YYYY
 all_data_fn = "data_input/wnv-s_all_data.csv"
 trap_fn = "data_input/foco_trap.csv"
 abund_out_fn = paste0("data_mid/","y",year_fn, "_", "w",week_fn, "_abundance")
-data_output_fn = paste0("data_output/","y",year_fn, "_", "w",week_fn, "_data_update")
+data_output_fn = paste0("data_output/","y",year_fn, "_", "w",week_fn, "_data_update.csv")
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 

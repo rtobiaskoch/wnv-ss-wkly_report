@@ -34,7 +34,7 @@ Code Below:\
 - if both true reads in data if not prints and error
 
 ```{r}
-source("scripts/read_data.R")
+source("scripts/check_data.R")
 ```
 
 Code Below:\
@@ -50,7 +50,10 @@ Code Below:\
 
 Data Input: \
 -output from abundance.R\
--data_input file:
+-data_input file:\
+\
+Data Output:\
+-yYYYY_wWW_data_update
 
 ```{r}
 source("scripts/pIR_VI.R")

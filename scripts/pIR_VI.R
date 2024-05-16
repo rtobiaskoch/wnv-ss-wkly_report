@@ -1,27 +1,16 @@
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #CALCULATE POOLED INFECTIVITY RATE BY WEEK
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+source("scripts/config.R")
 
 #check and read in data
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-if(exists("all_data_fn")){
-  if(file.exists(all_data_fn)) {
-    data_input = read_csv(all_data_fn, show_col_types = F)
-  }else{
-    "add your data to the data_input folder check the name in the config.R and run read_data.R script"
-  }
-  
-} else{
-  "all_data_fn object doesn't exist please run your config.R script"
-}
+data_input = check_read_fun(all_data_fn)
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-abund_zone_wk = read_rds(paste0(abund_out_fn, ".RData"))
+abund_zone_wk = check_read_fun(paste0(abund_out_fn, ".csv"))
 
-data_input = data_input %>%
-  filter(year == year_filter,
-         week == week_filter)
 
 #split to map pIR over week pools
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -42,15 +31,11 @@ data_input = data_input %>%
            pir_lci = round(lci,4),
            pir_uci = round(uci,4)) %>%
    mutate(vector_index = round(abund * pir,4))
-     )
-  
-  saveRDS(data_zone_wk,"data_output/data"
-  
-} else {
-  print("your abundance.R file hasn't been run. Please run first")  
 
-}
+  
 
+  write.csv(data_zone_wk, data_output_fn,row.names = F)
+  
 
 
 
