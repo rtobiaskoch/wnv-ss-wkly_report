@@ -43,7 +43,8 @@ if(any(c("zone","lat","long") %in% colnames(data_input))){ #if trap_columns zone
      
    }
 
-write.csv(data_update, "data_input/wnv-s_all_data.csv", row.names = F)
+trap_update_fn = str_replace(all_data_fn, ".csv", "_trap_update.csv")
+write.csv(data_update, trap_update_fn , row.names = F)
 
  
 

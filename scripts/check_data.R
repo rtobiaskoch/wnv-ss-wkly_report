@@ -15,7 +15,7 @@ if(exists("all_data_fn")){ #does  the file name to read in your data exist?
 
 #CHECK COL NAMES
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-if(all(colnames(data_input) == data_col)) {
+if(all(colnames(data_input) == data_col)) { #data_col in config.R file
   "All column names of data_input match expected names"
 } else {
   

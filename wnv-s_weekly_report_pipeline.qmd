@@ -28,6 +28,12 @@ if(update_trap == "YES") {
 }
 ```
 
+```{r}
+if(clean_data == "YES") {
+  source("scripts/data_clean.R")
+}
+```
+
 Code Below:\
 - checks if only one file is present in data_input/new_data folder\
 - checks if it is a csv\
@@ -48,12 +54,14 @@ source('scripts/abundance.R')
 Code Below:\
 - calculates pooled Infection Rate and Vector Index
 
-Data Input: \
+Data Input:\
 -output from abundance.R\
 -data_input file:\
 \
 Data Output:\
--yYYYY_wWW_data_update
+-yYYYY_wWW_data_update\
+\
+Notes: this script will drop weeks that only have a gravid trap. because gravid traps aren't used in abundance calculations
 
 ```{r}
 source("scripts/pIR_VI.R")
