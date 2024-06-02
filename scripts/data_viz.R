@@ -39,6 +39,19 @@ if(length(year_filter) > 1) {
     scale_color_manual(values = color_palette) +
     theme_classic() +
     facet_wrap(~zone)
+  
+  data_input %>%
+    group_by(year, week, zone, col) %>%
+    summarise(pir = mean(pir)) %>%
+    ungroup()%>%
+    ggplot(aes(week, pir, color = col, group = year)) +
+    geom_line() + 
+    ggtitle(title) +
+    scale_fill_manual(values = color_palette) +
+    scale_color_manual(values = color_palette) +
+    theme_classic() +
+    facet_wrap(~zone)
+  
 } else{
   title = paste0("Mosquitoes per trap per week ", year_fn, "-", week_fn)
   ggplot(data_input, aes(week, abund, fill = spp, color = spp)) +

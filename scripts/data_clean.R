@@ -26,7 +26,11 @@ data_clean = data_input %>%
   mutate(method2 = case_when(grepl(data_input$method, "^gravid|^G", ignore.case = T ) ~ 'G',
                              grepl(data_input$method, "^l/g|^light|^L", ignore.case = T ) ~ 'L'
                              )
-         )
+         ) %>%
+  #county clean
+  mutate(
+    
+  )
 
 if(any(!is.na(data_clean$spp2))) { #if there are no missing matches with spp2 then replace spp otherwise throw an message
   data_clean = data_clean %>%
