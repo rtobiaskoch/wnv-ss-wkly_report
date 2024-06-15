@@ -17,9 +17,9 @@ source("scripts/check_read_fun.R")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #DATA FILTER PARAMETERS##
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-year_filter = 2013:2023
-week_filter = 23:52
-fc_zones = c("NE", "SE", "NW", "SW")
+year_filter = 2024
+week_filter = 23
+fc_zones = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -111,6 +111,23 @@ class_col <- c("csu_id" = "character",
             "zone" = "character",
             "lat" = "numeric",
             "long" = "numeric")
+
+rename_col <- c("csu_id" = "CSU Pool Number (CMC Enters)" , 
+               "trap_id" = "Collection Site       (Trap ID)", 
+               "year" = "Year", 
+               "week" = "Week", 
+               "trap_date" = "Trap Date", 
+               "county" = "County", 
+               "method" = "L/G", 
+               "genus" = "Genus", 
+               "spp" = "Species", 
+               "sex" = "Sex", 
+               "no_gravid" = "No. Gravid", 
+               "no_deplete" = "No. Deplete", 
+               "total" = "Total", 
+               "test_code" = "Test Code (CSU Enters)" , 
+               "zone" = "Zone")
+
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
