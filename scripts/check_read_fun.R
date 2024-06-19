@@ -5,13 +5,16 @@ if(file.exists(input_file)) {
   if(exists("year_filter")){
     rio::import(input_file) %>%
       filter(year %in% year_filter) %>%
-      filter(week %in% week_filter)
+      filter(week %in% week_filter) %>%
+      mutate(zone = factor(zone, levels = zone_lvls),
+             spp = factor(spp, levels = c("Pipiens", "Tarsalis"))) %>%
+      arrange(zone, spp)
   } else {
-    "run config.R to get year and week filters"
+   print( "run config.R to get year and week filters")
   }
 
     }else{
-      "add your data to the data_input folder check the name in the config.R"
+      print( "add your data to the data_input folder check the name in the config.R")
     }
 
 }

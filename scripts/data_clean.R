@@ -1,7 +1,7 @@
 #data clean 
 source("scripts/config.R")
 
-data_input = check_read_fun(all_data_fn)
+data_input = check_read_fun(fn_database_update)
 
 #date clean check
 
@@ -52,6 +52,6 @@ if(any(!is.na(data_clean$method2))) { #if there are no missing matches with spp2
 skimr::skim(data_clean)
   
   
-  clean_fn = str_replace(all_data_fn, ".csv", "_cleaned.csv")
-  write.csv(data_clean,  clean_fn, row.names = F)
+  fn_clean = str_replace(fn_database_update, ".csv", "_cleaned.csv")
+  write.csv(data_clean,  fn_clean, row.names = F)
   

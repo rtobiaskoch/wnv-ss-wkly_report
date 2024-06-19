@@ -1,55 +1,42 @@
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#CALCULATE POOLED INFECTIVITY RATE BY WEEK
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+source("scripts/config.R")
 
-#check and read in data_input
+#pull and read database
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-if(exists("all_data_fn")){
-  if(file.exists(all_data_fn)) {
-    data_input = read_csv(all_data_fn, show_col_types = F)
-  }else{
-    "add your data to the data_input folder check the name in the config.R and run read_data.R script"
-  }
-  
-} else{
-  "all_data_fn object doesn't exist please run your config.R script"
-}
+gsheet_pull(database_gsheet_key, "data", fn_database_input)
+
+database = read.csv(fn_database_input) %>% #FIX DATE
+  mutate(trap_date = ymd(trap_date))
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 #checks and reads in trap_data
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-if(exists("trap_fn")){
-  if(file.exists(trap_fn)) {
-    trap_coord = read_csv(trap_fn, show_col_types = F)
-  }else{
-    "add your data to the data_input folder check the name in the config.R and run read_data.R script"
-  }
-  
-} else{
-  "trap_fn object doesn't exist please run your config.R script"
-}
+gsheet_pull(trap_gsheet_key, "data", fn_trap)
+trap_data = read.csv(fn_trap)
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-if(any(c("zone","lat","long") %in% colnames(data_input))){ #if trap_columns zone, lat long exist in dataframe remove them to be updated
+
+database_update = rquery::natural_join(new_data, database, by = "csu_id", jointype = "FULL")
+
+
+
   data_update = data_input %>% 
-    select(-c(trap_col)) 
-   } else{ #otherwise just add them
-     data_update = data_input %>% 
-       mutate(trap_id = str_to_upper(trap_id)) %>% 
+    select(-c(trap_col)) %>%
+      mutate(trap_id = str_to_upper(trap_id)) %>% 
        left_join(trap_coord, by ="trap_id") %>%
        mutate(zone = if_else(is.na(zone),
                              str_sub(trap_id, 1,2),#if zone is missing get the general location from the trap id
                              zone) #otherwise keep the zone
        )
      
-   }
 
-trap_update_fn = str_replace(all_data_fn, ".csv", "_trap_update.csv")
-write.csv(data_update, trap_update_fn , row.names = F)
+
+fn_trap_update = str_replace(fn_database_updated, ".csv", "_trap_update.csv")
+write.csv(data_update, fn_trap_update , row.names = F)
 
  
 
 unmatched_traps = data_update %>%
-  filter(is.na(lat))
+  filter(is.na(lat)) %>%
+  distinct(trap_id, zone, lat, long)
 
 if(nrow(unmatched_traps > 0)) {
   write.csv(unmatched_traps, "data_output/unmatched_traps.csv")
