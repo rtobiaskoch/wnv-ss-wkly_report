@@ -56,6 +56,12 @@ Code Below:\
 source("scripts/data_merge_and_push.R")
 ```
 
+creates list to remove any traps that weren't found in the database in the current season or the previous. used in abundance.
+
+```{r}
+source("scripts/inactive_trap.R")
+```
+
 Code Below:\
 - data input:\
 \-- data_input file and trap coordinates (if not in data_input)
@@ -95,5 +101,9 @@ source("scripts/tables.R")
 
 ```{r}
 source("scripts/data_viz.R")
+```
+
+```{r}
+source("scripts/map_data.R")
 
 ```

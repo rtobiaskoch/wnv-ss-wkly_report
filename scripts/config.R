@@ -4,9 +4,11 @@ rm(list = ls())
 suppressMessages({
   if (!require("pacman")) install.packages("pacman")
   pacman::p_unload()
-  pacman::p_load(googlesheets4, googledrive, rio, readxl,
-                 tidyverse, janitor, lubridate, PooledInfRate, ggpubr, 
-                 wesanderson)
+  pacman::p_load(googlesheets4, googledrive, rio, readxl, #importing
+                 tidyverse, janitor, lubridate, #manipulation
+                 PooledInfRate, #analysis
+                 ggpubr, wesanderson, leaflet# plotting
+                 )
   
   
 })
@@ -83,9 +85,11 @@ if(length(week_filter) > 1){ #if looking at multiple years then create YYYY-YYYY
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 database_gsheet_key = "12Mf-w9I9NHTTDjzEPRoxUE08ka4WZ6RE-RM1s-FW7qA"
 trap_gsheet_key = "1Jna3Bu47gjBWWz5vCoel4ksa-LBuo8R3zVfQYFl73wI"
+trap_malfunction_key = "1dsTyvZoCN6NUJlTcDLINMfxuGZdJuP2ADpn8noQwL6Q"
 
 fn_gdrive_database = "wnv-s_database"
 
+fn_trap_malfunction = "data_input/trap_malfunction.csv"
 fn_trap = "data_input/foco_trap.csv"
 fn_database_input = "data_input/wnv-s_database.csv" 
 
@@ -135,6 +139,8 @@ fn_cq_out = paste0("data_mid/","y",fn_year, "_", "w",fn_week, "_platemap.csv")
 fn_abund_out = paste0("data_mid/","y",fn_year, "_", "w",fn_week, "_abundance")
 
 fn_pools_mid = paste0("data_mid/","y",fn_year, "_", "w",fn_week, "_pools.csv")
+
+fn_inactive_trap = "data_mid/inactive_traps.csv"
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
