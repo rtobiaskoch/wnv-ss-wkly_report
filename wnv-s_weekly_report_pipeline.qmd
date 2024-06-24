@@ -58,16 +58,13 @@ source("scripts/data_merge_and_push.R")
 
 creates list to remove any traps that weren't found in the database in the current season or the previous. used in abundance.
 
-```{r}
-source("scripts/inactive_trap.R")
-```
 
 Code Below:\
 - data input:\
 \-- data_input file and trap coordinates (if not in data_input)
 
 ```{r}
-source('scripts/abundance.R')
+source('scripts/abundance_v2.R')
 ```
 
 
@@ -98,6 +95,11 @@ source("scripts/historical_weekly.R")
 ```{r}
 source("scripts/tables.R")
 ```
+
+```{r}
+source("scripts/weekly_input_report_format.R")
+```
+
 
 ```{r}
 source("scripts/data_viz.R")

@@ -23,10 +23,10 @@ source("scripts/gsheet_read_fun.R")
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#DATA FILTER PARAMETERS##
+#DATA PARAMETERS##
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 year_filter = 2024
-week_filter = 24
+week_filter = 25
 fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
 all_zones = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
@@ -86,10 +86,12 @@ if(length(week_filter) > 1){ #if looking at multiple years then create YYYY-YYYY
 database_gsheet_key = "12Mf-w9I9NHTTDjzEPRoxUE08ka4WZ6RE-RM1s-FW7qA"
 trap_gsheet_key = "1Jna3Bu47gjBWWz5vCoel4ksa-LBuo8R3zVfQYFl73wI"
 trap_malfunction_key = "1dsTyvZoCN6NUJlTcDLINMfxuGZdJuP2ADpn8noQwL6Q"
+trap_active_key = "1SA_PE74KLH6_jG3yR49e8py1uXgb_C02Q3Iz9MWivrY"
 
 fn_gdrive_database = "wnv-s_database"
 
 fn_trap_malfunction = "data_input/trap_malfunction.csv"
+fn_trap_active = "data_input/trap_active.csv"
 fn_trap = "data_input/foco_trap.csv"
 fn_database_input = "data_input/wnv-s_database.csv" 
 
@@ -133,6 +135,8 @@ if(length(fn_platemap) != 1) {
 fn_database_update = "data_mid/wnv-s_database_update.csv"
 
 fn_vdci_clean = paste0("data_mid/","y",fn_year, "_", "w",fn_week, "_vdci_cdc.csv")
+
+fn_vdci_clean_test = paste0("data_mid/","y",fn_year, "_", "w",fn_week, "_vdci_cdc_test.csv")
 
 fn_cq_out = paste0("data_mid/","y",fn_year, "_", "w",fn_week, "_platemap.csv")
 
@@ -209,6 +213,29 @@ rename_col <- c("csu_id" = "CSU Pool Number (CMC Enters)" ,
                "total" = "Total", 
                "test_code" = "Test Code (CSU Enters)" , 
                "zone" = "Zone")
+
+
+weekly_input_report_format <- c(
+  "Year",
+  "CSU Pool Number (CMC Enters)",
+  "IDA Pool (CSU Enters, Leave Blank)",
+  "Week",
+  "Trap Date",
+  "County",
+  "Account",
+  "Collection Site       (Trap ID)" ,
+  "Zone",
+  "Method",
+  "Genus",
+  "Spp",
+  "Sex",
+  "No. Gravid",
+  "No. Deplete",
+  "Total",
+  "Test Code (CSU Enters)",
+  "Test Result (CSU Enters)",
+  "Comments"
+)
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

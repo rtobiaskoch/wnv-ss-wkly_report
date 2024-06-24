@@ -1,16 +1,16 @@
 "csu_id","trap_id","year","week","trap_date","county","method","spp","total","test_code","zone"
-"CDC-005","PIONEER PARK","2024","25",2024-06-19,"Larimer","L","Tarsalis",5,NA,NA
-"CDC-008","PIONEER PARK","2024","25",2024-06-19,"Larimer","L","Pipiens",1,NA,NA
-"CDC-009","GOLF COURSE","2024","25",2024-06-19,"Larimer","L","Tarsalis",43,NA,NA
-"CDC-012","GOLF COURSE","2024","25",2024-06-19,"Larimer","L","Tarsalis",1,NA,NA
-"CDC-013","HILLSDALE PARK","2024","25",2024-06-19,"Larimer","L","Tarsalis",8,NA,NA
-"CDC-014","HILLSDALE PARK","2024","25",2024-06-19,"Larimer","L","Pipiens",1,NA,NA
-"CDC-010","GATEWAY PARK","2024","25",2024-06-19,"Larimer","L","Pipiens",1,NA,NA
-"CDC-011","GATEWAY PARK","2024","25",2024-06-19,"Larimer","L","Tarsalis",9,NA,NA
-"CDC-015","BERTHOUD RESERVOIR","2024","25",2024-06-19,"Larimer","L","Pipiens",1,NA,NA
-"CDC-016","BERTHOUD RESERVOIR","2024","25",2024-06-19,"Larimer","L","Tarsalis",50,NA,NA
-"CDC-017","BERTHOUD RESERVOIR","2024","25",2024-06-19,"Larimer","L","Tarsalis",40,NA,NA
-"CDC-018","BERTHOUD RESERVOIR","2024","25",2024-06-19,"Larimer","L","Tarsalis",3,NA,NA
+"CDC-005","PIONEER PARK","2024","25",2024-06-19,"LC","L","Tarsalis",5,NA,"BE"
+"CDC-008","PIONEER PARK","2024","25",2024-06-19,"LC","L","Pipiens",1,NA,"BE"
+"CDC-009","GOLF COURSE","2024","25",2024-06-19,"LC","L","Tarsalis",43,NA,"BE"
+"CDC-012","GOLF COURSE","2024","25",2024-06-19,"LC","L","Tarsalis",1,NA,"BE"
+"CDC-013","HILLSDALE PARK","2024","25",2024-06-19,"LC","L","Tarsalis",8,NA,"BE"
+"CDC-014","HILLSDALE PARK","2024","25",2024-06-19,"LC","L","Pipiens",1,NA,"BE"
+"CDC-010","GATEWAY PARK","2024","25",2024-06-19,"LC","L","Pipiens",1,NA,"BE"
+"CDC-011","GATEWAY PARK","2024","25",2024-06-19,"LC","L","Tarsalis",9,NA,"BE"
+"CDC-015","BERTHOUD RESERVOIR","2024","25",2024-06-19,"LC","L","Pipiens",1,NA,"BE"
+"CDC-016","BERTHOUD RESERVOIR","2024","25",2024-06-19,"LC","L","Tarsalis",50,NA,"BE"
+"CDC-017","BERTHOUD RESERVOIR","2024","25",2024-06-19,"LC","L","Tarsalis",40,NA,"BE"
+"CDC-018","BERTHOUD RESERVOIR","2024","25",2024-06-19,"LC","L","Tarsalis",3,NA,"BE"
 "CSU-21854","LV-069","2024","25",2024-06-17,"LC","L","Tarsalis",2,NA,"LV"
 "CSU-21855","LV-095","2024","25",2024-06-17,"LC","L","Tarsalis",12,NA,"LV"
 "CSU-21856","FC-040GR","2024","25",2024-06-17,"LC","G","Pipiens",18,NA,"NE"

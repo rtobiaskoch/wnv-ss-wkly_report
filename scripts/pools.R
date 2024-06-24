@@ -36,6 +36,7 @@ suppressMessages({
     mutate(n_pos_pools = pos_pools_L + pos_pools_G)
   
   fc_pos_pools = data_input %>% 
+    filter(zone %in% fc_zones) %>%
     group_by(year, week, spp, method) %>%
     summarise(zone = "FC",
               n = sum(test_code)) %>%

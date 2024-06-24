@@ -6,22 +6,18 @@ source("scripts/config.R")
 data_input = check_read_fun(fn_database_update)
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-#get traps to merge weekly data to.
-#this is done because traps with 0 are not reported. 
-gsheet_pull(trap_gsheet_key, "data", fn_trap)
-trap_data = read.csv(fn_trap)
-
-inactive_trap = read.csv(fn_inactive_trap) %>%
-  filter(zone != "BC") #remove BC & BE because their traps are infrequent
-  
-active_trap = trap_data %>%
-  anti_join(inactive_trap, by = "trap_id")
-
-
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#get malfunction trap data
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 gsheet_pull(trap_malfunction_key, "data", fn_trap_malfunction)
 malfunction_trap = read.csv(fn_trap_malfunction)
 
-  
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#get activetrap data for FC and LV
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #for each zone
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

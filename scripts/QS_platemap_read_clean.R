@@ -13,7 +13,8 @@ qs = qs[-1,]
 
 qs = clean_names(qs) %>%
   filter(!is.na(target_name)) %>% 
-  mutate(cq = round(as.numeric(ct_mean), 2)) %>%
+  mutate(ct = if_else(str_detect(ct, "Undetermined"), "55.55", ct)) %>% # convert to numeric to avoid errors
+  mutate(cq = round(as.numeric(ct), 2)) %>%
   select(well_position, target_name, cq) %>%
   pivot_wider(names_from = target_name, values_from = cq) %>%
   rename(cq = WNV,

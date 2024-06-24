@@ -10,20 +10,96 @@ data_zone_wk = check_read_fun(fn_data_output)
 
 t1a_abund = data_zone_wk %>%
   select(zone, spp, abund) %>%
-  pivot_wider(names_from = spp, values_from = abund)
+  pivot_wider(names_from = spp, 
+              values_from = abund,
+              names_prefix = "abund_")
+
+t1a_pir = data_zone_wk %>%
+  select(zone, spp, pir) %>%
+  pivot_wider(names_from = spp, 
+              values_from = pir,
+              names_prefix = "pir_")
+
+t1a_vi = data_zone_wk %>%
+  select(zone, spp, vi) %>%
+  pivot_wider(names_from = spp, 
+              values_from = vi,
+              names_prefix = "vi_") %>%
+  mutate(all = vi_Pipiens + vi_Tarsalis)
+
+t1a = t1a_abund %>%
+  left_join(t1a_pir, by = "zone") %>%
+  left_join(t1a_vi, by = "zone") %>%
+  mutate(across(everything(), ~ ifelse(is.na(.), "", .)))
 
 
-
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#>TABLE 2A
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 #total indiv examined
 #number pools examined
-total_examined = data_input %>%
-  group_by(year,week,zone,spp) %>% 
-  summarise(total = sum(total)) %>%
-  pivot_wider(names_from = "spp", values_from = "total")
+t2a_collected = data_zone_wk %>%
+  select(zone, spp, mosq_L) %>% 
+  pivot_wider(names_from = "spp", 
+              values_from = "mosq_L",
+              names_prefix = "collected_") %>%
+  mutate(all_collected = collected_Pipiens + collected_Tarsalis)
+
+
+t2a_traps = data_zone_wk %>%
+  distinct(zone, trap_L)
+
+if(nrow(get_dupes(t2a_traps)) > 0) { #if there are duplicates it means the number of traps for pip and tar don't match
+  print("the number of traps for pipiens and tarsalis don't match")
+}
+  
+
+
+t2a_abund = t1a_abund %>%
+  mutate(all_abund = abund_Pipiens + abund_Tarsalis)
+
+t2a = t2a_collected %>%
+  left_join(t2a_traps, by = "zone") %>%
+  left_join(t2a_abund, by = "zone") #%>%
+ # mutate(across(everything(), ~ ifelse(is.na(.), "", .)))
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#>TABLE 3A
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+t3a_examined = data_zone_wk %>%
+  select(zone, spp, mosq) %>% 
+  pivot_wider(names_from = "spp", 
+              values_from = "mosq",
+              names_prefix = "examined_") %>%
+  mutate(all_examined = examined_Pipiens + examined_Tarsalis)
 
 #number pools examined
-pools = data_input %>%
-  group_by(year,week,zone,spp) %>% 
-  count() %>%
-  pivot_wider(names_from = "spp", values_from = "n")
+t3a_pools = data_zone_wk %>%
+  select(zone, spp, n_pools) %>%
+  pivot_wider(names_from = "spp", 
+              values_from = "n_pools",
+              names_prefix = "pool_") %>%
+  mutate(all_pool = pool_Pipiens + pool_Tarsalis)
+
+t3a_p_pools = data_zone_wk %>%
+  select(zone, spp, n_pos_pools) %>%
+  pivot_wider(names_from = "spp", 
+              values_from = "n_pos_pools",
+              names_prefix = "pos_pool_") %>%
+  mutate(all_pos_pool = pos_pool_Pipiens + pos_pool_Tarsalis)
+
+t3a_pir = t1a_pir %>%
+  mutate(all_pir = pir_Pipiens + pir_Tarsalis) %>%
+  mutate(across(-zone, ~ . * 1000))
+
+t3a = t3a_examined %>%
+  left_join(t3a_pools, by = "zone") %>%
+  left_join(t3a_p_pools, by = "zone") %>%
+  left_join(t3a_pir, by = "zone") # %>%
+ # mutate(across(everything(), ~ ifelse(is.na(.), "", .)))
+
+write_csv(t1a, "data_output/table1a.csv")
+write_csv(t2a, "data_output/table2a.csv")
+write.csv(t3a, 'data_output/table3a.csv')
