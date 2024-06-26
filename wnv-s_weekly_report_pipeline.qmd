@@ -26,6 +26,7 @@ rm -f data_input/vdci/*
 rm -f data_input/qs/*
 rm -f data_input/platemap/*
 rm -f data_mid/*
+rm -f data_output/*
 
 ```
 
