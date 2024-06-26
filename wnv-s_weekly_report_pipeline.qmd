@@ -17,8 +17,20 @@ source("scripts/config.R")
 
 ```
 
-Update trap locations?
--will look to see if the trap_col names exist, remove them then merge with trap_coord and overwrite all_data_fn
+```{bash}
+git add --all
+git commit -m "weekly commit before data removal"
+git push
+rm -f data_input/cdc/*
+rm -f data_input/vdci/*
+rm -f data_input/qs/*
+rm -f data_input/platemap/*
+
+```
+
+\
+
+Update trap locations? -will look to see if the trap_col names exist, remove them then merge with trap_coord and overwrite all_data_fn
 
 ```{r}
 #update_trap in config.R
@@ -33,24 +45,20 @@ if(clean_data == "YES") {
 }
 ```
 
+data_input: vdci code below: formats weekly report data to match existing database
 
-
-data_input: vdci
-code below:
-formats weekly report data to match existing database
 ```{r}
 source("scripts/vdci_cdc_read_clean.R")
 ```
 
 data_input: platemap and quantstudio
+
 ```{r}
 source("scripts/QS_platemap_read_clean.R")
 ```
 
 Code Below:\
- - merges weekly report with existing database
- -pulls data from gdrive and makes and archived copy in database_archive
- 
+- merges weekly report with existing database -pulls data from gdrive and makes and archived copy in database_archive
 
 ```{r}
 source("scripts/data_merge_and_push.R")
@@ -58,14 +66,14 @@ source("scripts/data_merge_and_push.R")
 
 creates list to remove any traps that weren't found in the database in the current season or the previous. used in abundance.
 
-
 Code Below:\
 -data_input:\
-  - active_traps.gsheet\
-  - trap_malfunction.gsheet
+- active_traps.gsheet\
+- trap_malfunction.gsheet
 
 -data_output:\
-   - fn_func_trap: data_mid/functional_traps.csv
+- fn_func_trap: data_mid/functional_traps.csv
+
 ```{r}
 source("scripts/get_func_trap.R")
 ```
@@ -77,7 +85,6 @@ Code Below:\
 ```{r}
 source('scripts/abundance_v2.R')
 ```
-
 
 ```{r}
 source('scripts/pools.R')
@@ -113,7 +120,6 @@ suppressMessages(
 )
 
 ```
-
 
 ```{r}
 #source("scripts/data_viz.R")
