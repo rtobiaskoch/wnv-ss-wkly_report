@@ -1,8 +1,8 @@
-zone,abund_Pipiens,abund_Tarsalis,pir_Pipiens,pir_Tarsalis,vi_Pipiens,vi_Tarsalis,all
+"zone","abund_Pipiens","abund_Tarsalis","pir_Pipiens","pir_Tarsalis","vi_Pipiens","vi_Tarsalis","all"
 1,2.38,4.25,0,0,0,0,0
 2,1.56,13.33,0,0,0,0,0
 3,0.07,6.4,0,0,0,0,0
 4,0.44,1.22,0,0,0,0,0
-5,1.32,15.41,0,0,0,0,0
-6,0.33,16.33,0,0.01,0,0.16,0.16
-7,0.62,20.62,0,0,0,0,0
+5,0.93,6.37,0,0,0,0,0
+6,0.33,16.33,0,0.0095,0,0.1551,0.1551
+7,0.56,18.33,0,0,0,0,0

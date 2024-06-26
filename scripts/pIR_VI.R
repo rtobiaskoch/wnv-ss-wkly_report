@@ -36,9 +36,9 @@ pools = check_read_fun(fn_pools_mid)
              week = as.integer(week),
              zone = zone,
              spp = spp,
-             pir = round(P,2),
-             pir_lci = round(Lower,2),
-             pir_uci = round(Upper,2)
+             pir = round(P,4),
+             pir_lci = round(Lower,4),
+             pir_uci = round(Upper,4)
            )
  
  
@@ -67,9 +67,9 @@ pools = check_read_fun(fn_pools_mid)
   data_zone_wk = pools %>%
     left_join(abund_zone_wk, by = grp_vars) %>%
     left_join(df_pir, by = grp_vars) %>%
-    mutate(vi = round(abund * pir,2),
-          vi_lci = round(abund * pir_lci,2),
-          vi_uci = round(abund * pir_uci,2)) %>%
+    mutate(vi = round(abund * pir,4),
+          vi_lci = round(abund * pir_lci,4),
+          vi_uci = round(abund * pir_uci,4)) %>%
     mutate(year = factor(year),
            week = factor(week),
            zone = factor(zone, levels = zone_lvls),

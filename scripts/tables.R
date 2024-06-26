@@ -48,7 +48,7 @@ t2a_collected = data_zone_wk %>%
 
 
 t2a_traps = data_zone_wk %>%
-  distinct(zone, trap_L)
+  distinct(zone, trap_L_func)
 
 if(nrow(get_dupes(t2a_traps)) > 0) { #if there are duplicates it means the number of traps for pip and tar don't match
   print("the number of traps for pipiens and tarsalis don't match")
@@ -100,6 +100,6 @@ t3a = t3a_examined %>%
   left_join(t3a_pir, by = "zone") # %>%
  # mutate(across(everything(), ~ ifelse(is.na(.), "", .)))
 
-write_csv(t1a, "data_output/table1a.csv")
-write_csv(t2a, "data_output/table2a.csv")
-write.csv(t3a, 'data_output/table3a.csv')
+write.csv(t1a, "data_output/table1a.csv", row.names = F)
+write.csv(t2a, "data_output/table2a.csv", row.names = F)
+write.csv(t3a, 'data_output/table3a.csv', row.names = F)

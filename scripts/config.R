@@ -4,7 +4,7 @@ rm(list = ls())
 suppressMessages({
   if (!require("pacman")) install.packages("pacman")
   pacman::p_unload()
-  pacman::p_load(googlesheets4, googledrive, rio, readxl, #importing
+  pacman::p_load(googlesheets4, googledrive, rio, readxl, openxlsx, googledrive, #importing and exporting
                  tidyverse, janitor, lubridate, #manipulation
                  PooledInfRate, #analysis
                  ggpubr, wesanderson, leaflet# plotting
@@ -31,7 +31,8 @@ fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
 all_zones = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
 
-cq_threshold = 30
+cq_threshold = 35
+rn_threshold = 34000
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -146,6 +147,8 @@ fn_pools_mid = paste0("data_mid/","y",fn_year, "_", "w",fn_week, "_pools.csv")
 
 fn_inactive_trap = "data_mid/inactive_traps.csv"
 
+fn_func_trap = "data_mid/functional_traps.csv"
+
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #FILE NAMES OUTPUT
@@ -155,6 +158,7 @@ fn_gdrive_archive = paste0("wnv-s_database_pre_y",year_filter, "_w", week_filter
 
 fn_data_output = paste0("data_output/","y",fn_year, "_", "w",fn_week, "_data_update.csv")
 
+fn_weekly_input_format = "data_output/weekly_data_input_format.csv"
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -227,7 +231,7 @@ weekly_input_report_format <- c(
   "Zone",
   "Method",
   "Genus",
-  "Spp",
+  "SPP",
   "Sex",
   "No. Gravid",
   "No. Deplete",
@@ -245,7 +249,8 @@ weekly_input_report_format <- c(
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 grp_vars = c("year", "week", "zone", "spp")
 hx_grp_vars = c("week", "zone")
-zone_lvls = c("NW", "NE", "SE","SW", "FC", "LV", "BE", "BC")
+zone_lvls = c("NW", "NE", "SE","SW", "FC", "LV", "BE", "BC", "WC")
+non_routine_zones = c("BC", "WC")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #COLOR SETTINGS
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

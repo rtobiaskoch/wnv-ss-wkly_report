@@ -1,3 +1,4 @@
+source("scripts/config.R")
 
 database = read.csv(fn_database_update)
 

@@ -17,6 +17,7 @@ suppressMessages({
   
   
   fc_n_pools = data_input %>% 
+    filter(zone %in% fc_zones) %>%
     group_by(year, week, spp, method) %>%
     summarise(zone = "FC",
               n = n()) %>%
@@ -49,8 +50,6 @@ suppressMessages({
   pools = left_join(n_pools, pos_pools, by = grp_vars)
   
 }
-  
- 
   
 )
 
