@@ -30,8 +30,6 @@ rm -f data_output/*
 
 ```
 
-\
-
 Update trap locations? -will look to see if the trap_col names exist, remove them then merge with trap_coord and overwrite all_data_fn
 
 ```{r}
@@ -50,7 +48,7 @@ if(clean_data == "YES") {
 data_input: vdci code below: formats weekly report data to match existing database
 
 ```{r}
-source("scripts/vdci_cdc_read_clean.R")
+source("scripts/mozzy_pool_read_clean.R")
 ```
 
 data_input: platemap and quantstudio
@@ -75,6 +73,10 @@ Code Below:\
 
 -data_output:\
 - fn_func_trap: data_mid/functional_traps.csv
+
+```{r}
+source("bird_slev_check.R")
+```
 
 ```{r}
 source("scripts/get_func_trap.R")

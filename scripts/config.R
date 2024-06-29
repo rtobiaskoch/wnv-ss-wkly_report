@@ -91,6 +91,8 @@ trap_active_key = "1SA_PE74KLH6_jG3yR49e8py1uXgb_C02Q3Iz9MWivrY"
 
 fn_gdrive_database = "wnv-s_database"
 
+fn_mozzy_pool_input = "data_input/mozzy_pools"
+
 fn_trap_malfunction = "data_input/trap_malfunction.csv"
 fn_trap_active = "data_input/trap_active.csv"
 fn_trap = "data_input/foco_trap.csv"

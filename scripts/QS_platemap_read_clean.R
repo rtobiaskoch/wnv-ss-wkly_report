@@ -4,6 +4,8 @@ source("scripts/config.R")
 #QS data
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+
+
 qs_input = read_xls(fn_qs, sheet = "Results")
 
 qs = qs_input[34:nrow(qs_input),]

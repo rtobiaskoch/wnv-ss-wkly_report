@@ -1,4 +1,4 @@
-"year","csu_id","IDA Pool (CSU Enters, Leave Blank)","week","trap_date","county","Account","Collection Site","zone","Method","genus","SPP","sex","no_gravid","no_deplete","Total","test_code","Test Result (CSU Enters)","Comments"
+"year","csu_id","IDA Pool (CSU Enters, Leave Blank)","week","trap_date","county","Acct","trap_id","zone","method","genus","spp","sex","no_gravid","no_deplete","total","test_code","Test Result (CSU Enters)","Comments"
 "2024","BOU-00206",NA,"26",2024-06-24,"BC","BC","BC-04","BC","L","Cx.","Tarsalis","F",0,15,15,NA,NA,NA
 "2024","BOU-00207",NA,"26",2024-06-24,"BC","BC","BC-11","BC","L","Cx.","Tarsalis","F",0,14,14,NA,NA,NA
 "2024","BOU-00208",NA,"26",2024-06-24,"BC","BC","BC-22","BC","L","Cx.","Tarsalis","F",0,12,12,NA,NA,NA
