@@ -26,7 +26,7 @@ source("scripts/gsheet_read_fun.R")
 #DATA PARAMETERS##
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 year_filter = 2024
-week_filter = 25
+week_filter = 26
 fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
 all_zones = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
@@ -91,7 +91,11 @@ trap_active_key = "1SA_PE74KLH6_jG3yR49e8py1uXgb_C02Q3Iz9MWivrY"
 
 fn_gdrive_database = "wnv-s_database"
 
-fn_mozzy_pool_input = "data_input/mozzy_pools"
+#weekly input
+fn_mozzy_pool_input = "data_input/mozzy_pools" #replaced vdci and cdc input because also have boulder so all in one place
+fn_qs = "data_input/qs"
+fn_platemap = "data_input/platemap"
+
 
 fn_trap_malfunction = "data_input/trap_malfunction.csv"
 fn_trap_active = "data_input/trap_active.csv"
@@ -99,38 +103,9 @@ fn_trap = "data_input/foco_trap.csv"
 fn_database_input = "data_input/wnv-s_database.csv" 
 
 
-fn_new_vdci = list.files("data_input/vdci",
-                             full.names = T)
-if(length(fn_new_vdci) != 1) {
-  print("There is more or less than one file in the data_input/vdci folder, 
-        using week_filter and year_filter to filter all_data in config.R instead")
-}
-
-fn_new_cdc = list.files("data_input/cdc",
-                         full.names = T)
-
-if(length(fn_new_cdc) != 1) {
-  print("There is more or less than one file in the data_input/cdc folder, 
-        using week_filter and year_filter to filter all_data in config.R instead")
-}
 
 
-fn_qs = list.files("data_input/qs",
-                                 full.names = T)
 
-if(length(fn_qs) != 1) {
-  print("There is more or less than one file in the data_input/qs folder, 
-        using week_filter and year_filter to filter all_data in config.R instead")
-}
-
-
-fn_platemap = list.files("data_input/platemap",
-                             full.names = T)
-
-if(length(fn_platemap) != 1) {
-  print("There is more or less than one file in the data_input/platemap folder, 
-        using week_filter and year_filter to filter all_data in config.R instead")
-}
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # FILE NAMES MID

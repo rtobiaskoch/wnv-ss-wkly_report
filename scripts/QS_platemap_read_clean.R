@@ -3,44 +3,78 @@ source("scripts/config.R")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #QS data
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#get list of file paths for all files in the fn_mozzy_pool_input
+fn_path = list.files(path = fn_qs,
+               full.names = T,
+               ignore.case = T)  
+
+qs_input = fn_path %>% 
+  map(~ read_excel(.x, col_names = TRUE, sheet = "Results") %>% 
+        mutate(file_name = .x) %>%
+        filter(`Block Type` %in% c("Well", as.character(1:96)))
+       ) %>%
+  bind_rows()
 
 
+colnames(qs_input) = qs_input[1,] #replace the nonsensical names with the colnames that are in row one but keep file_name
 
-qs_input = read_xls(fn_qs, sheet = "Results")
+#put file_name colname back by matching the fn_path that are rows in file_name
+colnames(qs_input) = if_else(colnames(qs_input) %in% fn_path, 
+                             "file_name", 
+                             colnames(qs_input))
 
-qs = qs_input[34:nrow(qs_input),]
-colnames(qs) = qs[1,]
-qs = qs[-1,]
 
-
-qs = clean_names(qs) %>%
-  filter(!is.na(target_name)) %>% 
+qs = qs_input %>%
+  clean_names() %>%
+  filter(well_position != "Well Position") %>% #remove the column names from the dataframe observations
+   mutate(plate = case_when(
+               grepl("plate 1|p1|plate_1", file_name, ignore.case = TRUE) ~ "plate_1",
+               grepl("plate 2|p2|plate_2", file_name, ignore.case = TRUE) ~ "plate_2",
+               TRUE ~ "unknown"
+                   )
+         ) %>%
   mutate(ct = if_else(str_detect(ct, "Undetermined"), "55.55", ct)) %>% # convert to numeric to avoid errors
   mutate(cq = round(as.numeric(ct), 2),
-         ct_threshold = as.numeric(ct_threshold)) %>%
-  select(well_position, target_name, cq, `ct_threshold`) %>%
+         well = as.numeric(well), #convert to numeric to sort
+         #ct_threshold = as.numeric(ct_threshold)
+         ) %>%
+  arrange(plate, well) %>%
+  select(well_position, target_name, cq, ct_threshold, quantity, plate) %>%
   pivot_wider(names_from = target_name, values_from = cq) %>%
   rename(cq = WNV,
-         SLEV_cq = SLEV)
+         SLEV_cq = SLEV) 
 
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #Platemap
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+fn_path = list.files(path = fn_platemap,
+                     full.names = T,
+                     ignore.case = T)  
 
-platemap = read_xlsx(fn_platemap)
-platemap = platemap[1:8,1:12] %>%
+
+platemap = fn_path %>%
+  map(~read_excel(.x, col_names = T, 
+                            col_types = "text", range = "A1:M9") %>%
   rename(row = "...1") %>%
   pivot_longer(cols = -row, 
                names_to = "column", 
                values_to = "csu_id") %>%
+  mutate(file_name = .x) %>%
+  mutate(plate = case_when(
+    grepl("plate 1|p1|plate_1", file_name, ignore.case = TRUE) ~ "plate_1",
+    grepl("plate 2|p2|plate_2", file_name, ignore.case = TRUE) ~ "plate_2",
+    TRUE ~ "unknown")) %>%
   mutate(well_position = paste0(row, column)) %>%
-  select(well_position, csu_id)
+  select(well_position, csu_id, plate)
+     ) %>%
+  bind_rows()
+
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #merge
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-cq_data = left_join(qs, platemap, by = "well_position")
+cq_data = left_join(qs, platemap, by = c("well_position", "plate"))
 
 
 if(any(cq_data$ct_threshold < rn_threshold)) {
