@@ -2,19 +2,30 @@ source("scripts/config.R")
 
 
 cq_data = read.csv(fn_cq_out) %>% 
-  select(-SLEV_cq, -well_position)
+  select(-well_position)
 
 gsheet_pull(trap_gsheet_key, "data", fn_trap)
 trap_data = read.csv(fn_trap) %>%
   select(-zone)
 
-
-
-new_data = read.csv(fn_vdci_clean) %>% 
-  left_join(cq_data, by = "csu_id") %>%
+#join cq (pcr) data and the trap location data to get new data to add to the database
+#keep the standards controls and other samples that arent i 
+new_data0 = read.csv(fn_vdci_clean) %>% 
+  full_join(cq_data, by = "csu_id") %>%
   left_join(trap_data, by = c("trap_id")) %>%
-  mutate(test_code = if_else(cq <= cq_threshold, 1, 0)) %>%
+  mutate(test_code = if_else(copies_WNV > copy_threshold, 1, 0)) %>%
   mutate(seq = NA) 
+
+
+#get all controls RMNP and misc samples that aren't in the datasheets (mozzy pools)
+stds_ctrl_slev_bird = new_data0 %>%
+  select(pcr_check_col) #in config.R
+
+write.csv(stds_ctrl_slev_bird, fn_stds_ctrl_slev_bird, row.names = F)
+
+new_data = new_data0 %>%
+  filter(!is.na(trap_id)) %>%
+  select(all_of(database_col))
 
 write.csv(new_data, fn_vdci_clean_test, row.names = F)
 

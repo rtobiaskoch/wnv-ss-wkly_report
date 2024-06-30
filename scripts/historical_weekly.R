@@ -332,7 +332,7 @@ p_df_all_long = ggplot(df_all_long, aes(x = week, y = value,
   scale_fill_manual(values = c("hx" = "grey50",
                                 "current" = "red"))
     
-p_df_all_long   
+plot(p_df_all_long)   
 
 ggsave("data_output/plots/hx_plot.png", p_df_all_long)
     

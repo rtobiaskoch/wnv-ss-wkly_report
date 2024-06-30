@@ -12,6 +12,14 @@ active_trap = read.csv(fn_trap_active) #remove BC & BE because their traps are i
 gsheet_pull(trap_malfunction_key, "data", fn_trap_malfunction)
 malfunction_trap = read.csv(fn_trap_malfunction)
 
+malfunction_trap_test = malfunction_trap %>%
+  filter(year == year_filter,
+         week == week_filter)
+
+if(nrow(malfunction_trap_test) == 0) {
+  paste("Alert! there are no malfunctioned traps for the year and week filter. Sounds too good to be true. 
+        Check and update your malfunction trap on gdrive our where ever it may be hosted in your world.")
+}
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #FC ZONE TRAP NUMBERS
@@ -21,8 +29,11 @@ suppressMessages({
   #get number of traps per night
   
   #FC ROUTINE TRAP NUMBERS
-  trap_p_wk_status = active_trap   %>%
-    mutate(malfunction = if_else(trap_id %in% malfunction_trap$trap_id, 1, 0)) %>% # add in malfunctioning trap info to subtract
+  trap_p_wk_status = active_trap %>%
+    mutate(year = year_filter,
+           week = week_filter) %>%
+    left_join(malfunction_trap, by = c("trap_id", "year", "week")) %>%
+    mutate(malfunction = if_else(!is.na(malfunction),malfunction, 0)) %>%
     arrange(desc(active), malfunction)
   
   #get summary of functional traps for the week by zone by subtracting malfunctioning from active

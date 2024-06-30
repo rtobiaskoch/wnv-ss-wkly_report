@@ -23,7 +23,7 @@ git commit -m "weekly commit before data removal"
 git push
 rm -f data_input/cdc/*
 rm -f data_input/vdci/*
-rm -f data_input/qs/*
+rm -f data_input/pcr/*
 rm -f data_input/platemap/*
 rm -f data_mid/*
 rm -f data_output/*
@@ -54,7 +54,7 @@ source("scripts/mozzy_pool_read_clean.R")
 data_input: platemap and quantstudio
 
 ```{r}
-source("scripts/QS_platemap_read_clean.R")
+source("scripts/pcr_platemap_read_clean.R")
 ```
 
 Code Below:\
@@ -75,7 +75,7 @@ Code Below:\
 - fn_func_trap: data_mid/functional_traps.csv
 
 ```{r}
-source("bird_slev_check.R")
+source("scripts/stds_ctrl_bird_slev_check.R")
 ```
 
 ```{r}

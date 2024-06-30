@@ -31,7 +31,7 @@ fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
 all_zones = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
 
-cq_threshold = 35
+copy_threshold = 100
 rn_threshold = 34000
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -49,7 +49,7 @@ fc_zone_filter = "YES"
 #FILTER CHECK
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 current_year = year(Sys.Date())
-last_week = week(Sys.Date())-1
+last_week = week(Sys.Date())
 
 if(current_year != max(year_filter)) {
   print("the year_filter doesn't match the current_year. Did you remember to update it?")
@@ -93,9 +93,8 @@ fn_gdrive_database = "wnv-s_database"
 
 #weekly input
 fn_mozzy_pool_input = "data_input/mozzy_pools" #replaced vdci and cdc input because also have boulder so all in one place
-fn_qs = "data_input/qs"
 fn_platemap = "data_input/platemap"
-
+fn_pcr = "data_input/pcr"
 
 fn_trap_malfunction = "data_input/trap_malfunction.csv"
 fn_trap_active = "data_input/trap_active.csv"
@@ -137,13 +136,17 @@ fn_data_output = paste0("data_output/","y",fn_year, "_", "w",fn_week, "_data_upd
 
 fn_weekly_input_format = "data_output/weekly_data_input_format.csv"
 
+fn_stds_ctrl_slev_bird = "data_output/std_ctrl_slev_bird.csv"
+
+fn_non_database_sample = "data_output/non_database_samples(std-ctrl-bird-etc).csv"
+
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#IMPORT SETTINGS
+#SELECTION COLUMN SETTINGS
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 trap_col = c("zone", "lat", "long")
 
@@ -156,8 +159,9 @@ data_col = c("csu_id", "trap_id", "year", "week", "trap_date",
              "zone", "lat", "long")
 
 database_col = c( "csu_id", "trap_id", "year", "week", "trap_date", "county", "method", "spp",
-  "total", "test_code", "cq", "seq", "zone", "cq", "lat", "long")
+  "total", "test_code", "cq", "copies_WNV", "seq", "zone", "cq", "lat", "long")
 
+pcr_check_col <- c("csu_id", "test_code", "ct_threshold", "plate", "copies_SLEV", "copies_WNV", "cq_SLEV", "cq")
 
 class_col <- c("csu_id" = "character", 
             "trap_id" = "character", 

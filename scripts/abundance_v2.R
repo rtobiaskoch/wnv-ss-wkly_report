@@ -7,8 +7,6 @@ source("scripts/config.R")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 data_input = check_read_fun(fn_database_update)
 
-
-
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #read in weeks functional traps. derived from get_func_trap.R
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -19,7 +17,7 @@ func_trap_L = read.csv(fn_func_trap) %>%
 #>#GET WEEKS TRAP NUMBERS
 #>#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-
+suppressMessages({
   trap_p_wk0 = data_input %>%
   distinct(year,trap_date, week, zone, trap_id, method) %>% #get unique number of traps by removing traps listed 2x+ with multiple pools and spp
   group_by(year, zone, week, method) %>% #get number of traps per week per zone
@@ -28,26 +26,26 @@ func_trap_L = read.csv(fn_func_trap) %>%
   pivot_wider(names_from = method, values_from = n, 
               names_prefix = "trap_",values_fill = 0) %>%
   mutate(n_trap = trap_L + trap_G)
-  
+})
   #GET WEEKS TRAP NUMBERS: FC
   #>#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   
-  fc_trap_wk0 = trap_p_wk0 %>% 
-    filter(zone %in% fc_zones) %>%
-    group_by(year,week) %>%
-    summarise(
-      zone = "FC",
-      trap_G = sum(trap_G, na.rm = TRUE),
-      trap_L = sum(trap_L, na.rm = TRUE),
-      n_trap = sum(n_trap, na.rm = TRUE)
-    )
- 
+  suppressMessages({
+    fc_trap_wk0 = trap_p_wk0 %>% 
+      filter(zone %in% fc_zones) %>%
+      group_by(year,week) %>%
+      summarise(
+        zone = "FC",
+        trap_G = sum(trap_G, na.rm = TRUE),
+        trap_L = sum(trap_L, na.rm = TRUE),
+        n_trap = sum(n_trap, na.rm = TRUE)
+      )
+  } )
   
   #>#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   #>combine data
   #>#>#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
   trap_p_wk = rbind(trap_p_wk0, fc_trap_wk0) %>%
-
     left_join(func_trap_L, by = "zone") %>%
     mutate(trap_L_0 = trap_L_func - trap_L) %>%
     mutate(func_GT_wk = trap_L_func >= trap_L) %>% #is the routine greater than the weekly? if not there is an error

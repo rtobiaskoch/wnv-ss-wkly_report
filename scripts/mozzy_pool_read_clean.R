@@ -1,3 +1,4 @@
+source("scripts/config.R")
 #mozzy pool read
 
 #data from vdci, cdc, and bc
@@ -11,7 +12,8 @@ t = list.files(path = fn_mozzy_pool_input,
 data_input = t %>% 
   map(~read_excel(.x, col_names = T)) %>%
   bind_rows() %>%
-  rename(!!!rename_col)
+  rename(!!!rename_col) %>%
+  filter(!is.na(trap_date)&!is.na(zone)&!is.na(total))
   
 
 #clean data
@@ -70,7 +72,8 @@ weekly_data_format = data_clean %>%
          SPP = "spp",
          Method = "method")
 
-
+data_clean = data_clean %>%
+  select(any_of(database_col))
 #   filter(values > 0)
 
 write.csv(data_clean,  fn_vdci_clean, row.names = F)
