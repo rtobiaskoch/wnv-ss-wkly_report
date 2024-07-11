@@ -1,20 +1,36 @@
 source("scripts/config.R")
-#mozzy pool read
+
+#datasheets (mosquito pools) read
 
 #data from vdci, cdc, and bc
 
-#get list of file paths for all files in the fn_mozzy_pool_input
-t = list.files(path = fn_mozzy_pool_input,
+#get list of file paths for all files in the fn_datasheet_input
+t = list.files(path = fn_datasheet_input,
                full.names = T,
                ignore.case = T)  
 
-
+#read all files and bind it into one dataframe
 data_input = t %>% 
   map(~read_excel(.x, col_names = T)) %>%
   bind_rows() %>%
-  rename(!!!rename_col) %>%
-  filter(!is.na(trap_date)&!is.na(zone)&!is.na(total))
-  
+  filter(!is.na(`Trap Date`)&!is.na(`Zone`)&!is.na(`Total`)) #remove empty ids becasue VDCI keeps sending us empty ids
+
+#save this after binding for the Weekly Input for the Report. Maintaining the original stupid format
+#save as rds becasue csv fudges up the original colnames
+write_rds(data_input, fn_weekly_input_format_mid)
+
+
+data_input = data_input %>%
+  rename(!!!rename_col)
+
+if(nrow(get_dupes(data_input) > 0)) {
+  stop("You have duplicates in your datasheets")
+}
+
+if(nrow(get_dupes(data_input, csu_id) > 0)) {
+  stop("You have duplicate id's in your datasheets")
+}
+
 
 #clean data
 if(is.character(data_input$trap_date)) {
@@ -65,16 +81,8 @@ if(any(!is.na(data_clean$method2))) { #if there are no missing matches with spp2
 }
 
 
-weekly_data_format = data_clean %>%
-  rename(Account = "Acct",
-         `Collection Site` = "trap_id",
-         Total = "total",
-         SPP = "spp",
-         Method = "method")
-
 data_clean = data_clean %>%
   select(any_of(database_col))
 #   filter(values > 0)
 
-write.csv(data_clean,  fn_vdci_clean, row.names = F)
-write.csv(weekly_data_format, fn_weekly_input_format, row.names = F)
+write.csv(data_clean,  fn_datasheet_clean, row.names = F)

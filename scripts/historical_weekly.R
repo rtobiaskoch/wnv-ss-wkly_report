@@ -5,7 +5,7 @@ source("scripts/config.R")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#CURRENT WEEK
+#CURRENT YEAR:
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -17,12 +17,32 @@ week_filter = seq(1, week_filter, by =1)
 data_input = check_read_fun(fn_database_update)
 
 #get number of active traps. For the purposes of historical calculations not going to consider malfunctioning traps
-func_trap_L = read.csv(fn_func_trap) %>%
+func_trap_L0 = read.csv(fn_func_trap) %>%
   select(zone, active) %>%
   rename(trap_L = "active")
 
+
+
+#get list of zones with active traps (trap_L) 
+active_trap0_list = func_trap_L0 %>%
+  filter(trap_L == 0)
+active_trap0_list = unique(active_trap0_list$zone)
+
+#filter by zones that have 0 active traps and get count of submitted traps per week then the mean
+active_trap0 = data_input %>%
+  filter(zone %in% active_trap0_list) %>%
+  filter(method == "L") %>%
+  distinct(trap_id, year, zone, week) %>%
+  group_by(zone, year, week) %>%
+  summarize(trap_L = n()) %>%
+  group_by(zone) %>%
+  summarise(trap_L = mean(trap_L, na.rm = T))
+
+#replace the 0 active traps in the func_trap_L with the number of submitted traps
+func_trap_L = rquery::natural_join(active_trap0, func_trap_L0, jointype = "FULL", by = "zone")
+
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#CURRENT WEEK: ABUNDANCE
+#CURRENT YEAR: ABUNDANCE
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 suppressMessages({
@@ -56,7 +76,7 @@ suppressMessages({
 })
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#CURRENT WEEK: PIR
+#CURRENT YEAR: PIR
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 data_list = data_input %>%
   # anti_join(gravid_only, by = hx_grp_vars) %>% # remove the wks with only gravid trap
@@ -92,7 +112,7 @@ df_pir = rbind(df_pir0, fc_pir) %>%
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#CURRENT WEEK: VI/ALL
+#CURRENT YEAR: VI/ALL
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 df_all_c_long = df_abund %>%
@@ -124,52 +144,63 @@ df_all_c = df_abund %>%
 # HX: ABUNDANCE
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+#GET AVERAGE NUMBER OF TRAPS FOR EACH ZONE
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#>
 year_filter = seq(year_filter-5, year_filter-1, by = 1)
+#year_filter = 2006:2023
 week_filter = 20:40
 
 data_input = check_read_fun(fn_database_update)
 
 #get number of active traps. For the purposes of historical calculations not going to consider malfunctioning traps
-func_trap_L = read.csv(fn_func_trap) %>%
+func_trap_L0 = read.csv(fn_func_trap) %>%
   select(zone, active) %>%
   rename(trap_L = "active")
 
 suppressMessages({
 #get non 0 traps for non-routine areas like BC and WC
-trap_p_wk = data_input %>%
+  active_trap0 = data_input %>%
   filter(method == "L") %>%
   filter(zone %in% non_routine_zones) %>%
   distinct(year,trap_date, week, zone, trap_id) %>% #get unique number of traps by removing traps listed 2x+ with multiple pools and spp
   group_by(year, zone, week) %>% #get number of traps per week per zone
   summarise(trap_L = n()) %>%
   ungroup() %>%
-  group_by(zone, week) %>% #get the average number of traps otherwise it will count too many
+  group_by(zone) %>% #get the average number of traps otherwise it will count too many
   summarize(trap_L = mean(trap_L)) %>% 
   ungroup()
 })
 
+func_trap_L = rquery::natural_join(active_trap0, func_trap_L0, jointype = "FULL", by = "zone")
+
+
+#HX: GET MOSQUITOES
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 suppressMessages({
   # Your code with group_by and summarize
   #get number of traps per night
   
   #get number of mosquitoes per night per trap
   m_p_wk0 = data_input %>%
-    filter(method != "G") %>% #remove gravid traps for abundance calculation
-    group_by(year,week, zone) %>% #get number of mosquitoes per week per zone per species
+    ungroup() %>%
+    filter(method == "L") %>% #remove gravid traps for abundance calculation
+    group_by(year,week,zone) %>% #calc number of mosquitoes per week per zone
     summarize(mosq_L = sum(total)) %>%
     ungroup() %>%
-    group_by(week, zone) %>% #need average for all years
+    group_by(week, zone) %>% #calc average for all years
     summarise(mosq_L = mean(mosq_L)) %>%
     ungroup()# %>%
 })
 
-
+#HX: GET MOSQUITOES FOR CITYWIDE FC
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 suppressMessages({ 
   fc_m_p_wk = m_p_wk0 %>%
-    filter(zone %in% fc_zones) %>%
+    filter(zone %in% fc_zones) %>% # keep only FC zones
     group_by(week) %>% #get number of mosquitoes per week per zone per species
     summarize(zone = "FC",
-              mosq_L = mean(mosq_L)) %>%
+              mosq_L = sum(mosq_L)) %>%
     ungroup()# %>%
   
   m_p_wk = rbind(m_p_wk0, fc_m_p_wk)
@@ -178,15 +209,11 @@ suppressMessages({
 
 suppressMessages({ 
   #get abundance per trap 
-  df_abund = left_join(func_trap_L, m_p_wk, by = "zone")
-  
-  df_abund = 
-    rquery::natural_join(trap_p_wk, df_abund, jointype = "FULL",
-                         by = c("week", "zone")) %>% #get BC and WC trap_L
+  df_abund = left_join(func_trap_L, m_p_wk, by = "zone") %>%
     mutate(abund = round(mosq_L/trap_L,2)) %>%
     complete(zone, week) %>% #fill in missing weeks for the non-routine zones
-    filter(!is.na(week)) %>%
-    select(-mosq_L, -trap_L)
+    filter(!is.na(week)) #%>%
+    #select(-mosq_L, -trap_L)
   # pivot_wider(names_from = zone, 
   #             values_from = abund,
   #             names_prefix = "abund_")
@@ -230,6 +257,7 @@ df_pir = rbind(df_pir0, fc_pir) %>%
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 df_all_hx_long = df_abund %>%
+  select(-mosq_L, -trap_L) %>%
   left_join(df_pir, by = c("zone", "week")) %>%
   mutate(vi = round(abund * pir,4))  %>%
   pivot_longer(cols = c(abund, pir, vi),
@@ -238,6 +266,7 @@ df_all_hx_long = df_abund %>%
   mutate(type = "hx")
 
 df_all_hx = df_abund %>%
+  select(-mosq_L, -trap_L) %>%
   left_join(df_pir, by = c("zone", "week")) %>%
   mutate(vi = round(abund * pir,4))  %>%
   pivot_wider(names_from = zone, 
@@ -267,7 +296,8 @@ hx_abund_report = df_all %>%
             "abund_SW", "abund_hx_SW", 
             "abund_FC", "abund_hx_FC", 
             "abund_LV", "abund_hx_LV", 
-            "abund_BE", "abund_hx_BC"
+            "abund_BE", "abund_hx_BE",
+            "abund_BC", "abund_hx_BC"
   ))%>%
   mutate(across(everything(), ~ ifelse(is.na(.), "", .)))
 
@@ -286,7 +316,8 @@ hx_pir_report = df_all %>%
     "pir_SW", "pir_hx_SW", 
     "pir_FC", "pir_hx_FC", 
     "pir_LV", "pir_hx_LV", 
-    "pir_BE", "pir_hx_BC"
+    "pir_BE", "pir_hx_BE",
+    "pir_BC", "pir_hx_BC"
   ))%>%
   mutate(across(everything(), ~ ifelse(is.na(.), "", .)))
 
@@ -303,7 +334,8 @@ hx_vi_report = df_all %>%
             "vi_SW", "vi_hx_SW", 
             "vi_FC", "vi_hx_FC", 
             "vi_LV", "vi_hx_LV", 
-            "vi_BE", "vi_hx_BC"
+            "vi_BE", "vi_hx_BE",
+            "vi_BC", "vi_hx_BC"
   )) %>%
   mutate(across(everything(), ~ ifelse(is.na(.), "", .)))
 
@@ -323,7 +355,7 @@ df_all_long = rbind(df_all_c_long, df_all_hx_long) %>%
          zone = factor(zone, levels = zone_lvls))
 
 p_df_all_long = ggplot(df_all_long, aes(x = week, y = value, 
-                                        color = type, fill = type,group = type)) +
+                                        color = type, fill = type, group = type)) +
   geom_area(alpha = 0.3) +
   facet_grid(zone ~ est) +
   theme_classic() +

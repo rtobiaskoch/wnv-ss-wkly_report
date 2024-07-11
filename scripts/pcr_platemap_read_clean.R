@@ -55,7 +55,9 @@ fn_path = list.files(path = fn_platemap,
 
 platemap = fn_path %>%
   map(~read_excel(.x, col_names = T, 
-                            col_types = "text", range = "A1:M9") %>%
+                      col_types = "text", 
+                      range = "A1:M9",
+                      sheet = "pcr") %>%
   rename(row = "...1") %>%
   pivot_longer(cols = -row, 
                names_to = "column", 
@@ -66,6 +68,7 @@ platemap = fn_path %>%
     grepl("plate 2|p2|plate_2", file_name, ignore.case = TRUE) ~ "plate_2",
     TRUE ~ "unknown")) %>%
   mutate(well_position = paste0(row, column)) %>%
+  mutate(well_position = str_remove(well_position, "\\.0")) %>% #remove the column ##.0 that is getting imported
   select(well_position, csu_id, plate)
      ) %>%
   bind_rows()

@@ -46,7 +46,7 @@ suppressMessages({
   #>combine data
   #>#>#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
   trap_p_wk = rbind(trap_p_wk0, fc_trap_wk0) %>%
-    left_join(func_trap_L, by = "zone") %>%
+    left_join(func_trap_L, by = "zone") %>% #merge with the routine functional trap list
     mutate(trap_L_0 = trap_L_func - trap_L) %>%
     mutate(func_GT_wk = trap_L_func >= trap_L) %>% #is the routine greater than the weekly? if not there is an error
     mutate(func_GT_wk = if_else(is.na(func_GT_wk), T, func_GT_wk)) %>%

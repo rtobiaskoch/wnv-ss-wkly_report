@@ -7,7 +7,7 @@ suppressMessages({
   pacman::p_load(googlesheets4, googledrive, rio, readxl, openxlsx, googledrive, #importing and exporting
                  tidyverse, janitor, lubridate, #manipulation
                  PooledInfRate, #analysis
-                 ggpubr, wesanderson, leaflet# plotting
+                 ggpubr, wesanderson, leaflet, patchwork# plotting
                  )
   
   
@@ -26,7 +26,7 @@ source("scripts/gsheet_read_fun.R")
 #DATA PARAMETERS##
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 year_filter = 2024
-week_filter = 26
+week_filter = 27
 fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
 all_zones = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
@@ -92,7 +92,7 @@ trap_active_key = "1SA_PE74KLH6_jG3yR49e8py1uXgb_C02Q3Iz9MWivrY"
 fn_gdrive_database = "wnv-s_database"
 
 #weekly input
-fn_mozzy_pool_input = "data_input/mozzy_pools" #replaced vdci and cdc input because also have boulder so all in one place
+fn_datasheet_input = "data_input/datasheet" #replaced vdci and cdc input because also have boulder so all in one place
 fn_platemap = "data_input/platemap"
 fn_pcr = "data_input/pcr"
 
@@ -111,9 +111,11 @@ fn_database_input = "data_input/wnv-s_database.csv"
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 fn_database_update = "data_mid/wnv-s_database_update.csv"
 
-fn_vdci_clean = paste0("data_mid/","y",fn_year, "_", "w",fn_week, "_vdci_cdc.csv")
+fn_datasheet_clean = paste0("data_mid/","y",fn_year, "_", "w",fn_week, "_datasheet.csv")
 
-fn_vdci_clean_test = paste0("data_mid/","y",fn_year, "_", "w",fn_week, "_vdci_cdc_test.csv")
+fn_datasheet_clean_test = paste0("data_mid/","y",fn_year, "_", "w",fn_week, "_datasheet_test.csv")
+
+fn_weekly_input_format_mid = "data_mid/weekly_data_input_format_mid.RData"
 
 fn_cq_out = paste0("data_mid/","y",fn_year, "_", "w",fn_week, "_platemap.csv")
 

@@ -18,37 +18,25 @@ source("scripts/config.R")
 ```
 
 ```{bash}
-git add --all
-git commit -m "weekly commit before data removal"
-git push
-rm -f data_input/cdc/*
-rm -f data_input/vdci/*
-rm -f data_input/pcr/*
-rm -f data_input/platemap/*
-rm -f data_mid/*
-rm -f data_output/*
+# git add --all
+# git commit -m "weekly commit before data removal"
+# git push
+# rm -f data_input/cdc/*
+# rm -f data_input/datasheet/*
+# rm -f data_input/pcr/*
+# rm -f data_input/platemap/*
+# rm -f data_mid/*
+# rm -f data_output/*
 
 ```
 
-Update trap locations? -will look to see if the trap_col names exist, remove them then merge with trap_coord and overwrite all_data_fn
+
+data_input:
+- reads in all datasheets types
+
 
 ```{r}
-#update_trap in config.R
-if(update_trap == "YES") {
-  source("scripts/trap_update.R")
-}
-```
-
-```{r}
-if(clean_data == "YES") {
-  source("scripts/data_clean.R")
-}
-```
-
-data_input: vdci code below: formats weekly report data to match existing database
-
-```{r}
-source("scripts/mozzy_pool_read_clean.R")
+source("scripts/datasheet_read_clean.R")
 ```
 
 data_input: platemap and quantstudio
@@ -58,10 +46,20 @@ source("scripts/pcr_platemap_read_clean.R")
 ```
 
 Code Below:\
-- merges weekly report with existing database -pulls data from gdrive and makes and archived copy in database_archive
+- merges the cq_data (platemap and pcr results) with the datasheets
+- creates the test_code threshold
+- reads in database from google drive
+- creates a copy to archive on googledirve
+- merges weekly update with the database to make database_update
+- pushs database_update to googledrive
+- writes the weekly update to the mid folder
 
 ```{r}
 source("scripts/data_merge_and_push.R")
+```
+
+```{r}
+source("scripts/weekly_data_input.R")
 ```
 
 creates list to remove any traps that weren't found in the database in the current season or the previous. used in abundance.
@@ -73,10 +71,6 @@ Code Below:\
 
 -data_output:\
 - fn_func_trap: data_mid/functional_traps.csv
-
-```{r}
-source("scripts/stds_ctrl_bird_slev_check.R")
-```
 
 ```{r}
 source("scripts/get_func_trap.R")
@@ -112,6 +106,7 @@ source("scripts/pIR_VI.R")
 
 ```{r}
 source("scripts/historical_weekly.R")
+plot(p_df_all_long)  
 ```
 
 ```{r}

@@ -1,9 +1,9 @@
 "zone","method","active","malfunction","trap_L_func"
-"NW","L",9,1,8
+"NW","L",9,0,9
 "NE","L",10,0,10
 "SE","L",15,0,15
 "SW","L",9,0,9
-"FC","L",43,1,42
+"FC","L",43,0,43
 "LV","L",6,0,6
 "BE","L",9,0,9
 "BC","L",0,0,0
