@@ -5,9 +5,9 @@ suppressMessages({
   if (!require("pacman")) install.packages("pacman")
   pacman::p_unload()
   pacman::p_load(googlesheets4, googledrive, rio, readxl, openxlsx, googledrive, #importing and exporting
-                 tidyverse, janitor, lubridate, #manipulation
+                 tidyverse, janitor, lubridate, rquery, #manipulation
                  PooledInfRate, #analysis
-                 ggpubr, wesanderson, leaflet, patchwork# plotting
+                 ggpubr, wesanderson, paletteer, leaflet, patchwork# plotting
                  )
   
   
@@ -88,6 +88,7 @@ database_gsheet_key = "12Mf-w9I9NHTTDjzEPRoxUE08ka4WZ6RE-RM1s-FW7qA"
 trap_gsheet_key = "1Jna3Bu47gjBWWz5vCoel4ksa-LBuo8R3zVfQYFl73wI"
 trap_malfunction_key = "1dsTyvZoCN6NUJlTcDLINMfxuGZdJuP2ADpn8noQwL6Q"
 trap_active_key = "1SA_PE74KLH6_jG3yR49e8py1uXgb_C02Q3Iz9MWivrY"
+standards_key = "1bSMYQ4bZ9uBfrOQ6ylsegNmmGYdf9YFVbxB4qBhnFQo"
 
 fn_gdrive_database = "wnv-s_database"
 

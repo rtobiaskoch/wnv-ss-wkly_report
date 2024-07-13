@@ -148,7 +148,7 @@ df_all_c = df_abund %>%
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #>
 year_filter = seq(year_filter-5, year_filter-1, by = 1)
-year_filter = 2013:2021
+#year_filter = 2006:2023
 week_filter = 20:40
 
 data_input = check_read_fun(fn_database_update)
@@ -200,8 +200,7 @@ suppressMessages({
     filter(zone %in% fc_zones) %>% # keep only FC zones
     group_by(week) %>% #get number of mosquitoes per week per zone per species
     summarize(zone = "FC",
-              mosq_L = sum(mosq_L)) %>% # changed from the mean which would be incorrect 
-                                        #because I compare it to total number of traps per zone not the average
+              mosq_L = sum(mosq_L)) %>%
     ungroup()# %>%
   
   m_p_wk = rbind(m_p_wk0, fc_m_p_wk)
@@ -243,23 +242,11 @@ df_pir0 = as.data.frame(mle) %>%
 #             names_prefix = "pir_") %>%
 # mutate(pir_FC = (pir_NW + pir_NE + pir_SE+ pir_SW)/4)
 
-
-data_list_fc = data_input %>%
+fc_pir = df_pir0 %>%
   filter(zone %in% fc_zones) %>%
-  mutate(zone = "FC") %>%
-  # anti_join(gravid_only, by = hx_grp_vars) %>% # remove the wks with only gravid trap
-  mutate(grp = paste(week,zone, sep ="-"))
-
-
-mle_fc = pIR(test_code ~ total|grp, data = data_list_fc, pt.method = "firth")
-
-fc_pir = as.data.frame(mle_fc) %>%
-  separate(grp,
-           into = hx_grp_vars,
-           sep = "-") %>%
-  transmute(zone = zone,
-            week = as.integer(week),
-            pir = round(P,4))
+  group_by(week) %>%
+  summarise(zone = "FC", 
+            pir = round(mean(pir),4))
 
 df_pir = rbind(df_pir0, fc_pir) %>%
   complete(zone, week)
@@ -362,35 +349,24 @@ write.csv(hx_pir_report, "data_output/table3b_hx_pir.csv", row.names = F)
 #REPORT: VIZUALIZATION
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 df_all_long = rbind(df_all_c_long, df_all_hx_long) %>%
-  mutate(type = factor(type, levels = c("hx", "current")),
-         zone = factor(zone, levels = zone_lvls)) %>%
-  pivot_wider(names_from = est, values_from = value)
+  mutate(value = if_else(est == "pir", value * 3000, value),
+         value = if_else(est == "vi", value * 200, value),
+         type = factor(type, levels = c("hx", "current")),
+         zone = factor(zone, levels = zone_lvls))
 
-p_df_all_fun = function(df, value, text) {
-  
-  ggplot(df, aes(x = week, y = {{value}}, 
-             color = type, fill = type, group = type)) +
-  geom_area(position = "dodge", alpha = 0.3) +
-  facet_grid(zone ~ .) +
+p_df_all_long = ggplot(df_all_long, aes(x = week, y = value, 
+                                        color = type, fill = type, group = type)) +
+  geom_area(alpha = 0.3) +
+  facet_grid(zone ~ est) +
   theme_classic() +
-  ggtitle(text) +
   scale_color_manual(values = c("hx" = "grey50",
                                 "current" = "red")) +
   scale_fill_manual(values = c("hx" = "grey50",
-                               "current" = "red"))
-}   
+                                "current" = "red"))
+    
+plot(p_df_all_long)   
 
-p_abund = p_df_all_fun(df_all_long, abund, "Abundance")
-p_abund 
-
-p_pir = p_df_all_fun(df_all_long, pir, "Pooled Infection Rate")
-p_pir 
-
-p_vi = p_df_all_fun(df_all_long, vi, "Vector Index")
-p_vi
-
-p_abund + p_pir + p_vi + plot_layout(guides = "collect") & theme(legend.position = 'bottom')
-
-
-
-
+ggsave("data_output/plots/hx_plot.png", p_df_all_long)
+    
+    
+    

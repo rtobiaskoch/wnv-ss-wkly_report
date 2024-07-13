@@ -1,7 +1,6 @@
 source("scripts/config.R")
 
-
-data_input = check_read_fun(data_output_fn) %>%
+data_input = check_read_fun(fn_data_output) %>%
   mutate(year = as.factor(year),
          week = as.factor(week)) %>%
   left_join(year_cols_df, by = "year")
@@ -12,13 +11,12 @@ if(fc_zone_filter == "YES") {
     mutate(zone = factor(zone, levels = c("NW", "NE", "SW", "SE")))
 }
 
-
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #> ABUNDANCE
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 if(length(year_filter) > 1) {
-  title = paste0("Average mosquitoes per trap per week ", year_fn)
+  title = paste0("Average mosquitoes per trap per week ", year_filter)
   #boxplot mosquitoes per trap per week 2000-2019
   ggplot(data_input, aes(week, abund, fill = spp, color = spp)) +
     geom_boxplot(alpha = 0.5) +
@@ -53,7 +51,7 @@ if(length(year_filter) > 1) {
     facet_wrap(~zone)
   
 } else{
-  title = paste0("Mosquitoes per trap per week ", year_fn, "-", week_fn)
+  title = paste0("Mosquitoes per trap per week ", year_filter, "-", week_filter)
   ggplot(data_input, aes(week, abund, fill = spp, color = spp)) +
     geom_col(position = "dodge", alpha = 0.5) + 
     scale_color_manual(year_cols) +
@@ -72,7 +70,7 @@ if(length(year_filter) > 1) {
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 if(length(year_filter) > 1) {
-  title = paste0("Vector Index per trap per week ", year_fn)
+  title = paste0("Vector Index per trap per week ", year_filter)
   #boxplot mosquitoes per trap per week 2000-2019
   ggplot(data_input, aes(week, vi, fill = spp, color = spp)) +
     geom_boxplot(alpha = 0.5) +
@@ -95,7 +93,7 @@ if(length(year_filter) > 1) {
     facet_wrap(~zone)
   
 } else{
-  title = paste0("Vector Index trap per week ", year_fn, "-", week_fn)
+  title = paste0("Vector Index trap per week ", year_filter, "-", week_filter)
   ggplot(data_input, aes(week, vi, fill = spp, color = spp)) +
     geom_col(position = "dodge", alpha = 0.5) + 
     ggtitle(title) +

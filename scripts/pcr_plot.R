@@ -1,5 +1,11 @@
 source("scripts/config.R")
 
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#>-------------------------------- R E A D   &   C L E A N -----------------------------------------------
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 data_input0 = read.csv(fn_cq_out) 
 
 data_input = data_input0 %>%
@@ -14,37 +20,125 @@ data_input = data_input0 %>%
                            )
          )
 
+
+#read in previous weeks standards
+gsheet_pull(key = standards_key, 
+            sheet = 'data',
+            out_fn = "data_input/standards_input.csv")
+
+std_database = read.csv("data_input/standards_input.csv")   
+
 if(nrow(data_input %>% filter(sample_type == "undefined"))) {
   stop("you have undefined sample types in your data")
 } else {
 
-std = data_input %>%
-  filter(str_detect(pattern = "std", sample_type))
+ 
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#>----------------------------------- S T A N D A R D S --------------------------------------------------
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   
 
-std_wnv = std %>%
-  filter(str_detect(pattern = "wnv", csu_id)) 
-
-std_slev = std %>%
-  filter(str_detect(pattern = "slev", csu_id)) 
-
-p_std = ggplot() +
-  geom_point(data = std_wnv, aes(x = log10(copies_WNV), y = cq), 
-             color = "#F8766D", size = 3, alpha = 0.6) + #wnv
-  geom_line(data = std_wnv, aes(x = log10(copies_WNV), y = cq, group = plate), 
-            color = "#F8766D") + #wnv
-  geom_point(data = std_slev, aes(x = log10(copies_SLEV), y = cq_SLEV), 
-             color = "#00BFC4", size = 3, alpha = 0.6) + #slev
-  geom_line(data = std_slev, aes(x = log10(copies_SLEV), y = cq_SLEV, group = plate),
-            color = "#00BFC4") + 
-  scale_y_reverse() +
-  xlab("log10(copies)")+
-  ggtitle("Standards") +
-  theme_classic()
-p_std
   
+  
+std_new0 = data_input %>%
+  filter(str_detect(pattern = "std|pos ctrl", sample_type))
+
+std_new = std_new0 %>%
+  select(-ct_threshold, -well_position) %>%
+  rename(cq_WNV = cq) %>%
+  pivot_longer(cols = -c(plate, csu_id, sample_type),
+               names_to = "type",
+               values_to = "value") %>%
+  mutate(target = if_else(str_detect(type, "WNV"), "WNV", "SLEV")) %>%
+  mutate(type = str_extract(type, "^[^_]*")) %>%
+  pivot_wider(names_from = type, 
+              values_from = value) %>%
+  mutate(year = year_filter, 
+         week = week_filter,
+         log_copies = if_else(copies == 0, 0, log10(copies))) %>%
+  select(year, week, plate, target, csu_id, sample_type, cq, log_copies) 
+  
+
+std_update = natural_join(std_new, std_database, jointype = "FULL", 
+                          by = c("year", "week", "plate", "target", "csu_id", "sample_type"))
+
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#>-----------------------------S A V E   N E W   S T A N D A R D S --------------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+write.csv(std_update, "data_output/standards_new.csv")
+
+#make a copy of old standards key 
+drive_cp(file = as_id(standards_key), 
+         path = "standards_and_controls",
+         name = "standards_archive",
+         overwrite = T)
+
+#save it to gdrive
+googlesheets4::sheet_write(std_update,
+                           ss = standards_key,
+                           sheet = "data"
+)
+
+
+# std_wnv = std %>%
+#   filter(str_detect(pattern = "wnv", csu_id)) 
+# 
+# std_slev = std %>%
+#   filter(str_detect(pattern = "slev", csu_id)) 
+
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#>-----------------------------P L O T T I N G    S T A N D A R D S --------------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+p_std_df = std_update %>% 
+  mutate(#week = as.factor(week),
+         sample_type = if_else(str_detect(sample_type, "std"), "std", "pos_ctrl")) %>% 
+  mutate(grp = paste(year, week, plate, target, sample_type, sep = "-")) %>%
+  filter(str_to_lower(target) == str_extract(csu_id, "^[^_]*"))
+  
+
+p_std = p_std_df %>%
+  ggplot(aes(x = log_copies, y = cq, color = week, group = grp)) +
+  geom_point(alpha = 0.4, size = 3) +
+  geom_line() + 
+  facet_wrap(~target) +
+  theme_classic()
+
+plotly::ggplotly(p_std)
+
+
+p_std2 = p_std_df %>%
+  filter(week %in% 24:40) %>%
+  mutate(cq = if_else(cq == 55.55, 40, cq)) %>%
+  ggplot(aes(x = log_copies, y = cq, color = week, group = grp)) +
+  geom_point(alpha = 0.4, size = 3) +
+  geom_line() + 
+  facet_wrap(~target) +
+  ggtitle("Standards by Week") +
+  theme_classic()
+
+p_std2
+plotly::ggplotly(p_std2)
+
+
+
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------------------P L O T T I N G   S A M P L E S -----------------------------------------
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
  wnv =  data_input %>% 
     filter(!str_detect(pattern = "slev", csu_id)) %>%
-    filter(cq < 55.55 )
+    mutate(cq = if_else(cq == 55.55, 40, cq))
   
   p_pcr_wnv = ggplot(wnv, aes(x = sample_type, y = cq, 
                                  color = sample_type, fill = sample_type)) +
@@ -52,7 +146,7 @@ p_std
     scale_y_reverse() +
    # geom_hline(yintercept = log10(copy_threshold), linetype = "dashed", color = "red") +
     theme_minimal() +
-    ggtitle("WNV") +
+    ggtitle(paste0("Week ", week_filter, " WNV")) +
     theme(legend.position = "none")
   
   p_pcr_wnv
@@ -60,7 +154,7 @@ p_std
   
   slev =  data_input %>% 
     filter(!str_detect(pattern = "wnv", csu_id)) %>%
-    filter(cq_SLEV < 55.55)
+    mutate(cq_SLEV = if_else(cq_SLEV == 55.55, 40, cq_SLEV))
   
   p_pcr_slev = ggplot(slev, aes(x = sample_type, y = cq_SLEV, 
                               color = sample_type, fill = sample_type)) +
@@ -68,11 +162,19 @@ p_std
     scale_y_reverse() +
     # geom_hline(yintercept = log10(copy_threshold), linetype = "dashed", color = "red") +
     theme_minimal() +
-    ggtitle("slev") +
+    ggtitle(paste0("Week ", week_filter, " SLEV")) +
     theme(legend.position = "none")
   
   p_pcr_slev
 
 }
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#>-----------------------------C O M B I N E    P L O T S ------------------------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-p_std / p_pcr_wnv /  p_pcr_slev
+
+pcr_plot = p_std2 / p_pcr_wnv /  p_pcr_slev
+pcr_plot
+ggsave("data_output/plots/pcr_plot.png", pcr_plot)
