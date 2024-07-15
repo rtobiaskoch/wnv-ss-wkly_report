@@ -138,10 +138,12 @@ plotly::ggplotly(p_std2)
 
  wnv =  data_input %>% 
     filter(!str_detect(pattern = "slev", csu_id)) %>%
-    mutate(cq = if_else(cq == 55.55, 40, cq))
+    mutate(cq = if_else(cq == 55.55, 40, cq),
+           test_code = if_else(copies_WNV > copy_threshold, "1", "0")) %>%
+   mutate(test_code = factor(test_code, levels = c("1", "0")))
   
   p_pcr_wnv = ggplot(wnv, aes(x = sample_type, y = cq, 
-                                 color = sample_type, fill = sample_type)) +
+                                 color = test_code)) +
     geom_jitter(size = 3, alpha = 0.6) +
     scale_y_reverse() +
    # geom_hline(yintercept = log10(copy_threshold), linetype = "dashed", color = "red") +
@@ -154,10 +156,12 @@ plotly::ggplotly(p_std2)
   
   slev =  data_input %>% 
     filter(!str_detect(pattern = "wnv", csu_id)) %>%
-    mutate(cq_SLEV = if_else(cq_SLEV == 55.55, 40, cq_SLEV))
+    mutate(cq_SLEV = if_else(cq_SLEV == 55.55, 40, cq_SLEV),
+           test_code = if_else(copies_SLEV > copy_threshold, "1", "0")) %>%
+    mutate(test_code = factor(test_code, levels = c("1", "0")))
   
   p_pcr_slev = ggplot(slev, aes(x = sample_type, y = cq_SLEV, 
-                              color = sample_type, fill = sample_type)) +
+                              color = test_code)) +
     geom_jitter(size = 3, alpha = 0.6) +
     scale_y_reverse() +
     # geom_hline(yintercept = log10(copy_threshold), linetype = "dashed", color = "red") +
@@ -177,4 +181,7 @@ plotly::ggplotly(p_std2)
 
 pcr_plot = p_std2 / p_pcr_wnv /  p_pcr_slev
 pcr_plot
-ggsave("data_output/plots/pcr_plot.png", pcr_plot)
+ggsave("data_output/plots/pcr_plot.png", pcr_plot,
+       width = 8, height = 8, units = "in")
+
+

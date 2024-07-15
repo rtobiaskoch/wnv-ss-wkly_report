@@ -1,119 +1,130 @@
 "Year","CSU Pool Number (CMC Enters)","IDA Pool (CSU Enters, Leave Blank)","Week","Trap Date","County","Account","Collection Site       (Trap ID)","Zone","Method","Genus","Spp","Sex","No. Gravid","No. Deplete","Total","Test Result (CSU Enters)","Test Code (CSU Enters)"
-2024,"BOU-00211",NA,2,2024-07-01,"BC","BC","BC-22","BC","L","Cx.","Tarsalis","F",0,49,49,"Negative",0
-2024,"BOU-00212",NA,2,2024-07-01,"BC","BC","BC-26","BC","L","Cx.","Tarsalis","F",0,12,12,"Negative",0
-2024,"BOU-00213",NA,2,2024-07-01,"BC","BC","BC-13","BC","L","Cx.","Tarsalis","F",0,10,10,"Negative",0
-2024,"BOU-00214",NA,2,2024-07-01,"BC","BC","BC-14","BC","L","Cx.","Tarsalis","F",0,35,35,"Negative",0
-2024,"BOU-00215",NA,2,2024-07-01,"BC","BC","BC-28","BC","L","Cx.","Tarsalis","F",0,17,17,"Negative",0
-2024,"CDC-038",NA,27,2024-07-03,"LC","BE","GATEWAY PARK","BE","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
-2024,"CDC-039",NA,27,2024-07-03,"LC","BE","GATEWAY PARK","BE","L","Cx.","Tarsalis","F",NA,25,25,"Negative",0
-2024,"CDC-040",NA,27,2024-07-03,"LC","BE","GATEWAY PARK","BE","L","Cx.","Tarsalis","F",3,NA,3,"Negative",0
-2024,"CDC-041",NA,27,2024-07-03,"LC","BE","GATEWAY PARK","BE","L","Cx.","Pipiens","F",NA,2,2,"Negative",0
-2024,"CDC-042",NA,27,2024-07-03,"LC","BE","HILLSDALE PARK","BE","L","Cx.","Pipiens","F",NA,7,7,"Negative",0
-2024,"CDC-043",NA,27,2024-07-03,"LC","BE","HILLSDALE PARK","BE","L","Cx.","Tarsalis","F",5,NA,5,"Negative",0
-2024,"CDC-044",NA,27,2024-07-03,"LC","BE","HILLSDALE PARK","BE","L","Cx.","Tarsalis","F",NA,36,36,"Negative",0
-2024,"CDC-045",NA,27,2024-07-03,"LC","BE","PIONEER PARK","BE","L","Cx.","Pipiens","F",NA,6,6,"Negative",0
-2024,"CDC-046",NA,27,2024-07-03,"LC","BE","PIONEER PARK","BE","L","Cx.","Tarsalis","F",NA,28,28,"Negative",0
-2024,"CDC-053",NA,27,2024-07-03,"LC","BE","GOLF COURSE","BE","L","Cx.","Pipiens","F",NA,2,2,"Negative",0
-2024,"CDC-053",NA,27,2024-07-03,"LC","BE","GOLF COURSE","BE","L","Cx.","Pipiens","F",NA,2,2,"Negative",0
-2024,"CDC-054",NA,27,2024-07-03,"LC","BE","GOLF COURSE","BE","L","Cx.","Tarsalis","F",NA,40,40,"Negative",0
-2024,"CDC-054",NA,27,2024-07-03,"LC","BE","GOLF COURSE","BE","L","Cx.","Tarsalis","F",NA,40,40,"Negative",0
-2024,"CDC-055",NA,27,2024-07-03,"LC","BE","GOLF COURSE","BE","L","Cx.","Tarsalis","F",2,NA,2,"Negative",0
-2024,"CDC-055",NA,27,2024-07-03,"LC","BE","GOLF COURSE","BE","L","Cx.","Tarsalis","F",2,NA,2,"Negative",0
-2024,"CDC-047",NA,27,2024-07-03,"LC","BE","BERTHOUD RESERVIOR","BE","L","Cx.","Pipiens","F",0,2,2,"Negative",0
-2024,"CDC-048",NA,27,2024-07-03,"LC","BE","BERTHOUD RESERVIOR","BE","L","Cx.","Tarsalis","F",8,0,8,"Negative",0
-2024,"CDC-049",NA,27,2024-07-03,"LC","BE","BERTHOUD RESERVIOR","BE","L","Cx.","Tarsalis","F",0,50,50,"Negative",0
-2024,"CDC-050",NA,27,2024-07-03,"LC","BE","BERTHOUD RESERVIOR","BE","L","Cx.","Tarsalis","F",0,50,50,"Negative",0
-2024,"CDC-051",NA,27,2024-07-03,"LC","BE","BERTHOUD RESERVIOR","BE","L","Cx.","Tarsalis","F",0,50,50,"Negative",0
-2024,"CDC-052",NA,27,2024-07-03,"LC","BE","BERTHOUD RESERVIOR","BE","L","Cx.","Tarsalis","F",0,28,28,"Negative",0
-2024,"CSU-22020",NA,27,2024-07-01,"LC","LV","LV-069","LV","L","Cx.","Tarsalis","F",NA,1,1,"Negative",0
-2024,"CSU-22021",NA,27,2024-07-01,"LC","LV","LV-095","LV","L","Cx.","Tarsalis","F",NA,18,18,"Negative",0
-2024,"CSU-22022",NA,27,2024-07-01,"LC","FC","FC-038","NE","L","Cx.","Tarsalis","F",NA,31,31,"Negative",0
-2024,"CSU-22023",NA,27,2024-07-01,"LC","FC","FC-040","NE","L","Cx.","Tarsalis","F",NA,15,15,"Negative",0
-2024,"CSU-22024",NA,27,2024-07-01,"LC","FC","FC-040","NE","L","Cx.","Pipiens","F",NA,3,3,"Negative",0
-2024,"CSU-22025",NA,27,2024-07-01,"LC","FC","FC-034","NE","L","Cx.","Tarsalis","F",NA,23,23,"Negative",0
-2024,"CSU-22026",NA,27,2024-07-01,"LC","FC","FC-006","NE","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
-2024,"CSU-22027",NA,27,2024-07-01,"LC","FC","FC-036","NW","L","Cx.","Tarsalis","F",NA,18,18,"Negative",0
-2024,"CSU-22028",NA,27,2024-07-01,"LC","FC","FC-036","NW","L","Cx.","Pipiens","F",NA,15,15,"Negative",0
-2024,"CSU-22029",NA,27,2024-07-01,"LC","FC","FC-040GR","NE","G","Cx.","Pipiens","F",50,NA,50,"Negative",0
-2024,"CSU-22030",NA,27,2024-07-01,"LC","FC","FC-040GR","NE","G","Cx.","Pipiens","F",50,NA,50,"Negative",0
-2024,"CSU-22031",NA,27,2024-07-01,"LC","FC","FC-040GR","NE","G","Cx.","Pipiens","F",50,NA,50,"Negative",0
-2024,"CSU-22032",NA,27,2024-07-01,"LC","FC","FC-040GR","NE","G","Cx.","Pipiens","F",8,NA,8,"Negative",0
-2024,"CSU-22033",NA,27,2024-07-01,"LC","FC","FC-072","NE","L","Cx.","Tarsalis","F",NA,17,17,"Negative",0
-2024,"CSU-22034",NA,27,2024-07-01,"LC","FC","FC-072","NE","L","Cx.","Pipiens","F",NA,14,14,"Negative",0
-2024,"CSU-22035",NA,27,2024-07-01,"LC","FC","FC-092GR","NE","G","Cx.","Pipiens","F",7,NA,7,"Negative",0
-2024,"CSU-22036",NA,27,2024-07-01,"LC","FC","FC-067","NE","L","Cx.","Tarsalis","F",NA,1,1,"Negative",0
-2024,"CSU-22037",NA,27,2024-07-01,"LC","FC","FC-014","NE","L","Cx.","Tarsalis","F",NA,11,11,"Negative",0
-2024,"CSU-22038",NA,27,2024-07-01,"LC","FC","FC-091GR","NE","G","Cx.","Tarsalis","F",1,NA,1,"Negative",0
-2024,"CSU-22039",NA,27,2024-07-01,"LC","FC","FC-091GR","NE","G","Cx.","Pipiens","F",17,NA,17,"Negative",0
-2024,"CSU-22040",NA,27,2024-07-01,"LC","FC","FC-019","NE","L","Cx.","Tarsalis","F",NA,5,5,"Negative",0
-2024,"CSU-22041",NA,27,2024-07-01,"LC","FC","FC-019","NE","L","Cx.","Pipiens","F",NA,5,5,"Negative",0
-2024,"CSU-22042",NA,27,2024-07-01,"LC","FC","FC-066GR","NE","G","Cx.","Pipiens","F",9,NA,9,"Negative",0
-2024,"CSU-22043",NA,27,2024-07-01,"LC","FC","FC-069","NE","L","Cx.","Tarsalis","F",NA,17,17,"Negative",0
-2024,"CSU-22044",NA,27,2024-07-01,"LC","FC","FC-069","NE","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
-2024,"CSU-22045",NA,27,2024-07-01,"LC","FC","FC-066","NE","L","Cx.","Tarsalis","F",NA,47,47,"Negative",0
-2024,"CSU-22046",NA,27,2024-07-01,"LC","FC","FC-066","NE","L","Cx.","Pipiens","F",NA,12,12,"Negative",0
-2024,"CSU-22047",NA,27,2024-07-02,"LC","LV","LV-104","LV","L","Cx.","Tarsalis","F",NA,34,34,"Negative",0
-2024,"CSU-22048",NA,27,2024-07-02,"LC","LV","LV-104","LV","L","Cx.","Pipiens","F",NA,4,4,"Negative",0
-2024,"CSU-22049",NA,27,2024-07-02,"LC","LV","LV-089","LV","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
-2024,"CSU-22050",NA,27,2024-07-02,"LC","LV","LV-089","LV","L","Cx.","Tarsalis","F",NA,20,20,"Negative",0
-2024,"CSU-22051",NA,27,2024-07-02,"LC","LV","LV-110","LV","L","Cx.","Tarsalis","F",NA,13,13,"Negative",0
-2024,"CSU-22052",NA,27,2024-07-02,"LC","LV","LV-110","LV","L","Cx.","Pipiens","F",NA,3,3,"Negative",0
-2024,"CSU-22053",NA,27,2024-07-02,"LC","FC","FC-039","SE","L","Cx.","Tarsalis","F",NA,30,30,"Negative",0
-2024,"CSU-22054",NA,27,2024-07-02,"LC","FC","FC-064","SE","L","Cx.","Tarsalis","F",NA,15,15,"Negative",0
-2024,"CSU-22055",NA,27,2024-07-02,"LC","FC","FC-064","SE","L","Cx.","Pipiens","F",NA,3,3,"Negative",0
-2024,"CSU-22056",NA,27,2024-07-02,"LC","FC","FC-075","SE","L","Cx.","Tarsalis","F",NA,2,2,"Negative",0
-2024,"CSU-22057",NA,27,2024-07-02,"LC","FC","FC-075","SE","L","Cx.","Pipiens","F",NA,3,3,"Negative",0
-2024,"CSU-22058",NA,27,2024-07-02,"LC","FC","FC-053","SE","L","Cx.","Tarsalis","F",NA,11,11,"Negative",0
-2024,"CSU-22059",NA,27,2024-07-02,"LC","FC","FC-075GR","SE","G","Cx.","Pipiens","F",13,NA,13,"Negative",0
-2024,"CSU-22060",NA,27,2024-07-02,"LC","FC","FC-074","SE","L","Cx.","Tarsalis","F",NA,4,4,"Negative",0
-2024,"CSU-22061",NA,27,2024-07-02,"LC","FC","FC-004","SE","L","Cx.","Tarsalis","F",NA,14,14,"Negative",0
-2024,"CSU-22062",NA,27,2024-07-02,"LC","FC","FC-004","SE","L","Cx.","Pipiens","F",NA,3,3,"Negative",0
-2024,"CSU-22063",NA,27,2024-07-02,"LC","FC","FC-027","SE","L","Cx.","Tarsalis","F",NA,12,12,"Negative",0
-2024,"CSU-22064",NA,27,2024-07-02,"LC","FC","FC-027","SE","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
-2024,"CSU-22065",NA,27,2024-07-02,"LC","FC","FC-023","SE","L","Cx.","Tarsalis","F",NA,5,5,"Negative",0
-2024,"CSU-22066",NA,27,2024-07-02,"LC","FC","FC-023","SE","L","Cx.","Pipiens","F",NA,3,3,"Negative",0
-2024,"CSU-22067",NA,27,2024-07-02,"LC","FC","FC-047","SE","L","Cx.","Tarsalis","F",NA,6,6,"Negative",0
-2024,"CSU-22068",NA,27,2024-07-02,"LC","FC","FC-047","SE","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
-2024,"CSU-22069",NA,27,2024-07-02,"LC","FC","FC-050","SE","L","Cx.","Tarsalis","F",NA,3,3,"Negative",0
-2024,"CSU-22070",NA,27,2024-07-02,"LC","FC","FC-088GR","SE","G","Cx.","Pipiens","F",50,NA,50,"Negative",0
-2024,"CSU-22071",NA,27,2024-07-02,"LC","FC","FC-088GR","SE","G","Cx.","Pipiens","F",14,NA,14,"Negative",0
-2024,"CSU-22072",NA,27,2024-07-02,"LC","FC","FC-046","SE","L","Cx.","Tarsalis","F",NA,5,5,"Negative",0
-2024,"CSU-22073",NA,27,2024-07-02,"LC","FC","FC-046","SE","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
-2024,"CSU-22074",NA,27,2024-07-02,"LC","FC","FC-052","NW","L","Cx.","Tarsalis","F",NA,1,1,"Negative",0
-2024,"CSU-22075",NA,27,2024-07-02,"LC","FC","FC-052","NW","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
-2024,"CSU-22076",NA,27,2024-07-02,"LC","FC","FC-060","NW","L","Cx.","Tarsalis","F",NA,1,1,"Negative",0
-2024,"CSU-22077",NA,27,2024-07-02,"LC","FC","FC-031","SE","L","Cx.","Tarsalis","F",NA,11,11,"Negative",0
-2024,"CSU-22078",NA,27,2024-07-02,"LC","FC","FC-031","SE","L","Cx.","Pipiens","F",NA,4,4,"Negative",0
-2024,"CSU-22079",NA,27,2024-07-02,"LC","FC","FC-061","NW","L","Cx.","Tarsalis","F",NA,7,7,"Negative",0
-2024,"CSU-22080",NA,27,2024-07-02,"LC","FC","FC-061","NW","L","Cx.","Pipiens","F",NA,5,5,"Negative",0
-2024,"CSU-22081",NA,27,2024-07-02,"LC","FC","FC-090GR","NW","G","Cx.","Pipiens","F",20,NA,20,"Negative",0
-2024,"CSU-22082",NA,27,2024-07-02,"LC","FC","FC-073","NW","L","Cx.","Pipiens","F",NA,3,3,"Negative",0
-2024,"CSU-22083",NA,27,2024-07-02,"LC","FC","FC-041","NW","L","Cx.","Tarsalis","F",NA,1,1,"Negative",0
-2024,"CSU-22084",NA,27,2024-07-02,"LC","FC","FC-041","NW","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
-2024,"CSU-22085",NA,27,2024-07-02,"LC","FC","FC-063GR","NW","G","Cx.","Pipiens","F",6,NA,6,"Negative",0
-2024,"CSU-22086",NA,27,2024-07-02,"LC","FC","FC-049","SW","L","Cx.","Pipiens","F",NA,2,2,"Negative",0
-2024,"CSU-22087",NA,27,2024-07-02,"LC","FC","FC-015","NW","L","Cx.","Tarsalis","F",NA,1,1,"Negative",0
-2024,"CSU-22088",NA,27,2024-07-02,"LC","FC","FC-015","NW","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
-2024,"CSU-22089",NA,27,2024-07-02,"LC","FC","FC-011","NW","L","Cx.","Tarsalis","F",NA,2,2,"Negative",0
-2024,"CSU-22090",NA,27,2024-07-02,"LC","FC","FC-011","NW","L","Cx.","Pipiens","F",NA,4,4,"Negative",0
-2024,"CSU-22091",NA,27,2024-07-03,"LC","FC","FC-054","SE","L","Cx.","Tarsalis","F",NA,5,5,"Negative",0
-2024,"CSU-22092",NA,27,2024-07-03,"LC","FC","FC-029","SE","L","Cx.","Tarsalis","F",NA,4,4,"Negative",0
-2024,"CSU-22093",NA,27,2024-07-03,"LC","FC","FC-029","SE","L","Cx.","Pipiens","F",NA,2,2,"Negative",0
-2024,"CSU-22094",NA,27,2024-07-03,"LC","FC","FC-068","SW","L","Cx.","Tarsalis","F",NA,1,1,"Negative",0
-2024,"CSU-22095",NA,27,2024-07-03,"LC","FC","FC-093","SW","L","Cx.","Tarsalis","F",NA,1,1,"Negative",0
-2024,"CSU-22096",NA,27,2024-07-03,"LC","FC","FC-089GR","SW","G","Cx.","Pipiens","F",7,NA,7,"Negative",0
-2024,"CSU-22097",NA,27,2024-07-03,"LC","FC","FC-062","SW","L","Cx.","Pipiens","F",NA,4,4,"Negative",0
-2024,"CSU-22098",NA,27,2024-07-03,"LC","FC","FC-037","SW","L","Cx.","Tarsalis","F",NA,5,5,"Negative",0
-2024,"CSU-22099",NA,27,2024-07-03,"LC","FC","FC-037","SW","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
-2024,"CSU-22100",NA,27,2024-07-03,"LC","FC","FC-071","SW","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
-2024,"CSU-22101",NA,27,2024-07-03,"LC","FC","FC-057","SW","L","Cx.","Tarsalis","F",NA,3,3,"Negative",0
-2024,"CSU-22102",NA,27,2024-07-03,"LC","LV","LV-020","LV","L","Cx.","Tarsalis","F",NA,47,47,"Negative",0
-2024,"CSU-22103",NA,27,2024-07-03,"LC","BE","LC-053","BE","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
-2024,"CSU-22104",NA,27,2024-07-03,"LC","BE","LC-053","BE","L","Cx.","Tarsalis","F",NA,5,5,"Negative",0
-2024,"CSU-22105",NA,27,2024-07-03,"LC","BE","LC-001","BE","L","Cx.","Tarsalis","F",NA,42,42,"Negative",0
-2024,"CSU-22106",NA,27,2024-07-03,"LC","BE","LC-001","BE","L","Cx.","Pipiens","F",NA,14,14,"Negative",0
-2024,"CSU-22107",NA,27,2024-07-03,"LC","BE","WC-055","BE","L","Cx.","Tarsalis","F",NA,2,2,"Negative",0
-2024,"CSU-22108",NA,27,2024-07-03,"LC","BE","LC-054","BE","L","Cx.","Tarsalis","F",NA,44,44,"Negative",0
-2024,"CSU-22109",NA,27,2024-07-03,"LC","BE","LC-054","BE","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
-2024,"CSU-22110",NA,27,2024-07-03,"LC","BE","LC-049","BE","L","Cx.","Tarsalis","F",NA,6,6,"Negative",0
-2024,"CSU-22111",NA,27,2024-07-03,"LC","BE","LC-049","BE","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
+2024,"BOU-00216",NA,28,2024-07-08,"BC","BC","BC-04","BC","L","Cx.","Tarsalis","F",0,29,29,"Negative",0
+2024,"BOU-00217",NA,28,2024-07-08,"BC","BC","BC-22","BC","L","Cx.","Tarsalis","F",0,49,49,"Negative",0
+2024,"BOU-00218",NA,28,2024-07-08,"BC","BC","BC-26","BC","L","Cx.","Tarsalis","F",0,49,49,"Negative",0
+2024,"BOU-00219",NA,28,2024-07-08,"BC","BC","BC-13","BC","L","Cx.","Tarsalis","F",0,49,49,"Negative",0
+2024,"BOU-00220",NA,28,2024-07-08,"BC","BC","BC-14","BC","L","Cx.","Tarsalis","F",0,49,49,"Negative",0
+2024,"CDC-058",NA,28,2024-07-10,"LC",NA,"PIONEER PARK","BE","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
+2024,"CDC-059",NA,28,2024-07-10,"LC",NA,"PIONEER PARK","BE","L","Cx.","Tarsalis","F",NA,7,7,"Negative",0
+2024,"CDC-060",NA,28,2024-07-10,"LC",NA,"PIONEER PARK","BE","L","Cx.","Tarsalis","F",2,NA,2,"Negative",0
+2024,"CDC-061",NA,28,2024-07-10,"LC",NA,"BERTHOUD RESERVIOR","BE","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
+2024,"CDC-062",NA,28,2024-07-10,"LC",NA,"HILLSDALE PARK","BE","L","Cx.","Tarsalis","F",8,NA,8,"Negative",0
+2024,"CDC-063",NA,28,2024-07-10,"LC",NA,"HILLSDALE PARK","BE","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
+2024,"CDC-064",NA,28,2024-07-10,"LC",NA,"HILLSDALE PARK","BE","L","Cx.","Tarsalis","F",NA,49,49,"Negative",0
+2024,"CDC-065",NA,28,2024-07-10,"LC",NA,"GOLF COURSE","BE","L","Cx.","Tarsalis","F",1,NA,1,"Negative",0
+2024,"CDC-066",NA,28,2024-07-10,"LC",NA,"GOLF COURSE","BE","L","Cx.","Tarsalis","F",NA,9,9,"Negative",0
+2024,"CDC-067",NA,28,2024-07-10,"LC",NA,"GOLF COURSE","BE","L","Cx.","Pipiens","F",NA,2,2,"Positive",1
+2024,"CDC-068",NA,28,2024-07-10,"LC",NA,"HILLSDALE PARK","BE","L","Cx.","Pipiens","F",1,NA,1,"Negative",0
+2024,"CDC-069",NA,28,2024-07-10,"LC",NA,"HILLSDALE PARK","BE","L","Cx.","Pipiens","F",NA,17,17,"Negative",0
+2024,"CDC-070",NA,28,2024-07-10,"LC",NA,"BERTHOUD RESERVIOR","BE","L","Cx.","Pipiens","F",NA,21,21,"Negative",0
+2024,"CDC-071",NA,28,2024-07-10,"LC",NA,"BERTHOUD RESERVIOR","BE","L","Cx.","Tarsalis","F",5,NA,5,"Negative",0
+2024,"CDC-072",NA,28,2024-07-10,"LC",NA,"BERTHOUD RESERVIOR","BE","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
+2024,"CDC-073",NA,28,2024-07-10,"LC",NA,"BERTHOUD RESERVIOR","BE","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
+2024,"CDC-074",NA,28,2024-07-10,"LC",NA,"BERTHOUD RESERVIOR","BE","L","Cx.","Tarsalis","F",NA,27,27,"Negative",0
+2024,"CSU-22112",NA,28,2024-07-08,"LC","LV","LV-069","LV","L","Cx.","Tarsalis","F",NA,1,1,"Negative",0
+2024,"CSU-22113",NA,28,2024-07-08,"LC","LV","LV-095","LV","L","Cx.","Tarsalis","F",NA,18,18,"Negative",0
+2024,"CSU-22114",NA,28,2024-07-08,"LC","LV","LV-095","LV","L","Cx.","Pipiens","F",NA,3,3,"Negative",0
+2024,"CSU-22115",NA,28,2024-07-08,"LC","FC","FC-038","NE","L","Cx.","Tarsalis","F",NA,14,14,"Negative",0
+2024,"CSU-22116",NA,28,2024-07-08,"LC","FC","FC-006","NE","L","Cx.","Tarsalis","F",NA,1,1,"Negative",0
+2024,"CSU-22117",NA,28,2024-07-08,"LC","FC","FC-040","NE","L","Cx.","Tarsalis","F",NA,23,23,"Negative",0
+2024,"CSU-22118",NA,28,2024-07-08,"LC","FC","FC-040","NE","L","Cx.","Pipiens","F",NA,5,5,"Negative",0
+2024,"CSU-22119",NA,28,2024-07-08,"LC","FC","FC-040GR","NE","G","Cx.","Pipiens","F",38,NA,38,"Negative",0
+2024,"CSU-22120",NA,28,2024-07-08,"LC","FC","FC-091GR","NE","G","Cx.","Pipiens","F",2,NA,2,"Negative",0
+2024,"CSU-22121",NA,28,2024-07-08,"LC","FC","FC-092GR","NE","G","Cx.","Pipiens","F",9,NA,9,"Negative",0
+2024,"CSU-22122",NA,28,2024-07-08,"LC","FC","FC-072","NE","L","Cx.","Tarsalis","F",NA,19,19,"Negative",0
+2024,"CSU-22123",NA,28,2024-07-08,"LC","FC","FC-072","NE","L","Cx.","Pipiens","F",NA,15,15,"Negative",0
+2024,"CSU-22124",NA,28,2024-07-08,"LC","FC","FC-067","NE","L","Cx.","Tarsalis","F",NA,1,1,"Negative",0
+2024,"CSU-22125",NA,28,2024-07-08,"LC","FC","FC-069","NE","L","Cx.","Tarsalis","F",NA,2,2,"Negative",0
+2024,"CSU-22126",NA,28,2024-07-08,"LC","FC","FC-069","NE","L","Cx.","Pipiens","F",NA,2,2,"Negative",0
+2024,"CSU-22127",NA,28,2024-07-08,"LC","FC","FC-036","NW","L","Cx.","Tarsalis","F",NA,14,14,"Negative",0
+2024,"CSU-22128",NA,28,2024-07-08,"LC","FC","FC-036","NW","L","Cx.","Pipiens","F",NA,10,10,"Negative",0
+2024,"CSU-22129",NA,28,2024-07-08,"LC","FC","FC-066GR","NE","G","Cx.","Pipiens","F",4,NA,4,"Negative",0
+2024,"CSU-22130",NA,28,2024-07-08,"LC","FC","FC-019","NE","L","Cx.","Tarsalis","F",NA,22,22,"Negative",0
+2024,"CSU-22131",NA,28,2024-07-08,"LC","FC","FC-019","NE","L","Cx.","Pipiens","F",NA,21,21,"Negative",0
+2024,"CSU-22132",NA,28,2024-07-08,"LC","FC","FC-014","NE","L","Cx.","Tarsalis","F",NA,30,30,"Negative",0
+2024,"CSU-22133",NA,28,2024-07-08,"LC","FC","FC-014","NE","L","Cx.","Pipiens","F",NA,5,5,"Negative",0
+2024,"CSU-22134",NA,28,2024-07-08,"LC","FC","FC-066","NE","L","Cx.","Tarsalis","F",NA,25,25,"Negative",0
+2024,"CSU-22135",NA,28,2024-07-08,"LC","FC","FC-066","NE","L","Cx.","Pipiens","F",NA,12,12,"Negative",0
+2024,"CSU-22136",NA,28,2024-07-08,"LC","FC","FC-034","NE","L","Cx.","Tarsalis","F",NA,8,8,"Negative",0
+2024,"CSU-22137",NA,28,2024-07-09,"LC","LV","LV-104","LV","L","Cx.","Tarsalis","F",NA,48,48,"Negative",0
+2024,"CSU-22138",NA,28,2024-07-09,"LC","LV","LV-104","LV","L","Cx.","Pipiens","F",NA,2,2,"Negative",0
+2024,"CSU-22139",NA,28,2024-07-09,"LC","LV","LV-089","LV","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
+2024,"CSU-22140",NA,28,2024-07-09,"LC","LV","LV-089","LV","L","Cx.","Tarsalis","F",NA,34,34,"Negative",0
+2024,"CSU-22141",NA,28,2024-07-09,"LC","LV","LV-089","LV","L","Cx.","Pipiens","F",NA,13,13,"Negative",0
+2024,"CSU-22142",NA,28,2024-07-09,"LC","LV","LV-110","LV","L","Cx.","Tarsalis","F",NA,15,15,"Negative",0
+2024,"CSU-22143",NA,28,2024-07-09,"LC","LV","LV-110","LV","L","Cx.","Pipiens","F",NA,5,5,"Negative",0
+2024,"CSU-22144",NA,28,2024-07-09,"LC","FC","FC-053","SE","L","Cx.","Tarsalis","F",NA,4,4,"Negative",0
+2024,"CSU-22145",NA,28,2024-07-09,"LC","FC","FC-039","SE","L","Cx.","Tarsalis","F",NA,7,7,"Negative",0
+2024,"CSU-22146",NA,28,2024-07-09,"LC","FC","FC-064","SE","L","Cx.","Tarsalis","F",NA,47,47,"Negative",0
+2024,"CSU-22147",NA,28,2024-07-09,"LC","FC","FC-064","SE","L","Cx.","Pipiens","F",NA,20,20,"Negative",0
+2024,"CSU-22148",NA,28,2024-07-09,"LC","FC","FC-075GR","SE","G","Cx.","Pipiens","F",13,NA,13,"Negative",0
+2024,"CSU-22149",NA,28,2024-07-09,"LC","FC","FC-075","SE","L","Cx.","Tarsalis","F",NA,7,7,"Negative",0
+2024,"CSU-22150",NA,28,2024-07-09,"LC","FC","FC-075","SE","L","Cx.","Pipiens","F",NA,6,6,"Negative",0
+2024,"CSU-22151",NA,28,2024-07-09,"LC","FC","FC-074","SE","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
+2024,"CSU-22152",NA,28,2024-07-09,"LC","FC","FC-074","SE","L","Cx.","Tarsalis","F",NA,8,8,"Negative",0
+2024,"CSU-22153",NA,28,2024-07-09,"LC","FC","FC-074","SE","L","Cx.","Pipiens","F",NA,2,2,"Negative",0
+2024,"CSU-22154",NA,28,2024-07-09,"LC","FC","FC-088GR","SE","G","Cx.","Tarsalis","F",1,NA,1,"Negative",0
+2024,"CSU-22155",NA,28,2024-07-09,"LC","FC","FC-088GR","SE","G","Cx.","Pipiens","F",50,NA,50,"Negative",0
+2024,"CSU-22156",NA,28,2024-07-09,"LC","FC","FC-088GR","SE","G","Cx.","Pipiens","F",13,NA,13,"Negative",0
+2024,"CSU-22157",NA,28,2024-07-09,"LC","FC","FC-004","SE","L","Cx.","Tarsalis","F",NA,33,33,"Negative",0
+2024,"CSU-22158",NA,28,2024-07-09,"LC","FC","FC-004","SE","L","Cx.","Pipiens","F",NA,11,11,"Negative",0
+2024,"CSU-22159",NA,28,2024-07-09,"LC","FC","FC-050","SE","L","Cx.","Tarsalis","F",NA,3,3,"Negative",0
+2024,"CSU-22160",NA,28,2024-07-09,"LC","FC","FC-050","SE","L","Cx.","Pipiens","F",NA,6,6,"Negative",0
+2024,"CSU-22161",NA,28,2024-07-09,"LC","FC","FC-027","SE","L","Cx.","Tarsalis","F",NA,6,6,"Negative",0
+2024,"CSU-22162",NA,28,2024-07-09,"LC","FC","FC-027","SE","L","Cx.","Pipiens","F",NA,19,19,"Negative",0
+2024,"CSU-22163",NA,28,2024-07-09,"LC","FC","FC-023","SE","L","Cx.","Tarsalis","F",NA,7,7,"Negative",0
+2024,"CSU-22164",NA,28,2024-07-09,"LC","FC","FC-023","SE","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
+2024,"CSU-22165",NA,28,2024-07-09,"LC","FC","FC-046","SE","L","Cx.","Tarsalis","F",NA,16,16,"Negative",0
+2024,"CSU-22166",NA,28,2024-07-09,"LC","FC","FC-046","SE","L","Cx.","Pipiens","F",NA,9,9,"Negative",0
+2024,"CSU-22167",NA,28,2024-07-09,"LC","FC","FC-047","SE","L","Cx.","Tarsalis","F",NA,11,11,"Negative",0
+2024,"CSU-22168",NA,28,2024-07-09,"LC","FC","FC-047","SE","L","Cx.","Pipiens","F",NA,2,2,"Negative",0
+2024,"CSU-22169",NA,28,2024-07-09,"LC","FC","FC-031","SE","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
+2024,"CSU-22170",NA,28,2024-07-09,"LC","FC","FC-031","SE","L","Cx.","Tarsalis","F",NA,47,47,"Negative",0
+2024,"CSU-22171",NA,28,2024-07-09,"LC","FC","FC-031","SE","L","Cx.","Pipiens","F",NA,3,3,"Negative",0
+2024,"CSU-22172",NA,28,2024-07-10,"LC","BE","LC-053","BE","L","Cx.","Tarsalis","F",NA,12,12,"Negative",0
+2024,"CSU-22173",NA,28,2024-07-10,"LC","BE","WC-055","BE","L","Cx.","Tarsalis","F",NA,5,5,"Negative",0
+2024,"CSU-22174",NA,28,2024-07-10,"LC","BE","LC-054","BE","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
+2024,"CSU-22175",NA,28,2024-07-10,"LC","BE","LC-054","BE","L","Cx.","Tarsalis","F",NA,22,22,"Negative",0
+2024,"CSU-22176",NA,28,2024-07-10,"LC","BE","LC-054","BE","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
+2024,"CSU-22177",NA,28,2024-07-10,"LC","BE","LC-001","BE","L","Cx.","Tarsalis","F",NA,44,44,"Negative",0
+2024,"CSU-22178",NA,28,2024-07-10,"LC","BE","LC-001","BE","L","Cx.","Pipiens","F",NA,7,7,"Negative",0
+2024,"CSU-22179",NA,28,2024-07-10,"LC","BE","LC-049","BE","L","Cx.","Tarsalis","F",NA,41,41,"Negative",0
+2024,"CSU-22180",NA,28,2024-07-10,"LC","FC","FC-052","NW","L","Cx.","Tarsalis","F",NA,2,2,"Negative",0
+2024,"CSU-22181",NA,28,2024-07-10,"LC","FC","FC-052","NW","L","Cx.","Pipiens","F",NA,4,4,"Negative",0
+2024,"CSU-22182",NA,28,2024-07-10,"LC","LV","LV-020","LV","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
+2024,"CSU-22183",NA,28,2024-07-10,"LC","LV","LV-020","LV","L","Cx.","Tarsalis","F",NA,50,50,"Negative",0
+2024,"CSU-22184",NA,28,2024-07-10,"LC","LV","LV-020","LV","L","Cx.","Tarsalis","F",NA,17,17,"Negative",0
+2024,"CSU-22185",NA,28,2024-07-10,"LC","FC","FC-061","NW","L","Cx.","Tarsalis","F",NA,49,49,"Negative",0
+2024,"CSU-22186",NA,28,2024-07-10,"LC","FC","FC-061","NW","L","Cx.","Pipiens","F",NA,24,24,"Negative",0
+2024,"CSU-22187",NA,28,2024-07-10,"LC","FC","FC-073","NW","L","Cx.","Tarsalis","F",NA,9,9,"Negative",0
+2024,"CSU-22188",NA,28,2024-07-10,"LC","FC","FC-073","NW","L","Cx.","Pipiens","F",NA,4,4,"Negative",0
+2024,"CSU-22189",NA,28,2024-07-10,"LC","FC","FC-041","NW","L","Cx.","Tarsalis","F",NA,4,4,"Negative",0
+2024,"CSU-22190",NA,28,2024-07-10,"LC","FC","FC-041","NW","L","Cx.","Pipiens","F",NA,13,13,"Negative",0
+2024,"CSU-22191",NA,28,2024-07-10,"LC","FC","FC-060","NW","L","Cx.","Tarsalis","F",NA,5,5,"Negative",0
+2024,"CSU-22192",NA,28,2024-07-10,"LC","FC","FC-060","NW","L","Cx.","Pipiens","F",NA,10,10,"Negative",0
+2024,"CSU-22193",NA,28,2024-07-10,"LC","FC","FC-090GR","NW","G","Cx.","Pipiens","F",50,NA,50,"Negative",0
+2024,"CSU-22194",NA,28,2024-07-10,"LC","FC","FC-090GR","NW","G","Cx.","Pipiens","F",3,NA,3,"Negative",0
+2024,"CSU-22195",NA,28,2024-07-10,"LC","FC","FC-063GR","NW","G","Cx.","Pipiens","F",16,NA,16,"Negative",0
+2024,"CSU-22196",NA,28,2024-07-10,"LC","FC","FC-011","NW","L","Cx.","Tarsalis","F",NA,2,2,"Negative",0
+2024,"CSU-22197",NA,28,2024-07-10,"LC","FC","FC-011","NW","L","Cx.","Pipiens","F",NA,9,9,"Negative",0
+2024,"CSU-22198",NA,28,2024-07-10,"LC","FC","FC-015","NW","L","Cx.","Pipiens","F",NA,2,2,"Negative",0
+2024,"CSU-22199",NA,28,2024-07-10,"LC","FC","FC-058","SW","L","Cx.","Tarsalis","F",NA,1,1,"Negative",0
+2024,"CSU-22200",NA,28,2024-07-10,"LC","FC","FC-058","SW","L","Cx.","Pipiens","F",NA,2,2,"Negative",0
+2024,"CSU-22201",NA,28,2024-07-10,"LC","FC","FC-063","NW","L","Cx.","Tarsalis","F",NA,3,3,"Negative",0
+2024,"CSU-22202",NA,28,2024-07-10,"LC","FC","FC-063","NW","L","Cx.","Pipiens","F",NA,3,3,"Negative",0
+2024,"CSU-22203",NA,28,2024-07-10,"LC","FC","FC-049","SW","L","Cx.","Tarsalis","F",NA,13,13,"Negative",0
+2024,"CSU-22204",NA,28,2024-07-10,"LC","FC","FC-049","SW","L","Cx.","Pipiens","F",NA,13,13,"Negative",0
+2024,"CSU-22205",NA,28,2024-07-11,"LC","FC","FC-001","SW","L","Cx.","Tarsalis","F",NA,9,9,"Negative",0
+2024,"CSU-22206",NA,28,2024-07-11,"LC","FC","FC-001","SW","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
+2024,"CSU-22207",NA,28,2024-07-11,"LC","FC","FC-029GR","SE","G","Cx.","Pipiens","F",30,NA,30,"Negative",0
+2024,"CSU-22208",NA,28,2024-07-11,"LC","FC","FC-068","SW","L","Cx.","Tarsalis","F",NA,5,5,"Negative",0
+2024,"CSU-22209",NA,28,2024-07-11,"LC","FC","FC-068","SW","L","Cx.","Pipiens","F",NA,2,2,"Negative",0
+2024,"CSU-22210",NA,28,2024-07-11,"LC","FC","FC-029","SE","L","Cx.","Tarsalis","F",NA,9,9,"Negative",0
+2024,"CSU-22211",NA,28,2024-07-11,"LC","FC","FC-029","SE","L","Cx.","Pipiens","F",NA,3,3,"Negative",0
+2024,"CSU-22212",NA,28,2024-07-11,"LC","FC","FC-089GR","SW","G","Cx.","Pipiens","F",23,NA,23,"Negative",0
+2024,"CSU-22213",NA,28,2024-07-11,"LC","FC","FC-057","SW","L","Cx.","Tarsalis","F",NA,4,4,"Negative",0
+2024,"CSU-22214",NA,28,2024-07-11,"LC","FC","FC-057","SW","L","Cx.","Pipiens","F",NA,1,1,"Negative",0
+2024,"CSU-22215",NA,28,2024-07-11,"LC","FC","FC-093","SW","L","Cx.","Tarsalis","F",NA,19,19,"Negative",0
+2024,"CSU-22216",NA,28,2024-07-11,"LC","FC","FC-093","SW","L","Cx.","Pipiens","F",NA,7,7,"Negative",0
+2024,"CSU-22217",NA,28,2024-07-11,"LC","FC","FC-071","SW","L","Cx.","Tarsalis","F",NA,2,2,"Negative",0
+2024,"CSU-22218",NA,28,2024-07-11,"LC","FC","FC-037","SW","L","Cx.","Tarsalis","F",NA,21,21,"Negative",0

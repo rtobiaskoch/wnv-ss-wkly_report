@@ -1,6 +1,21 @@
 source("scripts/config.R")
 
-data_input = read_rds(fn_weekly_input_format_mid)
+data_input0 = read_rds(fn_weekly_input_format_mid)
+
+data_input = data_input0 %>%
+  filter(Week == week_filter&Year == year_filter) #incase samples were added from a previous week/year they still get added  to database
+
+filtered_samples = data_input0 %>%
+  filter(Week != week_filter|Year != year_filter)
+
+
+if(nrow(filtered_samples) > 0) {
+  write.csv(filtered_samples, "data_mid/non_week_samples.csv")
+  print(paste0(filtered_samples$`CSU Pool Number (CMC Enters)`, " sample was removed and not part of ", week_filter, " sample pool"))
+}
+
+
+
 
 order = colnames(data_input)
 
@@ -29,6 +44,7 @@ weekly_data_format = data_input %>%
                           )
         ) %>%
   mutate(Sex = as.character(Sex)) %>%
+  mutate(Week = epiweek(`Trap Date`)) %>% #replace manual week input with date week
   rename(Spp = "Species",
          Method = "L/G",
          Account = "Acct")

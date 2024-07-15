@@ -6,6 +6,7 @@ source("scripts/config.R")
 gsheet_pull(trap_active_key, "data", fn_trap_active)
 active_trap = read.csv(fn_trap_active) #remove BC & BE because their traps are infrequent
 
+
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #get active malfunction trap data
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -17,8 +18,8 @@ malfunction_trap_test = malfunction_trap %>%
          week == week_filter)
 
 if(nrow(malfunction_trap_test) == 0) {
-  paste("Alert! there are no malfunctioned traps for the year and week filter. Sounds too good to be true. 
-        Check and update your malfunction trap on gdrive our where ever it may be hosted in your world.")
+  print(paste("Alert! there are no malfunctioned traps for the year and week filter. Sounds too good to be true. 
+        Check and update your malfunction trap on gdrive our where ever it may be hosted in your world."))
 }
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

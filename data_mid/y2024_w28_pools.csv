@@ -1,0 +1,16 @@
+"year","week","zone","spp","pools_G","pools_L","n_pools","pos_pools_G","pos_pools_L","n_pos_pools"
+2024,28,"NW","Pipiens",3,9,12,0,0,0
+2024,28,"NW","Tarsalis",0,8,8,0,0,0
+2024,28,"NE","Pipiens",4,6,10,0,0,0
+2024,28,"NE","Tarsalis",0,10,10,0,0,0
+2024,28,"SE","Pipiens",4,11,15,0,0,0
+2024,28,"SE","Tarsalis",1,15,16,0,0,0
+2024,28,"SW","Pipiens",1,6,7,0,0,0
+2024,28,"SW","Tarsalis",0,8,8,0,0,0
+2024,28,"LV","Pipiens",0,4,4,0,0,0
+2024,28,"LV","Tarsalis",0,9,9,0,0,0
+2024,28,"BE","Pipiens",0,6,6,0,1,1
+2024,28,"BE","Tarsalis",0,19,19,0,0,0
+2024,28,"BC","Tarsalis",0,5,5,0,0,0
+2024,28,"FC","Pipiens",12,32,44,0,0,0
+2024,28,"FC","Tarsalis",1,41,42,0,0,0

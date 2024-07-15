@@ -19,14 +19,14 @@ source("scripts/config.R")
 
 ```{bash}
 # git add --all
-# git commit -m "weekly commit before data removal"
-# git push
-# rm -f data_input/cdc/*
-# rm -f data_input/datasheet/*
-# rm -f data_input/pcr/*
-# rm -f data_input/platemap/*
-# rm -f data_mid/*
-# rm -f data_output/*
+ #git commit -m "weekly commit before data removal"
+ #git push
+  #rm -f data_input/cdc/* -->
+# rm -f data_input/datasheet/* -->
+#  rm -f data_input/pcr/* -->
+# rm -f data_input/platemap/* -->
+# rm -f data_mid/* -->
+# rm -f data_output/* -->
 
 ```
 
@@ -55,9 +55,16 @@ Code Below:\
 - writes the weekly update to the mid folder
 
 ```{r}
+source("scripts/pcr_plot.R")
+pcr_plot
+```
+
+```{r}
 source("scripts/data_merge_and_push.R")
 ```
 
+Code Below:
+-data_input 
 ```{r}
 source("scripts/weekly_data_input.R")
 ```
@@ -106,7 +113,7 @@ source("scripts/pIR_VI.R")
 
 ```{r}
 source("scripts/historical_weekly.R")
-plot(p_df_all_long)  
+
 ```
 
 ```{r}

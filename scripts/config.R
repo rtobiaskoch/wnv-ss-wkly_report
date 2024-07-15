@@ -26,12 +26,12 @@ source("scripts/gsheet_read_fun.R")
 #DATA PARAMETERS##
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 year_filter = 2024
-week_filter = 27
+week_filter = 28
 fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
 all_zones = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
 
-copy_threshold = 100
+copy_threshold = 200
 rn_threshold = 34000
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
