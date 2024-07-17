@@ -75,7 +75,7 @@ pools = check_read_fun(fn_pools_mid)
  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   #-------------- C O M B I N E   D A T A -----------------------------
  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  data_zone_wk = pools %>%
+  data_zone_wk0 = pools %>%
     left_join(abund_zone_wk, by = grp_vars) %>%
     left_join(df_pir, by = grp_vars) %>%
     mutate(vi = round(abund * pir,4),
@@ -88,11 +88,54 @@ pools = check_read_fun(fn_pools_mid)
     arrange(zone, spp)
 
   #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  #--------------- C A L C    A L L   S P P ----------------------------
+  #--------------- S U M    A L L   S P P ----------------------------
   #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  #TBD
+  sum_col = c("pools_G", "pools_L", "n_pools",
+              "pos_pools_G", "pos_pools_L", "n_pos_pools", 
+              "mosq", "mosq_L", 
+              "abund", "vi", "vi_lci", "vi_uci")
+ 
+  distinct_col = c("trap_L_func")
   
+  
+  data_zone_wk_spp_all0 = data_zone_wk0 %>%
+    mutate(spp =  "All") %>%
+    group_by(year, week, zone, spp) %>%
+    summarise(spp = "All",
+              across(all_of(sum_col), sum),
+              across(all_of(distinct_col), ~n_distinct(.))
+              )
+  
+  
+  
+  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  #--------------- C A L C   P I R   A L L   S P P ---------------------
+  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  #calculate pir for all mosquito species (spp)
 
+  pir_all_spp = data_zone_wk0 %>%
+      group_by(year, week, zone) %>%
+      summarize(spp = "All",
+                pir = sum(vi)/sum(abund),
+                pir_lci = sum(vi_lci)/sum(abund),
+                pir_uci = sum(vi_uci)/sum(abund))
+    
+  
+  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  #--------------- J O I N   A L L   S P P ---------------------
+  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  data_zone_wk_spp_all = left_join(data_zone_wk_spp_all0, pir_all_spp, by = grp_vars)
+
+  
+  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  #--------------- C O M B I N E   A L L   S P P ---------------------
+  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  data_zone_wk = rbind(data_zone_wk0, data_zone_wk_spp_all) %>% 
+    arrange(year,week, zone , spp)
+  
+  
+  
+  
   write.csv(data_zone_wk, fn_data_output,row.names = F)
   
 

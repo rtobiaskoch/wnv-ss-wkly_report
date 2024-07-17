@@ -1,3 +1,54 @@
+
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#--------------- W E E K L Y    D A T A -------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#example of why you can't run pir over all species 
+#this is because it ignores the different risk probablities of different species. 
+
+
+suppressMessages({
+  all_spp_pir0 = data_input %>%
+    mutate(spp = "all") %>%
+    mutate(grp = paste(year,week,zone,spp,sep ="-"))
+  
+  mle = pIR(test_code ~ total|grp, data = all_spp_pir0, pt.method = "firth")
+  
+  all_spp_pir0 =  as.data.frame(mle) %>%
+    separate(grp,
+             into = c("year", "week", "zone", "spp"),
+             sep = "-") %>%
+    transmute(year = as.integer(year),
+              week = as.integer(week),
+              zone = zone,
+              spp = spp,
+              pir = round(P,4),
+              pir_lci = round(Lower,4),
+              pir_uci = round(Upper,4)
+    ) 
+  
+  test_p = data_zone_wk %>%
+    group_by(year, week, zone) %>%
+    summarize(spp = "all",
+              mosq = sum(mosq),
+              abund = sum(abund),
+              vi = sum(vi),
+              vi_uci = sum(vi_uci),
+              test_pir = vi/abund,
+              test_pir_uci = vi_uci/sum(abund))
+  
+})
+
+
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#--------------- H Y P O T H E T I C A L    D A T A -------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+
 #run pir_VIR first
 
 #example of NA ERRROR
