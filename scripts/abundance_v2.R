@@ -7,11 +7,21 @@ source("scripts/config.R")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 data_input = check_read_fun(fn_database_update)
 
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#--------------------G E T   F U N C T I O N A L   T R A P S ------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #read in weeks functional traps. derived from get_func_trap.R
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 func_trap_L = read.csv(fn_func_trap) %>%
   select(zone, active, trap_L_func)
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#--------------------C H E C K  T R A P S ------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+
+
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #>#GET WEEKS TRAP NUMBERS
@@ -72,7 +82,7 @@ if(any(trap_check_FC_LV$func_GT_wk == F)) {
   suppressMessages({
   
      
-    
+    #ALL ZONES
     #get number of mosquitoes per night per trap
     m_p_wk0 = data_input %>%
       group_by(across(all_of(c(grp_vars, "method")))) %>% #get number of mosquitoes per week per zone per species
@@ -82,6 +92,8 @@ if(any(trap_check_FC_LV$func_GT_wk == F)) {
                   names_prefix = "mosq_", values_fill = 0) %>%
       mutate(mosq = mosq_L + mosq_G)
     
+    
+    #FC
     #get number of mosquitoes per night per trap
     fc_m_p_wk = m_p_wk0 %>%
       filter(zone %in% fc_zones) %>%
@@ -93,7 +105,7 @@ if(any(trap_check_FC_LV$func_GT_wk == F)) {
     
     #get abundance per trap
    abund_zone_wk_with_G = left_join(trap_p_wk, m_p_wk, by = c("year","zone", "week")) %>%
-      mutate(abund = round(mosq_L/trap_L_func,2))
+      mutate(abund = round(mosq_L/trap_L_func,2)) #WHERE CALC HAPPENS
     
     abund_zone_wk = abund_zone_wk_with_G %>%
       select(year, week, zone, spp, mosq, mosq_L, trap_L_func, abund) %>%

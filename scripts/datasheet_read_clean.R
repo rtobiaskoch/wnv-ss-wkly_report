@@ -23,6 +23,22 @@ write_rds(data_input, fn_weekly_input_format_mid)
 data_input = data_input %>%
   rename(!!!rename_col)
 
+
+#check for samples from a previous week
+data_input = data_input0 %>%
+  filter(Week == week_filter&Year == year_filter) #incase samples were added from a previous week/year they still get added  to database
+
+filtered_samples = data_input0 %>%
+  filter(Week != week_filter|Year != year_filter)
+
+
+if(nrow(filtered_samples) > 0) {
+  write.csv(filtered_samples, "data_mid/non_week_samples.csv")
+  print(paste0(filtered_samples$`CSU Pool Number (CMC Enters)`, " sample was removed and not part of ", week_filter, " sample pool"))
+}
+
+
+
 if(nrow(get_dupes(data_input) > 0)) {
   stop("You have duplicates in your datasheets")
 }
