@@ -27,7 +27,7 @@ if(nrow(malfunction_trap_test) == 0) {
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 #chagne week filter for expand_grid to get all comination of year and week
-week_filter = 23:week_filter
+week_filter_yr
 
 
   # Your code with group_by and summarize
