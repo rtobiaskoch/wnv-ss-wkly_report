@@ -1,48 +1,49 @@
 "trap_id","zone","method","active"
+"BC-01","BC","L",0
 "BC-02","BC","L",0
 "BC-03","BC","L",0
 "BC-04","BC","L",0
 "BC-08","BC","L",0
 "BC-09","BC","L",0
 "BC-11","BC","L",0
+"BC-12","BC","L",0
+"BC-13","BC","L",0
 "BC-15","BC","L",0
+"BC-16","BC","L",0
 "BC-17","BC","L",0
 "BC-18","BC","L",0
-"BC-22","BC","L",0
-"BC-26","BC","L",0
-"BC-13","BC","L",0
-"BC-27","BC","L",0
-"BC-25","BC","L",0
 "BC-19","BC","L",0
-"BC-01","BC","L",0
-"BC-16","BC","L",0
-"BC-12","BC","L",0
+"BC-22","BC","L",0
+"BC-25","BC","L",0
+"BC-26","BC","L",0
+"BC-27","BC","L",0
+"BERTHOUD RESERVOIR","BE","L",1
 "GATEWAY PARK","BE","L",1
 "GOLF COURSE","BE","L",1
 "HILLSDALE PARK","BE","L",1
-"PIONEER PARK","BE","L",1
-"BERTHOUD RESERVOIR","BE","L",1
 "LC-001","BE","L",1
 "LC-049","BE","L",1
 "LC-053","BE","L",1
 "LC-054","BE","L",1
 "LC-055","BE","L",0
+"PIONEER PARK","BE","L",1
+"WC-055","BE","L",1
 "LV-020","LV","L",1
 "LV-069","LV","L",1
-"LV-089","LV","L",1
-"LV-095","LV","L",1
-"LV-104","LV","L",1
-"LV-110","LV","L",1
 "LV-074","LV","L",0
 "LV-074GR","LV","G",0
 "LV-078","LV","L",0
 "LV-079GR","LV","G",0
 "LV-087","LV","L",0
+"LV-089","LV","L",1
+"LV-095","LV","L",1
 "LV-099","LV","L",0
 "LV-100","LV","L",0
 "LV-101","LV","L",0
 "LV-102","LV","L",0
+"LV-104","LV","L",1
 "LV-105","LV","L",0
+"LV-110","LV","L",1
 "LV-112","LV","L",0
 "LV-113","LV","L",0
 "LV-114","LV","L",0
@@ -109,4 +110,3 @@
 "FC-071","SW","L",1
 "FC-089GR","SW","G",1
 "FC-093","SW","L",1
-"WC-055","WC","L",0

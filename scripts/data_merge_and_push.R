@@ -1,6 +1,10 @@
 source("scripts/config.R")
 
 
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#---------------- R E A D   D A T A  -------------------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 cq_data = read.csv(fn_cq_out) %>% 
   select(-well_position)
 
@@ -17,12 +21,21 @@ new_data0 = read.csv(fn_datasheet_clean) %>%
   mutate(seq = NA) 
 
 
+
 new_data = new_data0 %>%
   filter(!is.na(trap_id)) %>%
   select(all_of(database_col))
+  
+
 
 write.csv(new_data, fn_datasheet_clean_test, row.names = F)
 
+  
+  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  #---------- P U L L   &   U P D A T E    G D R I V E    D A T A B A S E  ----------------------
+  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  
+  
 #pull database from googledrive location and read it as a csv
 gsheet_pull(database_gsheet_key, "data", fn_database_input)
 
@@ -51,3 +64,4 @@ googlesheets4::sheet_write(database_update,
                            ss = database_gsheet_key,
                            sheet = "data"
                           )
+ # END OF ELSE FOR MISSING TRAP CHECK

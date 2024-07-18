@@ -2,7 +2,9 @@ source("scripts/config.R")
 
 #datasheets (mosquito pools) read
 
-#data from vdci, cdc, and bc
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------- R E A D   D A T A S H E E T S   -------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 #get list of file paths for all files in the fn_datasheet_input
 t = list.files(path = fn_datasheet_input,
@@ -10,45 +12,24 @@ t = list.files(path = fn_datasheet_input,
                ignore.case = T)  
 
 #read all files and bind it into one dataframe
-data_input = t %>% 
+data_input0 = t %>% 
   map(~read_excel(.x, col_names = T)) %>%
   bind_rows() %>%
   filter(!is.na(`Trap Date`)&!is.na(`Zone`)&!is.na(`Total`)) #remove empty ids becasue VDCI keeps sending us empty ids
 
 #save this after binding for the Weekly Input for the Report. Maintaining the original stupid format
 #save as rds becasue csv fudges up the original colnames
-write_rds(data_input, fn_weekly_input_format_mid)
+write_rds(data_input0, fn_weekly_input_format_mid)
 
 
-data_input = data_input %>%
+data_input = data_input0 %>%
   rename(!!!rename_col)
 
 
-#check for samples from a previous week
-data_input = data_input0 %>%
-  filter(Week == week_filter&Year == year_filter) #incase samples were added from a previous week/year they still get added  to database
 
-filtered_samples = data_input0 %>%
-  filter(Week != week_filter|Year != year_filter)
-
-
-if(nrow(filtered_samples) > 0) {
-  write.csv(filtered_samples, "data_mid/non_week_samples.csv")
-  print(paste0(filtered_samples$`CSU Pool Number (CMC Enters)`, " sample was removed and not part of ", week_filter, " sample pool"))
-}
-
-
-
-if(nrow(get_dupes(data_input) > 0)) {
-  stop("You have duplicates in your datasheets")
-}
-
-if(nrow(get_dupes(data_input, csu_id) > 0)) {
-  stop("You have duplicate id's in your datasheets")
-}
-
-
-#clean data
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- C L E A N   D A T E ------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 if(is.character(data_input$trap_date)) {
   data_input = data_input %>%
     mutate(trap_date = mdy(trap_date))
@@ -60,25 +41,81 @@ data_clean = data_input %>%
   mutate(week = epiweek(trap_date)) %>% #replace manual week input with date week
   mutate(year = as.factor(year),
          week = as.factor(week)) %>%
+  
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- C L E A N   T R A P  ------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  
   mutate(trap_id = str_to_upper(trap_id)) %>%
   #clean up variations in the species
+  
+  
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- C L E A N   S P P  ------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  
+  
   mutate(spp2 = case_when(str_detect(spp, regex("^tar", ignore_case = T )) ~ 'Tarsalis',
                           str_detect(spp, regex("^pip", ignore_case = T )) ~ 'Pipiens'
   )
   ) %>%
-  #clean up variations in the method of gravid light trap
+  
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- C L E A N   M E T H O D  -------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  
   mutate(method = str_trim(method)) %>%
   mutate(method2 = case_when(str_detect(method, regex("^g", ignore_case = T )) ~ 'G',
                              str_detect(method, regex("^l", ignore_case = T )) ~ 'L'
   )
   )
 
-#data_clean[1,"trap_date"] <- NA
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- C H E C K   D A T E  F O R M A T -------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 if(any(is.na(data_clean$trap_date))|class(data_clean$trap_date) != "Date") {
   stop("there are missing/misformated dates in the data input")
 }
 
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------- C H E C K    S A M P L E   D A T E    -------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#check for samples from a previous week
+data_input = data_input %>%
+  filter(week == week_filter&year == year_filter) #incase samples were added from a previous week/year they still get added  to database
+
+filtered_samples = data_input %>%
+  filter(week != week_filter|year != year_filter)
+
+
+if(nrow(filtered_samples) > 0) {
+  write.csv(filtered_samples, "data_mid/non_week_samples.csv")
+  print(paste0(filtered_samples$`CSU Pool Number (CMC Enters)`, " sample was removed and not part of ", week_filter, " sample pool"))
+}
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#---------------- C H E C K     D U P S --------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+if(nrow(get_dupes(data_input) > 0)) {
+  stop("You have duplicates in your datasheets")
+}
+
+if(nrow(get_dupes(data_input, csu_id) > 0)) {
+  stop("You have duplicate id's in your datasheets")
+}
+
+
+
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- C H E C K   S P P   -------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 if(any(!is.na(data_clean$spp2))) { #if there are no missing matches with spp2 then replace spp otherwise throw an message
   data_clean = data_clean %>%
@@ -87,6 +124,11 @@ if(any(!is.na(data_clean$spp2))) { #if there are no missing matches with spp2 th
 } else {
   stop("there are unknown species in the spp")
 }
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- C H E C K   M E T H O D   -------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 if(any(!is.na(data_clean$method2))) { #if there are no missing matches with spp2 then replace spp otherwise throw an message
   data_clean = data_clean %>%
@@ -97,8 +139,32 @@ if(any(!is.na(data_clean$method2))) { #if there are no missing matches with spp2
 }
 
 
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- C H E C K   T R A P   I D S  ----------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+gsheet_pull(trap_gsheet_key, "data", fn_trap)
+trap_data = read.csv(fn_trap) %>%
+  select(-zone)
+
+
+unmatched_trap = data_clean %>%
+  filter(!trap_id %in% trap_data$trap_id)
+
+if(nrow(unmatched_trap) > 0) {
+  write.csv(unmatched_trap, "data_mid/unknown_trap_ids.csv")
+  stop("There are unknown trap ids in your data, check the data_mid/unkown_trap_ids.csv file.")
+}
+
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- W R I T E   T O    F I L E  ----------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 data_clean = data_clean %>%
   select(any_of(database_col))
 #   filter(values > 0)
 
 write.csv(data_clean,  fn_datasheet_clean, row.names = F)
+

@@ -31,7 +31,7 @@ fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
 all_zones = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
 
-copy_threshold = 200
+copy_threshold = 22300
 rn_threshold = 34000
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -127,6 +127,8 @@ fn_pools_mid = paste0("data_mid/","y",fn_year, "_", "w",fn_week, "_pools.csv")
 fn_inactive_trap = "data_mid/inactive_traps.csv"
 
 fn_func_trap = "data_mid/functional_traps.csv"
+
+fn_max_trap_yr = "data_mid/max_trap_zone_yr.csv"
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

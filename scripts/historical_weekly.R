@@ -11,21 +11,26 @@ source("scripts/config.R")
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-
 week_filter = seq(1, week_filter, by =1)
 
 data_input = check_read_fun(fn_database_update)
 
-#get number of active traps. For the purposes of historical calculations not going to consider malfunctioning traps
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------   C U R R E N T  Y E A R: T R A P S ---------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#get number of active traps for the current.
 func_trap_L0 = read.csv(fn_func_trap) %>%
   select(zone, active) %>%
   rename(trap_L = "active")
 
 
-#get list of zones with active traps (trap_L) 
+#get list of zones with 0 routine "active" traps
 active_trap0_list = func_trap_L0 %>%
   filter(trap_L == 0)
-active_trap0_list = unique(active_trap0_list$zone)
+  active_trap0_list = unique(active_trap0_list$zone)
 
 #filter by zones that have 0 active traps and get count of submitted traps per week then the mean
 active_trap0 = data_input %>%
@@ -41,7 +46,7 @@ active_trap0 = data_input %>%
 func_trap_L = rquery::natural_join(active_trap0, func_trap_L0, jointype = "FULL", by = "zone")
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#CURRENT YEAR: ABUNDANCE
+#-------------------   C U R R E N T  Y E A R: M O Z Z I E S  ----------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 suppressMessages({
@@ -63,7 +68,10 @@ suppressMessages({
   
   m_p_wk = rbind(m_p_wk0, fc_m_p_wk)
   
-  #get abundance per trap 
+  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  #------------------ C U R R E N T  Y E A R:   A B U N D A N C E  ------------------------
+  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  
   df_abund = left_join(func_trap_L, m_p_wk, by = "zone") %>%
     mutate(abund = round(mosq_L/trap_L,2)) %>%
     select(-mosq_L, -trap_L) %>%
@@ -74,60 +82,145 @@ suppressMessages({
     #             names_prefix = "abund_")
 })
 
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#CURRENT YEAR: PIR
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-data_list = data_input %>%
-  # anti_join(gravid_only, by = hx_grp_vars) %>% # remove the wks with only gravid trap
-  mutate(grp = paste(week,zone, sep ="-"))
 
 
-mle = pIR(test_code ~ total|grp, data = data_list, pt.method = "firth")
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#----------------- C A L C   P I R:  A L L  --------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#create a grouping variable for mle
+data_input = data_input %>%
+  arrange(across(all_of(grp_vars))) %>% #dont split by method because PIR includes gravid traps
+  mutate(grp = paste(year,week,zone,spp, sep ="-"))
+
+#run pIR
+mle = pIR(test_code ~ total|grp, data = data_input, pt.method = "firth")
 
 
+#create pIR dataframe
 df_pir0 = as.data.frame(mle) %>%
   separate(grp,
-           into = hx_grp_vars,
+           into = c("year", "week", "zone", "spp"),
            sep = "-") %>%
-  mutate(week = as.integer(week)) %>%
-  rename(pir = P,
-         pir_lci = Lower,
-         pir_uci = Upper) %>%
-  select(-pir_lci, -pir_uci) %>%
-  mutate(pir = round(pir,4)) #%>%
-  # pivot_wider(names_from = "zone", 
-  #             values_from = "pir", 
-  #             names_prefix = "pir_") %>%
-  # mutate(pir_FC = (pir_NW + pir_NE + pir_SE+ pir_SW)/4)
-
-fc_pir = df_pir0 %>%
-  filter(zone %in% fc_zones) %>%
-  group_by(week) %>%
-  summarise(zone = "FC", 
-            pir = mean(pir))
-
-df_pir = rbind(df_pir0, fc_pir) %>%
-  complete(zone, week)
+  transmute(year = as.integer(year),
+            week = as.integer(week),
+            zone = zone,
+            spp = spp,
+            pir = round(P,4),
+            pir_lci = round(Lower,4),
+            pir_uci = round(Upper,4)
+  )
 
 
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#CURRENT YEAR: VI/ALL
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#----------------- C A L C   P I R:  F C -----------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#calculate FC row for sum
+suppressMessages({
+  fc_pir0 = data_input %>%
+    filter(zone %in% fc_zones) %>% #keep only fc zones
+    mutate(zone = "FC") %>% #change zone to be FC
+    mutate(grp = paste(year,week,zone,spp, sep ="-"))
+  
+  mle = pIR(test_code ~ total|grp, data = fc_pir0, pt.method = "firth")
+  
+  fc_pir0 =  as.data.frame(mle) %>%
+    separate(grp,
+             into = c("year", "week", "zone", "spp"),
+             sep = "-") %>%
+    transmute(year = as.integer(year),
+              week = as.integer(week),
+              zone = zone,
+              spp = spp,
+              pir = round(P,4),
+              pir_lci = round(Lower,4),
+              pir_uci = round(Upper,4)
+    )
+  
+})
 
-df_all_c_long = df_abund %>%
-  left_join(df_pir, by = c("zone", "week")) %>%
-  mutate(vi = round(abund * pir,4)) %>%
-  pivot_longer(cols = c(abund, pir, vi),
-               names_to = "est",
-               values_to = "value") %>%
-  mutate(type = "current")
+df_pir = rbind(df_pir0, fc_pir0)
 
-df_all_c = df_abund %>%
-  left_join(df_pir, by = c("zone", "week")) %>%
-  mutate(vi = round(abund * pir,4)) %>%
-  pivot_wider(names_from = zone, 
-              values_from = c(abund, pir, vi)
-              )
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------- C O M B I N E   D A T A -----------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+data_zone_wk0 = pools %>%
+  left_join(abund_zone_wk, by = grp_vars) %>%
+  left_join(df_pir, by = grp_vars) %>%
+  mutate(vi = round(abund * pir,4),
+         vi_lci = round(abund * pir_lci,4),
+         vi_uci = round(abund * pir_uci,4)) %>%
+  mutate(year = factor(year),
+         week = factor(week),
+         zone = factor(zone, levels = zone_lvls),
+         spp = factor(spp, levels = c("Pipiens", "Tarsalis"))) %>%
+  arrange(zone, spp)
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#--------------- S U M    A L L   S P P ----------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+sum_col = c("pools_G", "pools_L", "n_pools",
+            "pos_pools_G", "pos_pools_L", "n_pos_pools", 
+            "mosq", "mosq_L", 
+            "abund", "vi", "vi_lci", "vi_uci")
+
+distinct_col = c("trap_L_func")
+
+suppressMessages({
+  data_zone_wk_spp_all0 = data_zone_wk0 %>%
+    mutate(spp =  "All") %>%
+    group_by(year, week, zone, spp) %>%
+    summarise(spp = "All",
+              across(all_of(sum_col), sum),
+              across(all_of(distinct_col), ~max(.))
+    )
+  
+})
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#--------------- C A L C   P I R   A L L   S P P ---------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#calculate pir for all mosquito species (spp)
+
+suppressMessages({
+  pir_all_spp = data_zone_wk0 %>%
+    group_by(year, week, zone) %>%
+    summarize(spp = "All",
+              pir = sum(vi)/sum(abund),
+              pir_lci = sum(vi_lci)/sum(abund),
+              pir_uci = sum(vi_uci)/sum(abund))
+  
+})
+
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#--------------- J O I N   A L L   S P P ---------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+data_zone_wk_spp_all = left_join(data_zone_wk_spp_all0, pir_all_spp, by = grp_vars)
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#--------------- C O M B I N E   A L L   S P P ---------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+data_zone_wk = rbind(data_zone_wk0, data_zone_wk_spp_all) %>% 
+  arrange(year,week, zone , spp)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

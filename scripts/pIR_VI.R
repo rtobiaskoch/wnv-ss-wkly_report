@@ -97,28 +97,32 @@ pools = check_read_fun(fn_pools_mid)
  
   distinct_col = c("trap_L_func")
   
-  
+  suppressMessages({
   data_zone_wk_spp_all0 = data_zone_wk0 %>%
     mutate(spp =  "All") %>%
     group_by(year, week, zone, spp) %>%
     summarise(spp = "All",
               across(all_of(sum_col), sum),
-              across(all_of(distinct_col), ~n_distinct(.))
+              across(all_of(distinct_col), ~max(.))
               )
   
-  
+  })
   
   #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   #--------------- C A L C   P I R   A L L   S P P ---------------------
   #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   #calculate pir for all mosquito species (spp)
 
-  pir_all_spp = data_zone_wk0 %>%
+  suppressMessages({
+    pir_all_spp = data_zone_wk0 %>%
       group_by(year, week, zone) %>%
       summarize(spp = "All",
                 pir = sum(vi)/sum(abund),
                 pir_lci = sum(vi_lci)/sum(abund),
                 pir_uci = sum(vi_uci)/sum(abund))
+    
+  })
+
     
   
   #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
