@@ -1,11 +1,14 @@
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>sllz>>>>>>>
-check_read_fun = function(input_file, year_filter, week_filter) {
+check_read_fun = function(input_file, yr = NULL, wk = NULL) {
+  
+  if(is.null(wk)) {wk = week_filter}
+  if(is.null(yr)) {yr = year_filter}
   
 if(file.exists(input_file)) {
   if(exists("year_filter")){
     rio::import(input_file) %>%
-      filter(year %in% year_filter) %>%
-      filter(week %in% week_filter) %>%
+      filter(year %in% yr) %>%
+      filter(week %in% wk) %>%
       mutate(zone = factor(zone, levels = zone_lvls),
               spp = factor(spp, levels = c("Pipiens", "Tarsalis"))) %>%
       arrange(zone, spp)

@@ -2,7 +2,7 @@ source("scripts/config.R")
 
 #check and read in data
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-data_input = check_read_fun(fn_database_update)
+data_input = check_read_fun(fn_database_update, wk = week_filter_yr)
 
 
 suppressMessages({

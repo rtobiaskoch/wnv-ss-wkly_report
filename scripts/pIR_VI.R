@@ -5,13 +5,14 @@
 source("scripts/config.R")
 
 
+
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #------------------R E A D  D A T A ----------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #>
-data_input = check_read_fun(fn_database_update)
-abund_zone_wk = check_read_fun(paste0(fn_abund_out, ".csv"))
-pools = check_read_fun(fn_pools_mid)
+data_input = check_read_fun(fn_database_update, wk= week_filter_yr)
+abund_zone_wk = check_read_fun(paste0(fn_abund_out, ".csv"), wk = week_filter_yr)
+pools = check_read_fun(fn_pools_mid, wk = week_filter_yr)
   
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -110,8 +111,7 @@ pools = check_read_fun(fn_pools_mid)
   
   #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   #--------------- C A L C   P I R   A L L   S P P ---------------------
-  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  #calculate pir for all mosquito species (spp)
+  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>å
 
   suppressMessages({
     pir_all_spp = data_zone_wk0 %>%
@@ -136,8 +136,6 @@ pools = check_read_fun(fn_pools_mid)
   #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   data_zone_wk = rbind(data_zone_wk0, data_zone_wk_spp_all) %>% 
     arrange(year,week, zone , spp)
-  
-  
   
   
   write.csv(data_zone_wk, fn_data_output,row.names = F)

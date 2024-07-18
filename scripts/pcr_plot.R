@@ -121,6 +121,7 @@ p_std2 = p_std_df %>%
   ggplot(aes(x = log_copies, y = cq, color = week, group = grp)) +
   geom_point(alpha = 0.4, size = 3) +
   geom_line() + 
+  scale_y_reverse() +
   facet_wrap(~target) +
   ggtitle("Standards by Week") +
   theme_classic()
