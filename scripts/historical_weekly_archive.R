@@ -153,7 +153,7 @@ df_all_c = df_abund %>%
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #>
 year_filter = seq(year_filter-5, year_filter-1, by = 1)
-#year_filter = 2006:2023
+year_filter = 2014:2021
 week_filter = 20:40
 
 data_input = check_read_fun(fn_database_update)

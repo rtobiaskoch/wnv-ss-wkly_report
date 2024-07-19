@@ -28,7 +28,7 @@ source("scripts/gsheet_read_fun.R")
 year_filter = 2024
 week_filter = 28
 week_filter_yr= 23:week_filter
-year_filter_hx = seq(year_filter-11, year_filter-1, by = 1)
+year_filter_hx = seq(year_filter-6, year_filter-1, by = 1)
 
 fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
