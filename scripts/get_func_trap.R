@@ -15,7 +15,7 @@ malfunction_trap = read.csv(fn_trap_malfunction)
 
 malfunction_trap_test = malfunction_trap %>%
   filter(year == year_filter,
-         week == week_filter)
+         week == week_filter_yr)
 
 if(nrow(malfunction_trap_test) == 0) {
   print(paste("Alert! there are no malfunctioned traps for the year and week filter. Sounds too good to be true. 
@@ -25,9 +25,6 @@ if(nrow(malfunction_trap_test) == 0) {
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #FC ZONE TRAP NUMBERS
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-#chagne week filter for expand_grid to get all comination of year and week
-week_filter_yr
 
 
   # Your code with group_by and summarize
@@ -39,7 +36,7 @@ week_filter_yr
   active_trap = tidyr::expand_grid(
                 trap_id = active_trap$trap_id,
                 year = year_filter,
-                week = week_filter) %>%
+                week = week_filter_yr) %>%
    left_join(active_trap0, by = "trap_id") # add back in the zone, method and active status
   
   

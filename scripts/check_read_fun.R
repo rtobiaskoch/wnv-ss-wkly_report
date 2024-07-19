@@ -10,8 +10,8 @@ if(file.exists(input_file)) {
       filter(year %in% yr) %>%
       filter(week %in% wk) %>%
       mutate(zone = factor(zone, levels = zone_lvls),
-              spp = factor(spp, levels = c("Pipiens", "Tarsalis"))) %>%
-      arrange(zone, spp)
+              spp = factor(spp, levels = c("Pipiens", "Tarsalis", "All"))) %>%
+      arrange(year, zone, week,spp)
   } else {
    print( "run config.R to get year and week filters")
   }

@@ -139,7 +139,7 @@ pools = check_read_fun(fn_pools_mid, wk = week_filter_yr)
   
   
   write.csv(data_zone_wk, fn_data_output,row.names = F)
-  
+.fns  
 
 
 

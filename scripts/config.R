@@ -28,6 +28,8 @@ source("scripts/gsheet_read_fun.R")
 year_filter = 2024
 week_filter = 28
 week_filter_yr= 23:week_filter
+year_filter_hx = seq(year_filter-11, year_filter-1, by = 1)
+
 fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
 all_zones = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
@@ -90,6 +92,9 @@ trap_gsheet_key = "1Jna3Bu47gjBWWz5vCoel4ksa-LBuo8R3zVfQYFl73wI"
 trap_malfunction_key = "1dsTyvZoCN6NUJlTcDLINMfxuGZdJuP2ADpn8noQwL6Q"
 trap_active_key = "1SA_PE74KLH6_jG3yR49e8py1uXgb_C02Q3Iz9MWivrY"
 standards_key = "1bSMYQ4bZ9uBfrOQ6ylsegNmmGYdf9YFVbxB4qBhnFQo"
+routine_trap_tl_key = "1kIOqx6CldJ3ivXu9_ws60qqxrlLSmjHRz_tkv03vhqs"
+
+
 
 fn_gdrive_database = "wnv-s_database"
 
@@ -236,8 +241,8 @@ weekly_input_report_format <- c(
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 grp_vars = c("year", "week", "zone", "spp")
 hx_grp_vars = c("week", "zone")
-zone_lvls = c("NW", "NE", "SE","SW", "FC", "LV", "BE", "BC", "WC")
-non_routine_zones = c("BC", "WC")
+zone_lvls = c("NW", "NE", "SE","SW", "FC", "LV", "BE", "BC")
+non_routine_zones = c("BC")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #COLOR SETTINGS
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

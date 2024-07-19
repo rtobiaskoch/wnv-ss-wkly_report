@@ -7,12 +7,7 @@ source("scripts/config.R")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 #below is potential modification to the check_read_fun.R
-data_input = rio::import(fn_database_update) %>%
-  filter(year %in% year_filter) %>%
-  filter(week %in% week_filter_yr) %>%
-  mutate(zone = factor(zone, levels = zone_lvls),
-         spp = factor(spp, levels = c("Pipiens", "Tarsalis"))) %>%
-  arrange(zone, spp)
+data_input = check_read_fun(fn_database_update, wk = week_filter_yr)
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #--------------------G E T   F U N C T I O N A L   T R A P S ------------------
