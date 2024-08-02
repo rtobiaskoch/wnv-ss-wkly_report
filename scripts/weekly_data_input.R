@@ -11,7 +11,7 @@ filtered_samples = data_input0 %>%
 
 if(nrow(filtered_samples) > 0) {
   write.csv(filtered_samples, "data_mid/non_week_samples.csv")
-  print(paste0(filtered_samples$`CSU Pool Number (CMC Enters)`, " sample was removed and not part of ", week_filter, " sample pool"))
+  print(paste0(filtered_samples$`CSU Pool Number (CMC Enters)`, " sample was removed and not part of week ", week_filter, " sample pool"))
 }
 
 

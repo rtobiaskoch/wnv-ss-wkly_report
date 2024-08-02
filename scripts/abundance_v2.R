@@ -14,10 +14,7 @@ data_input = check_read_fun(fn_database_update, wk = week_filter_yr)
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #read in weeks functional traps. derived from get_func_trap.R
 
-func_trap_L0 = read.csv(fn_func_trap)
-
-func_trap_L = func_trap_L0
-
+func_trap_L = read.csv(fn_func_trap)
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #>#GET WEEKS TRAP NUMBERS
@@ -74,6 +71,8 @@ suppressMessages({
     filter(zone != "BC") %>%
     rbind(BC_trap)
   
+  write.csv(trap_p_wk, fn_trap_p_wk, row.names = F)
+  
   
 #>#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #>check trap numbers
@@ -125,22 +124,7 @@ if(any(trap_check_FC_LV$func_GT_wk == F)) {
   })
   
   
-  p_trap_QC = trap_p_wk %>%
-    select(-func_GT_wk, -trap_L_func, -method) %>%
-    pivot_longer(cols = -c(year, week, zone),
-                   names_to = "status",
-                  values_to = "n") %>%
-    filter(week == week_filter) %>%
-    ggplot(aes(status, n)) +
-    geom_col() +
-    facet_wrap(~zone) +
-    geom_text(aes(label = n), color = "white", vjust = -0.5) +
-    theme_classic()
-  p_trap_QC
-  
-  
   write.csv(abund_zone_wk, paste0(fn_abund_out, ".csv"), row.names = F)
-  
   
   
 } # end of else

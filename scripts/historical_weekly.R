@@ -29,10 +29,9 @@ current_year_long = current_year0 %>%
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 #GET DATA
-year_filter = year_filter_hx
-week_filter = 23:37
-
-data_input = check_read_fun(fn_database_update)
+data_input = check_read_fun(fn_database_update, 
+                            yr = year_filter_hx, 
+                            wk = week_filter_hx)
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #---------------------- H X: A  B U N D A N C E ------------------------------------------
@@ -48,7 +47,7 @@ data_input = check_read_fun(fn_database_update)
 
 gsheet_pull(routine_trap_tl_key, sheet = "data", out_fn = "data_input/routine_trap_yr.csv")
 routine_traps = read.csv("data_input/routine_trap_yr.csv") %>%
-  filter(year %in% year_filter)
+  filter(year %in% year_filter_hx)
 
 #GET NON-ROUTINE TRAPS
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -231,7 +230,7 @@ data_zone_wk_spp_all = left_join(data_zone_wk_spp_all0, pir_all_spp, by = grp_va
 data_zone_wk = rbind(data_zone_wk0, data_zone_wk_spp_all) %>% 
   arrange(year,week, zone , spp)
 
-
+write.csv(data_zone_wk, "data_output/hx_data.csv", row.names = F)
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -327,9 +326,109 @@ write.csv(hx_abund_report, "data_output/table2b_hx_abund.csv", row.names = F)
 write.csv(hx_pir_report, "data_output/table3b_hx_pir.csv", row.names = F)
 
 
+
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#REPORT: VIZUALIZATION
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#--------------------------------- P L O T T I N G --------------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#--------------------------------------- C I ---------------------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+df_ci_hx = data_zone_wk %>%
+  ungroup() %>%
+  filter(week == week_filter) %>%
+  select(zone, week, spp, vi, vi_lci, vi_uci) %>%
+  group_by(zone, week, spp) %>%
+  summarize_if(is.numeric, ~mean(.x)) %>%
+  mutate(type = "hx")
+
+df_ci_curr = current_year0 %>%
+  filter(week == week_filter) %>%
+  select(year, zone, week, spp, vi, vi_lci, vi_uci) %>%
+  mutate(type = "current",
+         week = factor(week),
+         year = factor(year))
+
+  
+df_ci_spp = rbind(df_ci_hx, df_ci_curr) %>%
+   filter(type != "hx") %>%
+  #filter(spp != "All") %>%
+  mutate(vi_uci = if_else(vi == 0, 0, vi_uci)) #make uci 0 if vi 0 otherwise makes it look like there was a positive
+
+
+df_ci_all = data_zone_wk %>%
+  ungroup() %>%
+  filter(week == week_filter) %>%
+  select(year, zone, week, spp, vi, vi_lci, vi_uci)  %>%
+  mutate(type = "hx")  %>%
+  rbind(df_ci_curr) %>%
+  mutate(year = as.integer(as.character(year))) %>%
+   #filter(type != "hx") %>%
+  filter(spp == "All") %>%
+  mutate(vi_uci = if_else(vi == 0, 0, vi_uci))
+
+
+pd = position_dodge(0.3)
+
+p_df_ci_spp = ggplot(df_ci_spp, aes(x = week, y = vi, color = spp)) +
+  geom_errorbar(aes(ymin = vi_lci, ymax = vi_uci), size = 0.8, width = .2, position = pd) +
+  geom_point(size = 2, position = pd) +
+  geom_hline(yintercept = 0) +
+  facet_grid(zone~.) +
+  theme_classic() +
+  scale_color_manual(values = mozzy_pal2) +
+  geom_hline(yintercept = vi_threshold, linetype = "dashed", color = "red") +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.25)) +
+  coord_cartesian(ylim = c(0, 1)) +
+  ggtitle("VI 95% CI") +
+  labs(y = element_blank()) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.position = "none")
+
+
+p_df_ci_all = ggplot(df_ci_all, aes(x = year, y = vi, color = type)) +
+  geom_errorbar(aes(ymin = vi_lci, ymax = vi_uci), size = 0.8, width = .2, position = pd) +
+  geom_point(size = 2, position = pd) +
+  geom_hline(yintercept = 0) +
+  facet_grid(zone~.) +
+  theme_classic() +
+  scale_color_manual(values = curr_hx_pal) +
+  geom_hline(yintercept = vi_threshold, linetype = "dashed", color = "red") +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.25)) +
+  scale_x_reverse() +
+  coord_cartesian(ylim = c(0, 1)) +
+  ggtitle(paste("VI Week", week_filter, sep = " ")) +
+  #labs(y = element_blank()) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.position = "none",
+        axis.text.x = element_blank())
+
+p_df_ci_all
+
+#generate description of time frames
+yr_calc = data_zone_wk %>%
+  filter(!zone %in% fc_zones) %>%
+  group_by(zone) %>%
+  summarize(min = min(as.numeric(as.character(year)), na.rm = T),
+            max = max(as.numeric(as.character(year)), na.rm = T)) 
+
+description = paste0(yr_calc$zone, " Historical Data was calculated from year ", 
+                     yr_calc$min, 
+                     " to ", 
+                     yr_calc$max)
+
+description = paste0(description, collapse = "\n")
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#--------------------------------- P L O T : S P P ( A L L ) -----------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 df_all_long = rbind(current_year_long, df_all_hx_long) %>%
    mutate(type = factor(type, levels = c("hx", "current")),
           zone = factor(zone, levels = zone_lvls)) %>%
@@ -340,10 +439,14 @@ df_all_long = rbind(current_year_long, df_all_hx_long) %>%
             vi = mean(vi)) %>%
   filter(spp == "All")
 
+
+
+
 p_df_all_fun = function(df, value, text) {
   
   ggplot(df, aes(x = week, y = {{value}}, 
              color = type, fill = type, group = type)) +
+  geom_hline(yintercept = 0) +
   geom_area(position = "dodge", alpha = 0.3) +
   facet_grid(zone ~ .) +
   theme_classic() +
@@ -360,13 +463,76 @@ p_abund
 p_pir = p_df_all_fun(df_all_long, pir, "Pooled Infection Rate")
 p_pir 
 
-p_vi = p_df_all_fun(df_all_long, vi, "Vector Index")
+p_vi = p_df_all_fun(df_all_long, vi, "Vector Index") + 
+  geom_hline(yintercept = vi_threshold, linetype = "dashed", color = "red") +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25))
 p_vi
 
-p_hx_current = p_abund + p_pir + p_vi + plot_layout(guides = "collect") & theme(legend.position = 'bottom')
+
+p_hx_current = p_abund + p_pir + p_vi + 
+  plot_annotation(caption = description) +
+  plot_layout(guides = "collect") & theme(legend.position = 'bottom', legend.title = element_blank())
+
 p_hx_current
 
-ggsave("data_output/plots/hx_plot.png", p_hx_current, height = 8, width = 10, units = "in")
+ggsave("data_output/plots/hx_plot_all.png", p_hx_current, height = 8, width = 12, units = "in")
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#--------------------------------- P L O T : S P P -----------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+df_all_long = rbind(current_year_long, df_all_hx_long) %>%
+  mutate(type = factor(type, levels = c("hx", "current")),
+         zone = factor(zone, levels = zone_lvls)) %>%
+  pivot_wider(names_from = est, values_from = value) %>%
+  group_by(zone, week, spp, type) %>%
+  summarise(abund = mean(abund), 
+            pir = mean(pir), 
+            vi = mean(vi)) %>%
+  mutate(type2 = paste0(type,"_", spp)) %>%
+  filter(spp != "All")
+
+write.csv(df_all_long, "df_all_long_hx.csv", row.names = F)
 
 
+
+
+p_df_all_fun2 = function(df, value, text) {
+  
+  ggplot(df, aes(x = week, y = {{value}}, group = interaction(type2, spp))) +
+    # Separate geom_area for stacking
+    geom_area(data = df %>% filter(type == "hx"), aes(fill = type2, color = type2), position = "stack", alpha = 0.5) +
+    geom_area(data = df %>% filter(type == "current"), aes(fill = type2, color = type2), position = "stack", alpha = 0.5) +
+    # geom_point(data = df %>% filter(week == week_filter & type = "current") %>% 
+    #              group_by(zone, week)) %>% summarise(vi = sum(vi)), aes(fill = )
+    geom_hline(yintercept = 0) +
+    # Separate geom_area for dodging
+  #  geom_area(data = df %>% filter(type %in% c("hx", "current")), aes(fill = type2), position = "dodge", alpha = 0.5) +
+    facet_grid(zone ~ .) +
+    theme_classic() +
+    ggtitle(text) +
+    scale_color_manual(values = mozzy_pal) +
+    scale_fill_manual(values = mozzy_pal)
+}
+
+
+p_abund = p_df_all_fun2(df_all_long, abund, "Abundance")
+p_abund 
+
+p_pir = p_df_all_fun2(df_all_long, pir, "Pooled Infection Rate")
+p_pir 
+
+p_vi = p_df_all_fun2(df_all_long, vi, "Vector Index") + 
+  geom_hline(yintercept = vi_threshold, linetype = "dashed", color = "red") +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25))
+p_vi
+
+
+  
+p_hx_current = p_abund + p_pir + p_vi + p_df_ci_all + 
+  plot_annotation(caption = c(description)) +
+  plot_layout(widths =c(3,3,3,1), guides = "collect") & theme(legend.position = 'bottom', legend.title = element_blank())
+
+p_hx_current
+
+ggsave("data_output/plots/hx_plot.png", p_hx_current, height = 8, width = 12, units = "in")
 

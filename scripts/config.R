@@ -23,12 +23,13 @@ source("scripts/gsheet_read_fun.R")
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#DATA PARAMETERS##
+#DATA PARAMETERS:
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 year_filter = 2024
-week_filter = 28
+week_filter = 30
 week_filter_yr= 23:week_filter
-year_filter_hx = seq(year_filter-6, year_filter-1, by = 1)
+week_filter_hx = 23:37
+year_filter_hx = seq(year_filter-11, year_filter-1, by = 1)
 
 fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
@@ -36,6 +37,7 @@ all_zones = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
 
 copy_threshold = 500
 rn_threshold = 34000
+vi_threshold = 0.75
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -111,8 +113,6 @@ fn_database_input = "data_input/wnv-s_database.csv"
 
 
 
-
-
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # FILE NAMES MID
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -135,6 +135,8 @@ fn_inactive_trap = "data_mid/inactive_traps.csv"
 fn_func_trap = "data_mid/functional_traps.csv"
 
 fn_max_trap_yr = "data_mid/max_trap_zone_yr.csv"
+
+fn_trap_p_wk = "data_mid/trap_p_wk.csv"
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -243,6 +245,8 @@ grp_vars = c("year", "week", "zone", "spp")
 hx_grp_vars = c("week", "zone")
 zone_lvls = c("NW", "NE", "SE","SW", "FC", "LV", "BE", "BC")
 non_routine_zones = c("BC")
+
+
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #COLOR SETTINGS
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -256,8 +260,25 @@ year_cols_df = data.frame(year = 2000:2050) %>%
                        year_col_highlight,
                        "other"))
 
-year_cols = c("2023" = "darkred",
+year_cols = c("2023" = "#c5283d",
               "other" = "grey50")
+
+#https://coolors.co/palette/fb8b24-d90368-820263
+
+mozzy_pal = c("hx_Tarsalis" = "grey50",
+              "hx_Pipiens" = "grey30",
+              "current_Tarsalis" = "#e9724c",
+              "current_Pipiens" = "#820263")
+
+mozzy_pal2 = c("Pipiens" = "#820263",
+               "Tarsalis" = "#e9724c",
+               "All" = "#faa916")
+
+
+mozzy_pal3 = c("#ffc857", "#e9724c", "#c5283d")
+
+curr_hx_pal = c("current" = "#faa916",
+                "hx"      = "grey50")
 
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -21,10 +21,18 @@ data_input0 = t %>%
 #save as rds becasue csv fudges up the original colnames
 write_rds(data_input0, fn_weekly_input_format_mid)
 
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- C H E C K   N A M E S ------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 data_input = data_input0 %>%
   rename(!!!rename_col)
 
+if(all(input_data_col %in% names(data_input))==F) { # if any of the required input_data_col aren't in the input data throw an error
+  
+  stop(paste0("The column(s) ", setdiff(input_data_col, names(data_input)), " are missing from your datasheets")
+       )
+}
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -47,7 +55,8 @@ data_clean = data_input %>%
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   
   mutate(trap_id = str_to_upper(trap_id)) %>%
-  #clean up variations in the species
+  mutate(trap_id = str_trim(trap_id)) %>%
+ 
   
   
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -108,9 +117,6 @@ if(nrow(get_dupes(data_input) > 0)) {
 if(nrow(get_dupes(data_input, csu_id) > 0)) {
   stop("You have duplicate id's in your datasheets")
 }
-
-
-
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

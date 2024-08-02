@@ -18,15 +18,13 @@ source("scripts/config.R")
 ```
 
 ```{bash}
-# git add --all
- #git commit -m "weekly commit before data removal"
- #git push
-  #rm -f data_input/cdc/* -->
-# rm -f data_input/datasheet/* -->
-#  rm -f data_input/pcr/* -->
-# rm -f data_input/platemap/* -->
-# rm -f data_mid/* -->
-# rm -f data_output/* -->
+# git commit -a -m "weekly commit before data removal"
+# git push
+# rm -f data_input/datasheet/* 
+# rm -f data_input/pcr/* 
+# rm -f data_input/platemap/*
+# rm -f data_mid/*
+# rm -f data_output/*
 
 ```
 
@@ -84,8 +82,6 @@ Code Below:
     -   platemap
 
     -   fn_func_trap: data_mid/functional_traps.csv \*to be added
-
-<!-- -->
 
 -   data_output:
 
@@ -150,23 +146,28 @@ source("scripts/pIR_VI.R")
 ```
 
 ```{r}
-source("scripts/historical_weekly.R")
+suppressMessages(
+  source("scripts/historical_weekly.R")
+)
 
+p_hx_current
 ```
 
 ```{r}
 source("scripts/tables.R")
 ```
 
+\
+Before generating tables and report make sure all the shit is correct\
+
+```{r}
+source("scripts/QC_report.R")
+```
+
 ```{r}
 suppressMessages(
   source("scripts/generate_report.R")
 )
-
 ```
 
-```         
-```
 
-```         
-```

@@ -25,8 +25,7 @@ t1a_vi = data_zone_wk %>%
   pivot_wider(names_from = spp, 
               values_from = vi,
               names_prefix = "vi_",
-              values_fill = 0) %>%
-  mutate(all_vi = coalesce(vi_Pipiens, 0) + coalesce(vi_Tarsalis, 0))
+              values_fill = 0)
 
 t1a = t1a_abund %>%
   left_join(t1a_pir, by = "zone") %>%
@@ -44,8 +43,7 @@ t2a_collected = data_zone_wk %>%
   pivot_wider(names_from = "spp", 
               values_from = "mosq_L",
               names_prefix = "collected_",
-              values_fill = 0) %>%
-  mutate(all_collected = coalesce(collected_Pipiens, 0) + coalesce(collected_Tarsalis, 0))
+              values_fill = 0)
 
 
 t2a_traps = data_zone_wk %>%
@@ -57,8 +55,7 @@ if(nrow(get_dupes(t2a_traps)) > 0) { #if there are duplicates it means the numbe
   
 
 
-t2a_abund = t1a_abund %>%
-  mutate(all_abund = coalesce(abund_Pipiens, 0) + coalesce(abund_Tarsalis, 0))
+t2a_abund = t1a_abund
 
 t2a = t2a_collected %>%
   left_join(t2a_traps, by = "zone") %>%
@@ -74,8 +71,7 @@ t3a_examined = data_zone_wk %>%
   pivot_wider(names_from = "spp", 
               values_from = "mosq",
               names_prefix = "examined_",
-              values_fill = 0) %>%
-  mutate(all_examined = coalesce(examined_Pipiens, 0) + coalesce(examined_Tarsalis, 0))
+              values_fill = 0)
 
 #number pools examined
 t3a_pools = data_zone_wk %>%
@@ -83,19 +79,16 @@ t3a_pools = data_zone_wk %>%
   pivot_wider(names_from = "spp", 
               values_from = "n_pools",
               names_prefix = "pool_",
-              values_fill = 0) %>%
-  mutate(all_pool = coalesce(pool_Pipiens, 0) + coalesce(pool_Tarsalis, 0))
+              values_fill = 0)
 
 t3a_p_pools = data_zone_wk %>%
   select(zone, spp, n_pos_pools) %>%
   pivot_wider(names_from = "spp", 
               values_from = "n_pos_pools",
               names_prefix = "pos_pool_",
-              values_fill = 0) %>%
-  mutate(all_pos_pool = coalesce(pos_pool_Pipiens, 0) + coalesce(pos_pool_Tarsalis, 0))
+              values_fill = 0)
 
 t3a_pir = t1a_pir %>%
-  mutate(all_pir = coalesce(pir_Pipiens, 0) + coalesce(pir_Tarsalis, 0)) %>%
   mutate(across(-zone, ~ . * 1000))
 
 t3a = t3a_examined %>%
