@@ -26,7 +26,7 @@ source("scripts/gsheet_read_fun.R")
 #DATA PARAMETERS:
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 year_filter = 2024
-week_filter = 30
+week_filter = 31
 week_filter_yr= 23:week_filter
 week_filter_hx = 23:37
 year_filter_hx = seq(year_filter-11, year_filter-1, by = 1)
@@ -92,7 +92,7 @@ if(length(week_filter) > 1){ #if looking at multiple years then create YYYY-YYYY
 database_gsheet_key = "12Mf-w9I9NHTTDjzEPRoxUE08ka4WZ6RE-RM1s-FW7qA"
 trap_gsheet_key = "1Jna3Bu47gjBWWz5vCoel4ksa-LBuo8R3zVfQYFl73wI"
 trap_malfunction_key = "1dsTyvZoCN6NUJlTcDLINMfxuGZdJuP2ADpn8noQwL6Q"
-trap_active_key = "1SA_PE74KLH6_jG3yR49e8py1uXgb_C02Q3Iz9MWivrY"
+#trap_active_key = "1SA_PE74KLH6_jG3yR49e8py1uXgb_C02Q3Iz9MWivrY"
 standards_key = "1bSMYQ4bZ9uBfrOQ6ylsegNmmGYdf9YFVbxB4qBhnFQo"
 routine_trap_tl_key = "1kIOqx6CldJ3ivXu9_ws60qqxrlLSmjHRz_tkv03vhqs"
 
@@ -252,16 +252,16 @@ non_routine_zones = c("BC")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 color_palette = wes_palette('Darjeeling1')
 
-year_col_highlight = "2023"
-
-year_cols_df = data.frame(year = 2000:2050) %>%
-  mutate(year = as.factor(year)) %>%
-  mutate(col = if_else(as.character(year) == year_col_highlight,
-                       year_col_highlight,
-                       "other"))
-
-year_cols = c("2023" = "#c5283d",
-              "other" = "grey50")
+# year_col_highlight = "2023"
+# 
+# year_cols_df = data.frame(year = 2000:2050) %>%
+#   mutate(year = as.factor(year)) %>%
+#   mutate(col = if_else(as.character(year) == year_col_highlight,
+#                        year_col_highlight,
+#                        "other"))
+# 
+# year_cols = c("2023" = "#c5283d",
+#               "other" = "grey50")
 
 #https://coolors.co/palette/fb8b24-d90368-820263
 
@@ -277,7 +277,7 @@ mozzy_pal2 = c("Pipiens" = "#820263",
 
 mozzy_pal3 = c("#ffc857", "#e9724c", "#c5283d")
 
-curr_hx_pal = c("current" = "#faa916",
+curr_hx_pal = c("current" = "#e9724c",
                 "hx"      = "grey50")
 
 

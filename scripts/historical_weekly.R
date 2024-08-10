@@ -400,13 +400,13 @@ p_df_ci_all = ggplot(df_ci_all, aes(x = year, y = vi, color = type)) +
   scale_color_manual(values = curr_hx_pal) +
   geom_hline(yintercept = vi_threshold, linetype = "dashed", color = "red") +
   scale_y_continuous(breaks = seq(0, 1, by = 0.25)) +
-  scale_x_reverse() +
+  scale_x_reverse(breaks = seq(min(df_ci_all$year), max(df_ci_all$year), by = 2)) +
   coord_cartesian(ylim = c(0, 1)) +
   ggtitle(paste("VI Week", week_filter, sep = " ")) +
   #labs(y = element_blank()) +
   theme(plot.title = element_text(hjust = 0.5),
         legend.position = "none",
-        axis.text.x = element_blank())
+        axis.text.x = element_text(angle = 90))
 
 p_df_ci_all
 
@@ -451,10 +451,8 @@ p_df_all_fun = function(df, value, text) {
   facet_grid(zone ~ .) +
   theme_classic() +
   ggtitle(text) +
-  scale_color_manual(values = c("hx" = "grey50",
-                                "current" = "red")) +
-  scale_fill_manual(values = c("hx" = "grey50",
-                               "current" = "red"))
+  scale_color_manual(values = curr_hx_pal) +
+  scale_fill_manual(values = curr_hx_pal)
 }   
 
 p_abund = p_df_all_fun(df_all_long, abund, "Abundance")
@@ -469,13 +467,13 @@ p_vi = p_df_all_fun(df_all_long, vi, "Vector Index") +
 p_vi
 
 
-p_hx_current = p_abund + p_pir + p_vi + 
-  plot_annotation(caption = description) +
-  plot_layout(guides = "collect") & theme(legend.position = 'bottom', legend.title = element_blank())
+p_hx_current0 = p_abund + p_pir + p_vi + p_df_ci_all + 
+  plot_annotation(caption = c(description)) +
+  plot_layout(widths =c(3,3,3,1), guides = "collect") & theme(legend.position = 'bottom', legend.title = element_blank())
 
-p_hx_current
 
-ggsave("data_output/plots/hx_plot_all.png", p_hx_current, height = 8, width = 12, units = "in")
+
+ggsave("data_output/plots/hx_plot_all.png", p_hx_current0, height = 8, width = 12, units = "in")
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #--------------------------------- P L O T : S P P -----------------------------

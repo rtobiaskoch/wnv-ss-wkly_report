@@ -1,16 +1,13 @@
 source("scripts/config.R")
 
-
-
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #---------------- R E A D   D A T A  -------------------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 cq_data = read.csv(fn_cq_out) %>% 
   select(-well_position)
 
-gsheet_pull(trap_gsheet_key, "data", fn_trap)
 trap_data = read.csv(fn_trap) %>%
-  select(-zone)
+  select(-zone, -active, -method)
 
 #join cq (pcr) data and the trap location data to get new data to add to the database
 #keep the standards controls and other samples that arent i 

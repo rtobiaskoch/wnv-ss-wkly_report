@@ -3,8 +3,7 @@ source("scripts/config.R")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #get active active trap data
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-gsheet_pull(trap_active_key, "data", fn_trap_active)
-active_trap0 = read.csv(fn_trap_active) #remove BC & BE because their traps are infrequent
+trap_data0 = read.csv(fn_trap) #remove BC & BE because their traps are infrequent
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -30,18 +29,18 @@ if(nrow(malfunction_trap_test) == 0) {
   # Your code with group_by and summarize
   #get number of traps per night
   
-  active_trap = active_trap0 %>% filter(active == 1)
+  trap_data = trap_data0 %>% filter(active == 1)
   
   #expand the traps to match the week and year we are interested in 
-  active_trap = tidyr::expand_grid(
-                trap_id = active_trap$trap_id,
+  trap_data = tidyr::expand_grid(
+                trap_id = trap_data$trap_id,
                 year = year_filter,
                 week = week_filter_yr) %>%
-   left_join(active_trap0, by = "trap_id") # add back in the zone, method and active status
+   left_join(trap_data0, by = "trap_id") # add back in the zone, method and active status
   
   
   #FC ROUTINE TRAP NUMBERS
-  trap_p_wk_status = active_trap %>%
+  trap_p_wk_status = trap_data %>%
     left_join(malfunction_trap, by = c("trap_id", "year", "week")) %>%
     mutate(malfunction = if_else(!is.na(malfunction),malfunction, 0)) %>%
     arrange(desc(active), malfunction)
