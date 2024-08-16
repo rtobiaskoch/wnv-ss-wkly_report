@@ -205,3 +205,31 @@
 2024,31,"plate_2","WNV","wnv_std_1e2","std 1e2",31.39,2
 2024,31,"plate_2","WNV","wnv_std_1e4","std 1e4",24.61,4
 2024,31,"plate_2","WNV","wnv_std_1e6","std 1e6",18.23,6
+2024,32,"plate_1","SLEV","pos ext ctl","pos ctrl",17.55,6.36426537393575
+2024,32,"plate_1","SLEV","slev_std_1e2","std 1e2",30.78,2
+2024,32,"plate_1","SLEV","slev_std_1e4","std 1e4",24.95,4
+2024,32,"plate_1","SLEV","slev_std_1e6","std 1e6",18.57,6
+2024,32,"plate_1","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2024,32,"plate_1","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2024,32,"plate_1","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2024,32,"plate_1","WNV","pos ext ctl","pos ctrl",15.62,6.99832896821182
+2024,32,"plate_1","WNV","slev_std_1e2","std 1e2",39.02,-0.193820026016113
+2024,32,"plate_1","WNV","slev_std_1e4","std 1e4",55.55,0
+2024,32,"plate_1","WNV","slev_std_1e6","std 1e6",35.91,0.761175813155731
+2024,32,"plate_1","WNV","wnv_std_1e2","std 1e2",31.86,2
+2024,32,"plate_1","WNV","wnv_std_1e4","std 1e4",25.41,4
+2024,32,"plate_1","WNV","wnv_std_1e6","std 1e6",18.85,6
+2024,32,"plate_2","SLEV","pos rna ctrl","pos ctrl",18.98,5.92725217881938
+2024,32,"plate_2","SLEV","slev_std_1e2","std 1e2",31.48,2
+2024,32,"plate_2","SLEV","slev_std_1e4","std 1e4",25.25,4
+2024,32,"plate_2","SLEV","slev_std_1e6","std 1e6",18.69,6
+2024,32,"plate_2","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2024,32,"plate_2","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2024,32,"plate_2","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2024,32,"plate_2","WNV","pos rna ctrl","pos ctrl",14.22,7.2663135603063
+2024,32,"plate_2","WNV","slev_std_1e2","std 1e2",55.55,0
+2024,32,"plate_2","WNV","slev_std_1e4","std 1e4",55.55,0
+2024,32,"plate_2","WNV","slev_std_1e6","std 1e6",37.72,0.0755469613925307
+2024,32,"plate_2","WNV","wnv_std_1e2","std 1e2",31.32,2
+2024,32,"plate_2","WNV","wnv_std_1e4","std 1e4",25.11,4
+2024,32,"plate_2","WNV","wnv_std_1e6","std 1e6",18.24,6

@@ -15,8 +15,6 @@ if(nrow(filtered_samples) > 0) {
 }
 
 
-
-
 order = colnames(data_input)
 
 test_results = check_read_fun(fn_database_update) %>%

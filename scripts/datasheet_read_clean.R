@@ -15,14 +15,14 @@ t = list.files(path = fn_datasheet_input,
 data_input0 = t %>% 
   map(~read_excel(.x, col_names = T)) %>%
   bind_rows() %>%
-  filter(!is.na(`Trap Date`)&!is.na(`Zone`)&!is.na(`Total`)) #remove empty ids becasue VDCI keeps sending us empty ids
+  filter(!is.na(`Trap Date`)) #remove empty ids becasue VDCI keeps sending us empty ids
 
 #save this after binding for the Weekly Input for the Report. Maintaining the original stupid format
 #save as rds becasue csv fudges up the original colnames
 write_rds(data_input0, fn_weekly_input_format_mid)
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#-------------------- C H E C K   N A M E S ------------------------------
+#-------------------- C H E C K   C O L   N A M E S ---------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 data_input = data_input0 %>%
@@ -32,6 +32,28 @@ if(all(input_data_col %in% names(data_input))==F) { # if any of the required inp
   
   stop(paste0("The column(s) ", setdiff(input_data_col, names(data_input)), " are missing from your datasheets")
        )
+}
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#---------------- C H E C K     Z O N E --------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+if(any(is.na(data_input$zone))){
+  
+  stop("you have missing zones in your data")
+}
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#---------------- C H E C K     S A M P L E    I D ----------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+if(any(is.na(data_input$csu_id))){
+  
+  stop("you have missing sample ids in your data")
+}
+
+if(any(!str_detect(data_input$csu_id, "-"))) {
+  stop("you have samples id without a -")
 }
 
 
@@ -110,12 +132,11 @@ if(nrow(filtered_samples) > 0) {
 #---------------- C H E C K     D U P S --------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-if(nrow(get_dupes(data_input) > 0)) {
-  stop("You have duplicates in your datasheets")
-}
+dupe = get_dupes(data_input, csu_id)
 
-if(nrow(get_dupes(data_input, csu_id) > 0)) {
-  stop("You have duplicate id's in your datasheets")
+if(nrow(dupe) > 0) {
+  stop("You have duplicate id(s) ", unique(dupe$csu_id)," in your datasheet(s)")
+  
 }
 
 

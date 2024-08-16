@@ -13,7 +13,8 @@ suppressMessages({
     summarise(n = n()) %>%
     pivot_wider(names_from = method, values_from = n, 
                 names_prefix = "pools_", values_fill = 0) %>%
-    mutate(n_pools = pools_L + pools_G)
+    mutate(n_pools = pools_L + pools_G) %>%
+    ungroup
   
   
   fc_n_pools = data_input %>% 
@@ -23,7 +24,8 @@ suppressMessages({
               n = n()) %>%
     pivot_wider(names_from = method, values_from = n, 
                 names_prefix = "pools_", values_fill = 0) %>%
-    mutate(n_pools = pools_L + pools_G)
+    mutate(n_pools = pools_L + pools_G) %>%
+    ungroup
   
   
   n_pools =  rbind(n_pools_zone, fc_n_pools)
@@ -34,7 +36,8 @@ suppressMessages({
     summarise(n = sum(test_code)) %>%
     pivot_wider(names_from = method, values_from = n, 
                 names_prefix = "pos_pools_", values_fill = 0) %>%
-    mutate(n_pos_pools = pos_pools_L + pos_pools_G)
+    mutate(n_pos_pools = pos_pools_L + pos_pools_G) %>%
+    ungroup
   
   fc_pos_pools = data_input %>% 
     filter(zone %in% fc_zones) %>%
