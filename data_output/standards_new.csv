@@ -233,3 +233,31 @@
 "232",2024,32,"plate_2","WNV","wnv_std_1e2","std 1e2",31.32,2
 "233",2024,32,"plate_2","WNV","wnv_std_1e4","std 1e4",25.11,4
 "234",2024,32,"plate_2","WNV","wnv_std_1e6","std 1e6",18.24,6
+"235",2024,33,"plate_1","SLEV","pos ext ctl","pos ctrl",21.06,3.45756854693135
+"236",2024,33,"plate_1","SLEV","slev_std_1e2","std 1e2",31.36,2
+"237",2024,33,"plate_1","SLEV","slev_std_1e4","std 1e4",24.87,2
+"238",2024,33,"plate_1","SLEV","slev_std_1e6","std 1e6",18.44,4
+"239",2024,33,"plate_1","SLEV","wnv_std_1e2","std 1e2",55.55,0
+"240",2024,33,"plate_1","SLEV","wnv_std_1e4","std 1e4",55.55,0
+"241",2024,33,"plate_1","SLEV","wnv_std_1e6","std 1e6",55.55,0
+"242",2024,33,"plate_1","WNV","pos ext ctl","pos ctrl",14.42,7.22643146422949
+"243",2024,33,"plate_1","WNV","slev_std_1e2","std 1e2",55.55,0
+"244",2024,33,"plate_1","WNV","slev_std_1e4","std 1e4",55.55,0
+"245",2024,33,"plate_1","WNV","slev_std_1e6","std 1e6",34.14,0.985426474083002
+"246",2024,33,"plate_1","WNV","wnv_std_1e2","std 1e2",30.89,2
+"247",2024,33,"plate_1","WNV","wnv_std_1e4","std 1e4",24.71,4
+"248",2024,33,"plate_1","WNV","wnv_std_1e6","std 1e6",18.25,6
+"249",2024,33,"plate_2","SLEV","pos ext ctl","pos ctrl",12.53,6.15336044609253
+"250",2024,33,"plate_2","SLEV","slev_std_1e2","std 1e2",25.09,2
+"251",2024,33,"plate_2","SLEV","slev_std_1e4","std 1e4",19.29,4
+"252",2024,33,"plate_2","SLEV","slev_std_1e6","std 1e6",12.9,6
+"253",2024,33,"plate_2","SLEV","wnv_std_1e2","std 1e2",30.48,0.262451089730429
+"254",2024,33,"plate_2","SLEV","wnv_std_1e4","std 1e4",27.13,1.36097188372594
+"255",2024,33,"plate_2","SLEV","wnv_std_1e6","std 1e6",15.71,5.11050765792434
+"256",2024,33,"plate_2","WNV","pos ext ctl","pos ctrl",9.71,7.39448050441475
+"257",2024,33,"plate_2","WNV","slev_std_1e2","std 1e2",27.51,1.89014146006458
+"258",2024,33,"plate_2","WNV","slev_std_1e4","std 1e4",55.55,0
+"259",2024,33,"plate_2","WNV","slev_std_1e6","std 1e6",31.09,0.783903579272735
+"260",2024,33,"plate_2","WNV","wnv_std_1e2","std 1e2",26.92,2
+"261",2024,33,"plate_2","WNV","wnv_std_1e4","std 1e4",21.16,4
+"262",2024,33,"plate_2","WNV","wnv_std_1e6","std 1e6",13.98,6

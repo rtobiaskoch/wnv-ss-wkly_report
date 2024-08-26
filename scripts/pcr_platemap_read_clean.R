@@ -40,6 +40,7 @@ pcr = pcr_input %>%
          #ct_threshold = as.numeric(ct_threshold)
          ) %>%
   arrange(plate, well) %>%
+ # select(well_position, task, target_name, cq, ct_threshold, copies, plate) %>%
   select(well_position, target_name, cq, ct_threshold, copies, plate) %>%
   pivot_wider(names_from = target_name, 
               values_from = c(copies,cq)) %>%
@@ -73,6 +74,39 @@ platemap = fn_path %>%
      ) %>%
   bind_rows()
 
+
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#merge
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+cq_data = left_join(pcr, platemap, by = c("well_position", "plate"))
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#---------------- C H E C K   S T D S  ----------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# stds = cq_data %>%
+#   filter(task == "STANDARD"|grepl("std", csu_id, ignore.case = T))
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#---------------- C H E C K   C O N T R O L S  ----------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+pos = cq_data %>% 
+  filter(grepl("pos", csu_id, ignore.case = T))
+
+if(any(pos$copies_WNV < copy_threshold|pos$copies_SLEV < copy_threshold)) {
+  warning(paste0("one of your positive extraction controls have < ",copy_threshold, " copies"))
+}
+
+
+neg = cq_data %>% 
+  filter(grepl("neg", csu_id, ignore.case = T))
+
+if(any(neg$copies_WNV > copy_threshold|neg$copies_SLEV < copy_threshold)) {
+  warning(paste0("one of your negative extraction controls have > ",copy_threshold, " copies"))
+}
+
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #---------------- C H E C K   S A M P L E   I D S  ----------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -82,12 +116,6 @@ platemap = fn_path %>%
 # if(any(!str_detect(data_input$csu_id, "-"))) {
 #   stop("you have samples id without a -")
 # }
-
-
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#merge
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-cq_data = left_join(pcr, platemap, by = c("well_position", "plate"))
 
 
 temp = cq_data %>%

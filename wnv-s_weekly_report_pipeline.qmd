@@ -20,11 +20,11 @@ source("scripts/config.R")
 ```{bash}
 # git commit -a -m "weekly commit before data removal"
 # git push
-# rm -f data_input/datasheet/* 
-# rm -f data_input/pcr/* 
-# rm -f data_input/platemap/*
-# rm -f data_mid/*
-# rm -f data_output/*
+
+```
+
+```{r}
+#source("scripts/dir_clean.R")
 
 ```
 
@@ -161,7 +161,7 @@ source("scripts/tables.R")
 Before generating tables and report make sure all the shit is correct\
 
 ```{r}
-source("scripts/QC_report.R")
+#source("scripts/QC_report.R")
 ```
 
 ```{r}
