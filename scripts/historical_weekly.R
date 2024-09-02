@@ -467,9 +467,11 @@ p_vi = p_df_all_fun(df_all_long, vi, "Vector Index") +
 p_vi
 
 
-p_hx_current0 = p_abund + p_pir + p_vi + p_df_ci_all + 
+p_hx_current0 = p_abund + p_pir + p_vi + 
   plot_annotation(caption = c(description)) +
-  plot_layout(widths =c(3,3,3,1), guides = "collect") & theme(legend.position = 'bottom', legend.title = element_blank())
+  plot_layout(#widths =c(3,3,3,1), 
+              guides = "collect") & theme(legend.position = 'bottom', 
+                                          legend.title = element_blank())
 
 
 

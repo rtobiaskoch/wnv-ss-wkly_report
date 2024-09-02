@@ -157,8 +157,7 @@ p_hx_current
 source("scripts/tables.R")
 ```
 
-\
-Before generating tables and report make sure all the shit is correct\
+Before generating tables and report make sure all the stuff is correct\
 
 ```{r}
 #source("scripts/QC_report.R")

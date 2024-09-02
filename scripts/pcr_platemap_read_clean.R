@@ -103,7 +103,7 @@ if(any(pos$copies_WNV < copy_threshold|pos$copies_SLEV < copy_threshold)) {
 neg = cq_data %>% 
   filter(grepl("neg", csu_id, ignore.case = T))
 
-if(any(neg$copies_WNV > copy_threshold|neg$copies_SLEV < copy_threshold)) {
+if(any(neg$copies_WNV > copy_threshold|neg$copies_SLEV > copy_threshold)) {
   warning(paste0("one of your negative extraction controls have > ",copy_threshold, " copies"))
 }
 

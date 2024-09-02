@@ -116,8 +116,8 @@ plotly::ggplotly(p_std)
 
 
 p_std2 = p_std_df %>%
- # filter(week %in% 24:40) %>%
-  filter(week %in% 33) %>%
+  filter(week %in% 24:40) %>%
+  filter(week != 33) %>%
   mutate(cq = if_else(cq == 55.55, 40, cq)) %>%
   ggplot(aes(x = log_copies, y = cq, color = week, group = grp)) +
   geom_point(alpha = 0.4, size = 3) +

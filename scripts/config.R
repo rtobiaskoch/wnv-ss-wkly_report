@@ -26,7 +26,7 @@ source("scripts/gsheet_read_fun.R")
 #DATA PARAMETERS:
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 year_filter = 2024
-week_filter = 34
+week_filter = 35
 week_filter_yr= 23:week_filter
 week_filter_hx = 23:37
 year_filter_hx = seq(year_filter-11, year_filter-1, by = 1)
