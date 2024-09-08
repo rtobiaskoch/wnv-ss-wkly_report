@@ -14,6 +14,7 @@ pcr_input = fn_path %>%
         filter(`Block Type` %in% c("Well", as.character(1:96)))
        ) %>%
   bind_rows()
+  
 
 
 colnames(pcr_input) = pcr_input[1,] #replace the nonsensical names with the colnames that are in row one but keep file_name
@@ -80,7 +81,8 @@ platemap = fn_path %>%
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #merge
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-cq_data = left_join(pcr, platemap, by = c("well_position", "plate"))
+cq_data = left_join(pcr, platemap, by = c("well_position", "plate"))  %>%
+  filter(!is.na(csu_id))
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
