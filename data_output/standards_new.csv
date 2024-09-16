@@ -317,3 +317,45 @@
 "316",2024,35,"plate_2","WNV","wnv_std_1e2","std 1e2",31.26,2
 "317",2024,35,"plate_2","WNV","wnv_std_1e4","std 1e4",24.8,4
 "318",2024,35,"plate_2","WNV","wnv_std_1e6","std 1e6",18.46,6
+"319",2024,36,"plate_1","SLEV","pos ext ctl","pos ctrl",17.13,6.43278423559392
+"320",2024,36,"plate_1","SLEV","slev_std_1e2","std 1e2",31.38,2
+"321",2024,36,"plate_1","SLEV","slev_std_1e4","std 1e4",25.05,4
+"322",2024,36,"plate_1","SLEV","slev_std_1e6","std 1e6",18.49,6
+"323",2024,36,"plate_1","SLEV","wnv_std_1e2","std 1e2",55.55,0
+"324",2024,36,"plate_1","SLEV","wnv_std_1e4","std 1e4",55.55,0
+"325",2024,36,"plate_1","SLEV","wnv_std_1e6","std 1e6",55.55,0
+"326",2024,36,"plate_1","WNV","pos ext ctl","pos ctrl",13.91,7.2524182277672
+"327",2024,36,"plate_1","WNV","slev_std_1e2","std 1e2",55.55,0
+"328",2024,36,"plate_1","WNV","slev_std_1e4","std 1e4",37.88,0
+"329",2024,36,"plate_1","WNV","slev_std_1e6","std 1e6",35.09,0.847572659142112
+"330",2024,36,"plate_1","WNV","wnv_std_1e2","std 1e2",31.22,2
+"331",2024,36,"plate_1","WNV","wnv_std_1e4","std 1e4",24.77,4
+"332",2024,36,"plate_1","WNV","wnv_std_1e6","std 1e6",17.99,6
+"333",2024,36,"plate_2","SLEV","pos ext ctl","pos ctrl",55.55,0
+"334",2024,36,"plate_2","SLEV","slev_std_1e2","std 1e2",55.55,0
+"335",2024,36,"plate_2","SLEV","slev_std_1e4","std 1e4",25.35,4
+"336",2024,36,"plate_2","SLEV","slev_std_1e6","std 1e6",18.64,6
+"337",2024,36,"plate_2","SLEV","wnv_std_1e2","std 1e2",55.55,0
+"338",2024,36,"plate_2","SLEV","wnv_std_1e4","std 1e4",55.55,0
+"339",2024,36,"plate_2","SLEV","wnv_std_1e6","std 1e6",55.55,0
+"340",2024,36,"plate_2","WNV","pos ext ctl","pos ctrl",55.55,0
+"341",2024,36,"plate_2","WNV","slev_std_1e2","std 1e2",55.55,0
+"342",2024,36,"plate_2","WNV","slev_std_1e4","std 1e4",55.55,0
+"343",2024,36,"plate_2","WNV","slev_std_1e6","std 1e6",34.71,3.68962136763636
+"344",2024,36,"plate_2","WNV","wnv_std_1e2","std 1e2",55.55,0
+"345",2024,36,"plate_2","WNV","wnv_std_1e4","std 1e4",32.6,4
+"346",2024,36,"plate_2","WNV","wnv_std_1e6","std 1e6",19.04,6
+"347",2024,37,"plate_1","SLEV","pos extract ctl","pos ctrl",17.42,8.67382918519248
+"348",2024,37,"plate_1","SLEV","slev_std_1e2","std 1e2",25.17,2
+"349",2024,37,"plate_1","SLEV","slev_std_1e4","std 1e4",31.48,4
+"350",2024,37,"plate_1","SLEV","slev_std_1e6","std 1e6",18.61,6
+"351",2024,37,"plate_1","SLEV","wnv_std_1e2","std 1e2",55.55,0
+"352",2024,37,"plate_1","SLEV","wnv_std_1e4","std 1e4",55.55,0
+"353",2024,37,"plate_1","SLEV","wnv_std_1e6","std 1e6",55.55,0
+"354",2024,37,"plate_1","WNV","pos extract ctl","pos ctrl",13.64,11.0285271326385
+"355",2024,37,"plate_1","WNV","slev_std_1e2","std 1e2",32.36,-0.795880017344075
+"356",2024,37,"plate_1","WNV","slev_std_1e4","std 1e4",35.84,0
+"357",2024,37,"plate_1","WNV","slev_std_1e6","std 1e6",36.69,0
+"358",2024,37,"plate_1","WNV","wnv_std_1e2","std 1e2",24.66,2
+"359",2024,37,"plate_1","WNV","wnv_std_1e4","std 1e4",31.33,4
+"360",2024,37,"plate_1","WNV","wnv_std_1e6","std 1e6",18.32,6

@@ -400,7 +400,7 @@ p_df_ci_all = ggplot(df_ci_all, aes(x = year, y = vi, color = type)) +
   scale_color_manual(values = curr_hx_pal) +
   geom_hline(yintercept = vi_threshold, linetype = "dashed", color = "red") +
   scale_y_continuous(breaks = seq(0, 1, by = 0.25)) +
-  scale_x_reverse(breaks = seq(min(df_ci_all$year), max(df_ci_all$year), by = 2)) +
+  scale_x_reverse(breaks = seq(min(df_ci_all$year, na.rm = T), max(df_ci_all$year, na.rm = T), by = 2)) +
   coord_cartesian(ylim = c(0, 1)) +
   ggtitle(paste("VI Week", week_filter, sep = " ")) +
   #labs(y = element_blank()) +
