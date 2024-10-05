@@ -345,17 +345,17 @@
 "344",2024,36,"plate_2","WNV","wnv_std_1e2","std 1e2",55.55,0
 "345",2024,36,"plate_2","WNV","wnv_std_1e4","std 1e4",32.6,4
 "346",2024,36,"plate_2","WNV","wnv_std_1e6","std 1e6",19.04,6
-"347",2024,37,"plate_1","SLEV","pos extract ctl","pos ctrl",17.42,8.67382918519248
-"348",2024,37,"plate_1","SLEV","slev_std_1e2","std 1e2",25.17,2
-"349",2024,37,"plate_1","SLEV","slev_std_1e4","std 1e4",31.48,4
+"347",2024,37,"plate_1","SLEV","pos extract ctl","pos ctrl",17.42,6.38321474510667
+"348",2024,37,"plate_1","SLEV","slev_std_1e2","std 1e2",31.48,2
+"349",2024,37,"plate_1","SLEV","slev_std_1e4","std 1e4",25.17,4
 "350",2024,37,"plate_1","SLEV","slev_std_1e6","std 1e6",18.61,6
 "351",2024,37,"plate_1","SLEV","wnv_std_1e2","std 1e2",55.55,0
 "352",2024,37,"plate_1","SLEV","wnv_std_1e4","std 1e4",55.55,0
 "353",2024,37,"plate_1","SLEV","wnv_std_1e6","std 1e6",55.55,0
-"354",2024,37,"plate_1","WNV","pos extract ctl","pos ctrl",13.64,11.0285271326385
-"355",2024,37,"plate_1","WNV","slev_std_1e2","std 1e2",32.36,-0.795880017344075
-"356",2024,37,"plate_1","WNV","slev_std_1e4","std 1e4",35.84,0
-"357",2024,37,"plate_1","WNV","slev_std_1e6","std 1e6",36.69,0
-"358",2024,37,"plate_1","WNV","wnv_std_1e2","std 1e2",24.66,2
-"359",2024,37,"plate_1","WNV","wnv_std_1e4","std 1e4",31.33,4
+"354",2024,37,"plate_1","WNV","pos extract ctl","pos ctrl",13.64,7.4227087211311
+"355",2024,37,"plate_1","WNV","slev_std_1e2","std 1e2",35.84,0.595496221825574
+"356",2024,37,"plate_1","WNV","slev_std_1e4","std 1e4",32.36,1.66558099101795
+"357",2024,37,"plate_1","WNV","slev_std_1e6","std 1e6",36.69,0.334453751150931
+"358",2024,37,"plate_1","WNV","wnv_std_1e2","std 1e2",31.33,2
+"359",2024,37,"plate_1","WNV","wnv_std_1e4","std 1e4",24.66,4
 "360",2024,37,"plate_1","WNV","wnv_std_1e6","std 1e6",18.32,6

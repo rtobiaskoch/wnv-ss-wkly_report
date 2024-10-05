@@ -1,8 +1,8 @@
 source("scripts/config.R")
 
 gsheet_pull(trap_gsheet_key, "data", fn_trap)
-trap_data = read.csv(fn_trap) %>%
-  filter(zone == "LC")
+
+trap_data = read.csv(fn_trap)
 
 # Create a color palette based on the 'zone' column
 pal <- colorFactor(palette = "viridis", domain = trap_data$zone)
@@ -16,3 +16,4 @@ leaflet(trap_data) %>%
     popup = ~paste0("Trap ID: ", trap_id, "<br>Zone: ", zone)
   ) %>%
   addLegend("bottomright", pal = pal, values = ~zone, title = "Zone")
+

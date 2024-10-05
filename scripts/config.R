@@ -25,8 +25,10 @@ source("scripts/gsheet_read_fun.R")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #DATA PARAMETERS:
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#year_filter = as.numeric(readline("Enter the year you would like to analyze: "))
 year_filter = 2024
-week_filter = 37
+#week_filter = as.numeric(readline("Enter the week you would like to analyze: "))
+week_filter = 31
 week_filter_yr= 23:week_filter
 week_filter_hx = 23:37
 year_filter_hx = seq(year_filter-11, year_filter-1, by = 1)
@@ -95,6 +97,7 @@ trap_malfunction_key = "1dsTyvZoCN6NUJlTcDLINMfxuGZdJuP2ADpn8noQwL6Q"
 #trap_active_key = "1SA_PE74KLH6_jG3yR49e8py1uXgb_C02Q3Iz9MWivrY"
 standards_key = "1bSMYQ4bZ9uBfrOQ6ylsegNmmGYdf9YFVbxB4qBhnFQo"
 routine_trap_tl_key = "1kIOqx6CldJ3ivXu9_ws60qqxrlLSmjHRz_tkv03vhqs"
+
 
 
 

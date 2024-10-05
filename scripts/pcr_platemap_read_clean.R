@@ -1,21 +1,23 @@
 source("scripts/config.R")
 
+#INPUT FILES
+#fn_pcr = location of your pcr output from quant studio
+#fn_platemap = location of your platemaps that correspond to the output from quantstudio
+
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #pcr data
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#get list of file paths for all files in the fn_mozzy_pool_input
-fn_path = list.files(path = fn_pcr,
+#get list of file paths for all files in the pcr output from quantstudio
+fn_path = list.files(path = fn_pcr, #
                full.names = T,
                ignore.case = T)  
 
 pcr_input = fn_path %>% 
-  map(~ read_excel(.x, col_names = TRUE, sheet = "Results") %>% 
-        mutate(file_name = .x) %>%
-        filter(`Block Type` %in% c("Well", as.character(1:96)))
+  map(~ read_excel(.x, col_names = TRUE, sheet = "Results") %>% #iteratively read through all file names in path
+        mutate(file_name = .x) %>% #add a column that is the file name where the observation came from
+        filter(`Block Type` %in% c("Well", as.character(1:96))) #keep only the 96 wells as the output as superfluous BS
        ) %>%
-  bind_rows()
-  
-
+  bind_rows() #put everything together
 
 colnames(pcr_input) = pcr_input[1,] #replace the nonsensical names with the colnames that are in row one but keep file_name
 
@@ -28,13 +30,15 @@ colnames(pcr_input) = if_else(colnames(pcr_input) %in% fn_path,
 pcr = pcr_input %>%
   clean_names() %>%
   filter(well_position != "Well Position") %>% #remove the column names from the dataframe observations
-   mutate(plate = case_when(
+   mutate(plate = case_when( #create a new column that is a standardized name of your plate number or however many you might have
                grepl("plate 1|p1|plate_1", file_name, ignore.case = TRUE) ~ "plate_1",
                grepl("plate 2|p2|plate_2", file_name, ignore.case = TRUE) ~ "plate_2",
+               grepl("plate 3|p3|plate_3", file_name, ignore.case = TRUE) ~ "plate_3",
+               grepl("plate 4|p4|plate_4", file_name, ignore.case = TRUE) ~ "plate_4",
                TRUE ~ "unknown"
                    )
          ) %>%
-  mutate(ct = if_else(str_detect(ct, "Undetermined"), "55.55", ct)) %>% # convert to numeric to avoid errors
+  mutate(ct = if_else(str_detect(ct, "Undetermined"), "55.55", ct)) %>% # convert "undetermined to numeric 55.55 to avoid errors
   mutate(cq = round(as.numeric(ct), 2),
          well = as.numeric(well), #convert to numeric to sort
          copies = if_else(cq == 55.55, 0, round(as.numeric(quantity),2))
@@ -50,10 +54,10 @@ pcr = pcr_input %>%
  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #Platemap
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#get the list of platemaps from your 
 fn_path = list.files(path = fn_platemap,
                      full.names = T,
                      ignore.case = T)  
-
 
 platemap = fn_path %>%
   map(~read_excel(.x, col_names = T, 
@@ -74,9 +78,6 @@ platemap = fn_path %>%
   select(well_position, csu_id, plate)
      ) %>%
   bind_rows()
-
-
-
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #merge

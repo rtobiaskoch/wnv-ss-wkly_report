@@ -24,7 +24,7 @@ git push
 ```
 
 ```{r}
-#source("scripts/dir_clean.R")
+source("scripts/dir_clean.R")
 
 ```
 
