@@ -32,6 +32,7 @@ week_filter = 31
 week_filter_yr= 23:week_filter
 week_filter_hx = 23:37
 year_filter_hx = seq(year_filter-11, year_filter-1, by = 1)
+googledrive::drive_auth()
 
 fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
