@@ -17,13 +17,13 @@ source("scripts/config.R")
 ```
 
 ```{bash}
-git commit -a -m "weekly commit before data removal"
-git push
+#git commit -a -m "weekly commit before data removal"
+#git push
 
 ```
 
 ```{r}
-source("scripts/dir_clean.R")
+#source("scripts/dir_clean.R")
 
 ```
 
@@ -90,7 +90,7 @@ source("scripts/weekly_data_input.R")
 
 Code Below:\
 - data input:\
-- data_input file and trap coordinates (if not in data_input)
+- data_input file and trap coordinates (if not in data_input)    
 
 ```{r}
 source('scripts/abundance_v2.R')

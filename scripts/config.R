@@ -13,7 +13,9 @@ suppressMessages({
   
 })
 
-
+if(!file.exists("data_input/config_params.RDS")) {
+  
+  
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #FUNCTIONS
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -25,14 +27,21 @@ source("scripts/gsheet_read_fun.R")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #DATA PARAMETERS:
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#year_filter = as.numeric(readline("Enter the year you would like to analyze: "))
-year_filter = 2024
-#week_filter = as.numeric(readline("Enter the week you would like to analyze: "))
-week_filter = 31
+
+
+
+year_filter = as.numeric(readline("Enter the year you would like to analyze: "))
+week_filter = as.numeric(readline("Enter the week you would like to analyze: "))
+
 week_filter_yr= 23:week_filter
 week_filter_hx = 23:37
 year_filter_hx = seq(year_filter-11, year_filter-1, by = 1)
-googledrive::drive_auth()
+
+#if drive doesn't have a token then have user authorize
+if(!drive_has_token()) {
+  googledrive::drive_auth()
+}
+
 
 fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
@@ -51,23 +60,6 @@ update_trap = "NO"
 clean_data = "NO"
 fc_zone_filter = "YES"
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#FILTER CHECK
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-current_year = year(Sys.Date())
-last_week = week(Sys.Date())
-
-if(current_year != max(year_filter)) {
-  print("the year_filter doesn't match the current_year. Did you remember to update it?")
-}
-
-if(last_week != max(week_filter)) {
-  print("the week_filter doesn't match last_week. Did you remember to update it?")
-}
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -287,3 +279,21 @@ curr_hx_pal = c("current" = "#e9724c",
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+all_params <- ls(envir = .GlobalEnv)
+
+# Create a list containing all the values of these objects
+all_params_list <- mget(all_params, envir = .GlobalEnv)
+
+saveRDS(all_params_list, "data_input/config_params.RDS")
+
+} else { #end of if config_params.RDS file exists
+
+  list2env(readRDS("data_input/config_params.RDS"), 
+           envir = .GlobalEnv)
+  cat(paste0("config file already exists in data_input/config_params.RDS", "\n",
+               "year filter = ", year_filter, "\n",
+               "week filter = ", week_filter)
+  )
+
+}

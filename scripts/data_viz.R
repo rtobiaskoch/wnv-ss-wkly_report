@@ -1,4 +1,4 @@
-source("scripts/config.R")
+list2env(readRDS("data_input/config_params.RDS"),           envir = .GlobalEnv)
 
 data_input = check_read_fun(fn_data_output) %>%
   mutate(year = as.factor(year),

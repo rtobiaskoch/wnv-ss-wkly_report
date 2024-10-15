@@ -1,4 +1,4 @@
-source("scripts/config.R")
+list2env(readRDS("data_input/config_params.RDS"),           envir = .GlobalEnv)
 
 #pull and read database
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

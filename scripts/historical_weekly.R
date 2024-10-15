@@ -1,4 +1,6 @@
-source("scripts/config.R")
+rm(list = ls())
+list2env(readRDS("data_input/config_params.RDS"),          
+         envir = .GlobalEnv)
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #CURRENT YEAR: WIDER

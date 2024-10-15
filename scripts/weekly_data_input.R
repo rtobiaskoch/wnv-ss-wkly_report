@@ -1,4 +1,4 @@
-source("scripts/config.R")
+list2env(readRDS("data_input/config_params.RDS"),           envir = .GlobalEnv)
 
 data_input0 = read_rds(fn_weekly_input_format_mid)
 

@@ -1,4 +1,4 @@
-source("scripts/config.R")
+list2env(readRDS("data_input/config_params.RDS"),           envir = .GlobalEnv)
 
 gsheet_pull(trap_gsheet_key, "data", fn_trap)
 

@@ -1,5 +1,6 @@
-source("scripts/config.R")
-
+rm(list = ls())
+list2env(readRDS("data_input/config_params.RDS"), 
+         envir = .GlobalEnv)
 #datasheets (mosquito pools) read
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -20,6 +21,14 @@ data_input0 = t %>%
 #save this after binding for the Weekly Input for the Report. Maintaining the original stupid format
 #save as rds becasue csv fudges up the original colnames
 write_rds(data_input0, fn_weekly_input_format_mid)
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- C H E C K   W E E K __________---------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+if(any(data_input0$Week != week_filter)) {
+  stop(paste0("One or more of the weeks in your datasheet doesn't match the week_filter."))
+}
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #-------------------- C H E C K   C O L   N A M E S ---------------------
