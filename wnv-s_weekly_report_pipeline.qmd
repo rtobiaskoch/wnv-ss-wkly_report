@@ -4,16 +4,23 @@ format: html
 editor: visual
 ---
 
-## Weekly Data Report
+# Weekly Data Report
 
-Code Below:\
-- clears environment\
+### \>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\> 0 ---------------------------------- CONFIGURATION -------------------------------------------------- \>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>
+
+\- clears environment\
 - unloads packages\
 - loads necessary packages\
+- defines filepaths\
 - creates setting for plots
 
-```{r}
-source("scripts/config.R")
+### INPUT
+
+NONE
+
+```{bash}
+Rscript 0_R/config_weekly.R --year 2024 --week 37 # first arg is year second is week
+
 ```
 
 ```{bash}
@@ -22,27 +29,90 @@ source("scripts/config.R")
 
 ```
 
+```{r, echo=FALSE, eval=TRUE}
+clean_dir = readline("Do you want to clean the directories?: (y/n)")
+if(tolower(clean_dir) == "y") {
+  
+  dbl_check = readline("Are you sure?: (y/n)")
+  if(tolower(dbl_check) == "y") {
+   source("0_R/dir_clean.R")
+  } else { #end if y double check
+   NULL } #end if no to double check
+} else {#end if yes to clean
+ NULL } #end if no to clean
+```
+
+### \>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\> 0 ------------------------------\-\--DATA GDRIVE LOAD ----------------------------------------------- \>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>
+
 ```{r}
-#source("scripts/dir_clean.R")
+source("0_R/0_check_load_input_data.R")
+```
+
+README: DATA GDRIVE LOAD
+
+```{r}
 
 ```
 
-data_input: - reads in all datasheets types
+### \>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\> 1 ------------------------------\-\--DATASHEET CLEAN ----------------------------------------------- \>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>
 
-```{r}
-source("scripts/datasheet_read_clean.R")
+```{r, datasheet_clean}
+source("0_R/1_datasheet_read_clean.R")
 ```
 
+DATASHEET CLEAN: README
+
+```{r, fold = T}
+#DESC
+#-----------------------------------------------------------------------------------------
+# 1 .reads in all datasheets located in the datasheets directory that contain the mosquito pool data from VDCI, CDC, BC
+# 2. checks to make sure that data in input correctly-outputs the combined file [fn_datasheet_clean]
+
+# INPUT FILES:
+#-----------------------------------------------------------------------------------------
+# 
+# [ input_directory ] / datasheets / [ VDCI ]
+#[ input_directory ] / datasheets / [ CDC ]
+#[ input_directory ] / datasheets / [ BC ]
+
+
+# INPUT SETTINGS
+#-----------------------------------------------------------------------------------------
+# #SUBDIRECTORIES
+#   dir_datasheet = "1_input/datasheet/" #TIME FILTERS
+#   week_filter = 37year_filter = 2024col_rename_datasheet
+
+#-----------------------------------------------------------------------------------------
+# #FILENAMES
+# fn_datasheet_clean
+# fn_weekly_input_format_midfn_trap
+#-----------------------------------------------------------------------------------------
+# # GOOGLE SHEET KEYS
+
+# key_foco_trap
+#-----------------------------------------------------------------------------------------
+# OUTPUT
+# 
+# [ mid_directory ] / [fn_datasheet_clean]
+# 
+# [ mid_directory ] / [fn_weekly_input_format_mid ]
+```
+
+### \>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\> 2 -------------------------------PCR & PLATEMAP CLEAN ----------------------------------------- \>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>
+
+```{r}
+source("0_R/2_pcr_platemap_read_clean.R")
+```
+
+-Reads in the pcr data from quantstudio that contains the Ct values\
+- reads in platemap data that links the platmap postion with sample id\
+-\
 data_input: platemap and quantstudio
 
-```{r}
-source("scripts/pcr_platemap_read_clean.R")
-```
+### \>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\> 1 ----------------------------------------------------PCR PLOT -------------------------------------------- \>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>\>
 
-Code Below:\
-
-```{r}
-source("scripts/pcr_plot.R")
+```{r pcr plot}
+source("0_R/pcr_plot.R")
 pcr_plot
 ```
 
@@ -57,7 +127,7 @@ Code Below:
     -   pull and create list of functional traps (ones that are active that didn't malfunction)
 
 ```{r}
-source("scripts/get_func_trap.R")
+source("0_R/get_func_trap.R")
 ```
 
 Code Below:
@@ -79,25 +149,25 @@ Code Below:
     -   pushes changes from new data to database to googledrive
 
 ```{r}
-source("scripts/data_merge_and_push.R")
+source("0_R/data_merge_and_push.R")
 ```
 
 Code Below: -data_input
 
 ```{r}
-source("scripts/weekly_data_input.R")
+source("0_R/weekly_data_input.R")
 ```
 
 Code Below:\
 - data input:\
-- data_input file and trap coordinates (if not in data_input)    
+- data_input file and trap coordinates (if not in data_input)
 
 ```{r}
-source('scripts/abundance_v2.R')
+source("0_R/abundance_v2.R")
 ```
 
 ```{r}
-source('scripts/pools.R')
+source("0_R/pools.R")
 ```
 
 Code Below:
@@ -117,29 +187,29 @@ Description:
 this script will drop weeks that only have a gravid trap. because gravid traps aren't used in abundance calculations
 
 ```{r}
-source("scripts/pIR_VI.R")
+source("0_R/pIR_VI.R")
 ```
 
 ```{r}
 suppressMessages(
-  source("scripts/historical_weekly.R")
+  source("0_R/historical_weekly.R")
 )
 
 p_hx_current
 ```
 
 ```{r}
-source("scripts/tables.R")
+source("0_R/tables.R")
 ```
 
 Before generating tables and report make sure all the stuff is correct\
 
 ```{r}
-#source("scripts/QC_report.R")
+#source("0_R/QC_report.R")
 ```
 
 ```{r}
 suppressMessages(
-  source("scripts/generate_report.R")
+  source("0_R/generate_report.R")
 )
 ```
