@@ -16,7 +16,7 @@ if(file.exists(config_params_file)){
   suppressMessages({
     if (!require("pacman")) install.packages("pacman")
     pacman::p_unload()
-    pacman::p_load(tidyverse, purrr #manipulation
+    pacman::p_load(tidyverse, readxl, purrr #manipulation
     )
   })
   
@@ -112,7 +112,7 @@ platemap = fn_path %>%
       week = str_extract(file_name, "(?<=w)\\d+"), # Extract week as the part after "_w" and before "_p"
       plate = str_extract(file_name, "(?<=p)\\d+"),     # Extract plate as the part after "_p" (end of the string)
       plate = paste0("plate_", plate)
-    ) %>%
+        ) %>%
   mutate(well_position = paste0(row, column)) %>%
   mutate(well_position = str_remove(well_position, "\\.0")) %>% #remove the column ##.0 that is getting imported
   select(well_position, csu_id, year, week, plate)
