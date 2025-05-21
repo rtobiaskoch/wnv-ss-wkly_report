@@ -19,8 +19,7 @@ editor: visual
 NONE
 
 ```{bash}
-Rscript 0_R/config_weekly.R --year 2024 --week 37 # first arg is year second is week
-
+Rscript 0_R/config_weekly.R --year 2024 --week 37 --threshold 500 # first arg is year second is week
 ```
 
 ```{bash}

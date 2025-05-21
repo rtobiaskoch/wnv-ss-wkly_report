@@ -138,10 +138,10 @@ if (length(empty_dirs) > 0) {
 # ---------------- D E F I N E   G S H E E T   K E Y --------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 key_database_gsheet = "12Mf-w9I9NHTTDjzEPRoxUE08ka4WZ6RE-RM1s-FW7qA"
-key_trap_gsheet = "1Jna3Bu47gjBWWz5vCoel4ksa-LBuo8R3zVfQYFl73wI"
+key_trap_gsheet = "1G5UcRmcVsVpMtKW_-4WLKX8WT_fvyIYj7sGcoNxDmr4"
 key_trap_malfunction = "1dsTyvZoCN6NUJlTcDLINMfxuGZdJuP2ADpn8noQwL6Q"
 key_standards_gsheet = "1bSMYQ4bZ9uBfrOQ6ylsegNmmGYdf9YFVbxB4qBhnFQo"
-key_foco_trap = "1Jna3Bu47gjBWWz5vCoel4ksa-LBuo8R3zVfQYFl73wI"
+key_foco_trap = "1G5UcRmcVsVpMtKW_-4WLKX8WT_fvyIYj7sGcoNxDmr4"
 
 fn_gdrive_database = file.path(dir_input,"wnv-s_database - data.csv") # <<<<<<<--------------------------------------------------- U S E R   I N P U T
 fn_trap_malfunction <- file.path(dir_input, "trap_malfunction - data.csv")
@@ -156,7 +156,7 @@ fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
 all_zones = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
 
-copy_threshold = 500 # <<<<<<<------------------------------------------------------------------------------------------------ U S E R   I N P U T
+
 rn_threshold = 34000 # <<<<<<<------------------------------------------------------------------------------------------------ U S E R   I N P U T
 vi_threshold = 0.75 # <<<<<<<------------------------------------------------------------------------------------------------- U S E R   I N P U T
 
@@ -169,28 +169,35 @@ vi_threshold = 0.75 # <<<<<<<---------------------------------------------------
 #variables that will change from week to week
 week_hardcode = 37  # <<<<<<<------------------------------------------------------------------------------------------------ U S E R   I N P U T
 year_hardcode = 2024 # <<<<<<<----------------------------------------------------------------------------------------------- U S E R   I N P U T
+copy_threshold_hardcode = 500 # <<<<<<<------------------------------------------------------------------------------------------------ U S E R   I N P U T
 
 # Create an argument parser
-  parser <- ArgumentParser(description = "Script to handle config file data inputs")
-  
-  # Add arguments for fn_trap and fn_database_input
-  parser$add_argument("--week", help = "week of report", type = "integer")
-  parser$add_argument("--year", help = "year of the report", type = "integer")
-  
-  # Parse arguments
-  args <- parser$parse_args()
-  
-  # Assign default values if arguments are not provided
-  week_filter <- if (!is.null(args$week)) args$week else week_hardcode
-  year_filter <- if (!is.null(args$year)) args$year else year_hardcode
-  
-  # Output the values
-  cat("Week filter set to:", week_filter, "\n")
-  cat("Year filter set to:", year_filter, "\n")
+parser <- ArgumentParser(description = "Script to handle config file data inputs")
+
+# Add arguments for fn_trap and fn_database_input
+parser$add_argument("--week", help = "week of report", type = "integer")
+parser$add_argument("--year", help = "year of the report", type = "integer")
+parser$add_argument("--threshold", help = "copy threshold for positive", type = "integer")
+
+# Parse arguments
+args <- parser$parse_args()
+
+# Assign default values if arguments are not provided
+week_filter <- if (!is.null(args$week)) args$week else week_hardcode
+year_filter <- if (!is.null(args$year)) args$year else year_hardcode
+copy_threshold <- if (!is.null(args$threshold)) args$threshold else copy_threshold_hardcode 
+
+rm(week_hardcode, year_hardcode, copy_threshold_hardcode)
+
+# Output the values
+cat("Week filter set to:", week_filter, "\n")
+cat("Year filter set to:", year_filter, "\n")
+cat("Copy threshold set to:",   copy_threshold, "\n")
 
 week_filter_yr= 23:week_filter
 week_filter_hx = 23:37
 year_filter_hx = seq(year_filter-12, year_filter-1, by = 1)
+
 
 
 
