@@ -1,4 +1,4 @@
-list2env(readRDS(config_params_file),           envir = .GlobalEnv)
+
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #get active active trap data

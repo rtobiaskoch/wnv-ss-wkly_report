@@ -1,58 +1,29 @@
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #LOAD PACKAGES FOR PIPELINE
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-rm(list = ls())
-#IF THE CONFIG PARAMS FILE EXISTS US THAT TO DEFINE INPUTS 
-# ELSE DEFINE THEM HERE
-config_params_file = "0_input/config_params.RDS" # <<<<<<<<<<----------------------------------  USER INPUT
 
-if(file.exists(config_params_file)){
-  list2env(readRDS(config_params_file), 
-           envir = .GlobalEnv)
-} else {
-  
-  
-  #LOAD PACKAGES
-  suppressMessages({
-    if (!require("pacman")) install.packages("pacman")
-    pacman::p_unload()
-    pacman::p_load(tidyverse, readxl, purrr #manipulation
-    )
-  })
-  
-  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  #--------------------------- I N P U T S --------------------------------
-  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  #INPUTS FOR THIS SCRIPT IF CONFIG FILE DOESN'T EXIST
-  
-  #SUBDIRECTORIES INPUTS
-  dir_pcr = "1_input/pcr/" # <<<<<<<<<<-------------------------------------------------------------  USER INPUT
-  dir_platemap= "1_input/platemap/"
-  
-  #TIME FILTERS
-  week_filter = 37
-  year_filter = 2024
-  
-  #FILENAMES OUTPUT
-  fn_cq_out = paste0("2_mid","/y",year_filter, "_", "w",week_filter, "_platemap.csv")
-  
-  #USER DEFINED STATIC DATA PARAMETERS:
-  copy_threshold = 500
-  rn_threshold = 34000
+#LOAD PACKAGES
+suppressMessages({
+  if (!require("pacman")) install.packages("pacman")
+  pacman::p_unload()
+  pacman::p_load(tidyverse, readxl, purrr #manipulation
+  )
+})
 
-  #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  
-} # end of if config_params_file exist statement
 
+cat("\nCopy threshold for pcr set at ", copy_threshold, "\n")
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#pcr data
+# ------------------------- P C R -------------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #get list of file paths for all files in the pcr output from quantstudio
 fn_path = list.files(path = dir_pcr, #
                full.names = T,
                ignore.case = T)  
+
+
+cat("\nReading in the following pcr files:\n", 
+    paste(unlist(fn_path), collapse = "\n"))
 
 pcr_input = fn_path %>% 
   map(~ {
@@ -89,13 +60,36 @@ pcr = pcr_input %>%
               values_from = c(copies,cq)) %>%
   rename(cq = cq_WNV) # rename to match database and rest of code
 
- #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#Platemap
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- C H E C K   P C R ------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#check year
+if(unique(pcr$year) != year_filter) {
+  stop(cat("\n The Year in your pcr data (1_input/pcr) doesn't equal your year_filter (defined in your config file). \n 
+           Check the file name of the PCR. \n "))
+} else {
+  cat("\n The year in PCR matches your year_filter. Nice. \n")
+}
+
+#check week
+if(unique(pcr$week) != week_filter) {
+  stop(cat("\n The week in your pcr data (1_input/pcr) doesn't equal your week_filter (defined in your config file). \n 
+           check the filename of the PCR. \n"))
+} else {
+  cat("\n The week in PCR matches your week_filter. Nice. \n ")
+}
+
+
+ #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#------------------------ P L A T E M A P -----------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #get the list of platemaps from your 
 fn_path = list.files(path = dir_platemap,
                      full.names = T,
                      ignore.case = T)  
+
+cat("\nReading in the following pcr files:\n", 
+    paste(unlist(fn_path), collapse = "\n"))
 
 platemap = fn_path %>%
   map(~read_excel(.x, col_names = T, 
@@ -120,7 +114,26 @@ platemap = fn_path %>%
   bind_rows()
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#merge
+#------------------C H E C K   P L A T E M A P -----------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#check year
+if(unique(platemap$year) != year_filter) {
+  stop(cat("\n The Year in your platemap data (1_input/platemap) doesn't equal your year_filter (defined in your config file). \n 
+           Check the file name of the platemap. \n"))
+} else {
+  cat("\n The year in platemap matches your year_filter. Nice. \n ")
+}
+
+#check week
+if(unique(platemap$week) != week_filter) {
+  stop(cat("\n The week in your platemap data (1_input/platemap) doesn't equal your week_filter (defined in your config file). \n 
+           check the filename of the platemap. \n"))
+} else {
+  cat("\n The week in platemap matches your week_filter. Nice. \n")
+}
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#------------------ M E R G E  P C R  & P L A T E M A P --------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 cq_data = left_join(pcr, platemap,
                     by = c("well_position", "year", "week", "plate"))  %>%
@@ -128,9 +141,18 @@ cq_data = left_join(pcr, platemap,
   arrange(year, week, plate)
 
 
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------------C H E C K   M E R G E ---------------------- 
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+if(nrow(cq_data) == 0) {
+  stop(cat("\n Your platemap and pcr joining variables do not match. Check your week and year \n "))
+} else {
+  cat("\n Your platemap and pcr have successfully merged. \n")
+}
+
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#---------------- C H E C K   S T D S  ----------------------
+#------------------------ C H E C K   S T D S  --------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # stds = cq_data %>%
 #   filter(task == "STANDARD"|grepl("std", csu_id, ignore.case = T))
@@ -142,42 +164,34 @@ pos = cq_data %>%
   filter(grepl("pos", csu_id, ignore.case = T))
 
 if(any(pos$copies_WNV < copy_threshold|pos$copies_SLEV < copy_threshold)) {
-  warning(paste0("one of your positive extraction controls have < ",copy_threshold, " copies"))
+  warning(cat("\n One of your positive extraction controls have < ",copy_threshold, " copies. \n"))
 }
-
 
 neg = cq_data %>% 
   filter(grepl("neg", csu_id, ignore.case = T))
 
 if(any(neg$copies_WNV > copy_threshold|neg$copies_SLEV > copy_threshold)) {
-  warning(paste0("one of your negative extraction controls have > ",copy_threshold, " copies"))
+  warning(cat("\n One of your negative extraction controls have < ",copy_threshold, " copies. \n"))
 }
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #---------------- C H E C K   S A M P L E   I D S  ----------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-#add check for sample id format
-
-# if(any(!str_detect(data_input$csu_id, "-"))) {
-#   stop("you have samples id without a -")
-# }
-
 
 temp = cq_data %>%
   filter(grepl("^CSU|^BOU|^CDC", csu_id, ignore.case = T))
   
 if(nrow(get_dupes(temp, csu_id)) >0) {
-  stop("Alert! You have duplicate id's in your pcr plate run. Double check your plates to ensure this was intentional. ")
+  stop("\n Alert! You have duplicate id's in your pcr plate run. \n Double check your plates to ensure this was intentional. \n")
 } else(
-  print("no duplicate sample ids that start with CSU|BOU|CDC")
+  cat("\n No duplicate sample ids that start with CSU|BOU|CDC. \n")
 )
 
 
 if(any(cq_data$ct_threshold < rn_threshold)) {
-  stop(paste0("Ct baseline thresholds are RN below ", rn_threshold, "check Quantstudio (pcr) output file."))
+  stop(cat("\n Ct baseline thresholds are RN below ", rn_threshold, "check Quantstudio (pcr) output file. \n"))
 } else {
-  
   write.csv(cq_data, fn_cq_out, row.names = F)
 }
 

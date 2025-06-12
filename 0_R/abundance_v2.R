@@ -1,4 +1,3 @@
-list2env(readRDS(config_params_file),           envir = .GlobalEnv)
 
 #ABUNDANCE
 
@@ -22,13 +21,13 @@ func_trap_L = read.csv(fn_func_trap)
 
 suppressMessages({
   trap_p_wk0 = data_input %>%
-  distinct(year,trap_date, week, zone, trap_id, method) %>% #get unique number of traps by removing traps listed 2x+ with multiple pools and spp
-  group_by(year, zone, week, method) %>% #get number of traps per week per zone
-  summarise(n = n()) %>%
-  ungroup()%>%
-  pivot_wider(names_from = method, values_from = n, 
-              names_prefix = "trap_",values_fill = 0) %>%
-  mutate(n_trap = trap_L + trap_G)
+    distinct(year,trap_date, week, zone, trap_id, method) %>% #get unique number of traps by removing traps listed 2x+ with multiple pools and spp
+    group_by(year, zone, week, method) %>% #get number of traps per week per zone
+    summarise(n = n()) %>%
+    ungroup()%>%
+    pivot_wider(names_from = method, values_from = n, 
+                names_prefix = "trap_",values_fill = 0) %>%
+    mutate(n_trap = trap_L + trap_G)
 })
   #GET WEEKS TRAP NUMBERS: FC
   #>#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

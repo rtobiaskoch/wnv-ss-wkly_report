@@ -1,4 +1,14 @@
-list2env(readRDS(config_params_file),           envir = .GlobalEnv)
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#LOAD PACKAGES FOR PIPELINE
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#LOAD PACKAGES
+suppressMessages({
+  if (!require("pacman")) install.packages("pacman")
+  pacman::p_unload()
+  pacman::p_load(tidyverse, purrr, rquery#manipulation
+  )
+})
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -9,7 +19,8 @@ list2env(readRDS(config_params_file),           envir = .GlobalEnv)
 data_input0 = read.csv(fn_cq_out) 
 
 data_input = data_input0 %>%
-  mutate(sample_type = case_when(grepl("^CSU|^BOU|^CDC", csu_id, ignore.case = T) ~ "mozzy",
+  mutate(sample_type = case_when(
+                             grepl("^CSU|^BOU|^CDC", csu_id, ignore.case = T) ~ "mozzy",
                              grepl("neg|negative", csu_id, ignore.case = T) ~ "neg ctrl",
                              grepl("pos|positive", csu_id, ignore.case = T) ~ "pos ctrl",
                              grepl("1e2", csu_id, ignore.case = T) ~ "std 1e2",
@@ -21,12 +32,8 @@ data_input = data_input0 %>%
          )
 
 
-#read in previous weeks standards
-gsheet_pull(key = key_standards_gsheet, 
-            sheet = 'data',
-            out_fn = "data_input/standards_input.csv")
 
-std_database = read.csv("data_input/standards_input.csv")   
+std_database = read.csv(fn_standards) 
 
 if(nrow(data_input %>% filter(sample_type == "undefined"))) {
   stop("you have undefined sample types in your data")
@@ -38,9 +45,7 @@ if(nrow(data_input %>% filter(sample_type == "undefined"))) {
 #>----------------------------------- S T A N D A R D S --------------------------------------------------
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-   
 
-  
   
 std_new0 = data_input %>%
   filter(str_detect(pattern = "std|pos ctrl", sample_type))
@@ -71,19 +76,19 @@ std_update = natural_join(std_new, std_database, jointype = "FULL",
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-write.csv(std_update, "data_output/standards_new.csv")
+write.csv(std_update, fn_standards_output)
 
 #make a copy of old standards key 
 drive_cp(file = as_id(key_standards_gsheet), 
          path = "standards_and_controls",
-         name = "standards_archive",
+         name = paste0("standards_archive_", Sys.time()),
          overwrite = T)
 
 #save it to gdrive
 googlesheets4::sheet_write(std_update,
                            ss = key_standards_gsheet,
                            sheet = "data"
-)
+                          )
 
 
 # std_wnv = std %>%
@@ -116,8 +121,6 @@ plotly::ggplotly(p_std)
 
 
 p_std2 = p_std_df %>%
-  filter(week %in% 24:40) %>%
-  filter(week != 33 & week != 36) %>%
   mutate(cq = if_else(cq == 55.55, 40, cq)) %>%
   ggplot(aes(x = log_copies, y = cq, color = week, group = grp)) +
   geom_point(alpha = 0.4, size = 3) +
@@ -129,7 +132,6 @@ p_std2 = p_std_df %>%
 
 p_std2
 plotly::ggplotly(p_std2)
-
 
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -185,7 +187,7 @@ plotly::ggplotly(p_std2)
 
 pcr_plot = p_std2 / p_pcr_wnv /  p_pcr_slev
 pcr_plot
-ggsave("data_output/plots/pcr_plot.png", pcr_plot,
+ggsave("../3_output/plots/pcr_plot.png", pcr_plot,
        width = 8, height = 8, units = "in")
 
 

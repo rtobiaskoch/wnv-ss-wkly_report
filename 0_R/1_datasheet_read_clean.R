@@ -8,63 +8,10 @@ rm(list = ls())
 suppressMessages({
   if (!require("pacman")) install.packages("pacman")
   pacman::p_unload()
-  pacman::p_load(tidyverse, purrr #manipulation
+  pacman::p_load(tidyverse, purrr, readxl, janitor #manipulation
   )
 })
 
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#------------------------------ C O N F I G ------------------------------------------
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-
-#IF THE CONFIG PARAMS FILE EXISTS US THAT TO DEFINE INPUTS 
-# ELSE DEFINE THEM HERE
-config_params_file = "1_input/config_params.RDS" # <<<<<<<<<<----------------------------------  USER INPUT
-
-if(file.exists(config_params_file)){
-  list2env(readRDS(config_params_file), 
-           envir = .GlobalEnv)
-} else { # if no config define them yourself peasant.
-
-#INPUTS FOR THIS SCRIPT IF CONFIG FILE DOESN'T EXIST *****************
-  
-  #SUBDIRECTORIES
-  dir_datasheet = "1_input/datasheet/" # <<<<<<<<<<--------------------------------------------  USER INPUT
-  
-  #TIME FILTERS
-  week_filter = 37
-  year_filter = 2024
-  
-  col_rename_datasheet <- c("csu_id" = "CSU Pool Number (CMC Enters)" , 
-                            "trap_id" = "Collection Site       (Trap ID)", 
-                            "year" = "Year", 
-                            "week" = "Week", 
-                            "trap_date" = "Trap Date", 
-                            "county" = "County", 
-                            "method" = "L/G", 
-                            "genus" = "Genus", 
-                            "spp" = "Species", 
-                            "sex" = "Sex", 
-                            "no_gravid" = "No. Gravid", 
-                            "no_deplete" = "No. Deplete", 
-                            "total" = "Total", 
-                            "test_code" = "Test Code (CSU Enters)" , 
-                            "zone" = "Zone")
-  
-  col_input_database = c("csu_id", "trap_id", "year", "week", "trap_date", 
-                         "county", "method", "spp", "total", "test_code", "zone")
-  
-  col_database = c( "csu_id", "trap_id", "zone", "year", "week", "trap_date", "county", "method", "spp",
-                    "total", "test_code", "cq", "copies_WNV", "seq", "cq", "lat", "long")
-  #FILENAMES
-  fn_datasheet_clean = "2_mid/y2024_w37_datasheet.csv"
-  fn_weekly_input_format_mid = "2_mid/weekly_data_input_format_mid.RData"
-  fn_trap = "1_input/foco_trap - data.csv"
-  
-  #KEYS
-  key_foco_trap = "1Jna3Bu47gjBWWz5vCoel4ksa-LBuo8R3zVfQYFl73wI"
-  
-} # end of if config_params_file exist statement
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -74,7 +21,10 @@ if(file.exists(config_params_file)){
 #get list of file paths for all files in the dir_datasheet
 t = list.files(path = dir_datasheet,
                full.names = T,
-               ignore.case = T)  
+               ignore.case = T) 
+
+cat("\nReading in the following datasheet files:\n", 
+    paste(unlist(t), collapse = "\n"))
 
 #read all files and bind it into one dataframe
 data_input0 = t %>% 
@@ -82,53 +32,26 @@ data_input0 = t %>%
   bind_rows() %>%
   filter(!is.na(`Trap Date`)) #remove empty ids becasue VDCI keeps sending us empty ids
 
+cat("\n\nDatasheet contains: \n", 
+    sum(data_input0$Total), 
+    "mosquitoes \n", 
+    nrow(data_input0), 
+    "pools \n", 
+    length(unique(data_input0$`Collection Site       (Trap ID)`)), "traps\n",
+    length(unique(data_input0$Zone)), "Zones\n"
+    )
+
 #save this after binding for the Weekly Input for the Report. Maintaining the original stupid format
 #save as rds becasue csv fudges up the original colnames
 write_rds(data_input0, fn_weekly_input_format_mid)
 
-
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#-------------------- C H E C K   W E E K __________---------------------
+#-------------- C L E A N   C O L N A M E S   -------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-if(any(data_input0$Week != week_filter)) {
-  stop(paste0("One or more of the weeks in your datasheet doesn't match the week_filter."))
-}
-
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#-------------------- C H E C K   C O L   N A M E S ---------------------
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-data_input = data_input0 %>%
-  rename(!!!col_rename_datasheet)
-
-if(all(col_input_database %in% names(data_input))==F) { # if any of the required col_input_database aren't in the input data throw an error
-  
-  stop(paste0("The column(s) ", setdiff(col_input_database, names(data_input)), " are missing from your datasheets")
-       )
-}
-
-
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#---------------- C H E C K     Z O N E --------------------------------
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-if(any(is.na(data_input$zone))){
-  
-  stop("you have missing zones in your data")
-}
-
-
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#---------------- C H E C K     S A M P L E    I D ----------------------
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-if(any(is.na(data_input$csu_id))){
-  
-  stop("you have missing sample ids in your data")
-}
-
-if(any(!str_detect(data_input$csu_id, "-"))) {
-  stop("you have samples id without a -")
-}
-
+# Rename using !!!
+data_input <- data_input0 |>
+  rename(!!!col_rename_datasheet) |>
+  select(any_of(col_database))
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #-------------------- C L E A N   D A T E ------------------------------
@@ -175,12 +98,35 @@ data_clean = data_input %>%
   )
 
 
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- C H E C K   N A------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Identify columns (except test_code) that contain any blanks
+# Safely check for blanks in each column
+partially_blank_cols <- data_clean |>
+  select(-test_code) |>
+  map_lgl(~ identical(TRUE, any(is.na(.) | . == ""))) |>
+  keep(~ .x) |>
+  names()
+
+# Issue warning or message
+if (length(partially_blank_cols) > 0) {
+  warning("\nThe following columns contain blank values: ",
+          paste(partially_blank_cols, collapse = ", "))
+} else {
+  cat("\nNo columns contain blank values.\n")
+}
+
+
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #-------------------- C H E C K   D A T E  F O R M A T -------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 if(any(is.na(data_clean$trap_date))|class(data_clean$trap_date) != "Date") {
-  stop("there are missing/misformated dates in the data input")
+  stop("\nthere are missing/misformated dates in the data input\n")
+} else {
+  cat("\nAll dates in the datasheet are formatted correctly.\n")
 }
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -207,7 +153,8 @@ dupe = get_dupes(data_input, csu_id)
 
 if(nrow(dupe) > 0) {
   stop("You have duplicate id(s) ", unique(dupe$csu_id)," in your datasheet(s)")
-  
+} else {
+  cat("\nNo duplicates in your datasheet.\n")
 }
 
 
@@ -220,7 +167,7 @@ if(any(!is.na(data_clean$spp2))) { #if there are no missing matches with spp2 th
     mutate(spp = spp2) %>%
     select(-spp2)
 } else {
-  stop("there are unknown species in the spp")
+  stop("\nthere are unknown species in the spp\n")
 }
 
 
@@ -233,56 +180,19 @@ if(any(!is.na(data_clean$method2))) { #if there are no missing matches with spp2
     mutate(method = method2) %>%
     select(-method2)
 } else {
-  stop("there are unknown trap methods in the method")
+  stop("\nthere are unknown trap methods in the method\n")
 }
 
 
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#-------------------- C H E C K   T O T A L   -------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-
-
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# -------------------- D E F I N E   G S H E E T _ P U L L  ----------------------
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-fun_gsheet_pull_prompt = function(filename, sheet, key) {
-  
-  user_input <- readline(prompt = paste0("Would you like to download the trap malfunction file to ", filename, " from Google Drive? (yes/no): "))
-  
-  # Check the user's input
-  if (tolower(user_input) == "yes") {
-    # Run the script if the user says "yes"
-    
-    require(googlesheets4)
-    require(googledrive)
-    library(googlesheets4)
-    
-    #if drive doesn't have a token then have user authorize
-    if(!googledrive::drive_has_token()) {
-      googledrive::drive_auth()
-    }
-    
-    mdata = googlesheets4::read_sheet(key, sheet = sheet)
-    mdata <- mdata %>%
-      mutate(across(where(is.list), ~ sapply(., paste, collapse = ", ")))
-    #mdata = apply(mdata, 2, as.character) #added because error   unimplemented type 'list' in 'EncodeElement' was occuring
-    write.csv(mdata, filename, row.names = F, na = "")
-    read.csv(filename)
-    
-    print("...Checking that gdrive download worked...")
-    
-  } else { #end of user_input yes update
-    cat("File", filename, " download skipped. Please ensure the file exists before proceeding.\n")
-  }
-  
-  if(!file.exists(filename)) {
-    stop(cat(filename, " file doesn't exist. Please download and rerun this config file. \n"))
-  } else {
-    cat(filename, "exists.\n")
-  }
-  
-  rm(user_input)
-} #end of function
-
+if(any(data_clean$total > 50)) { #if there are no missing matches with spp2 then replace spp otherwise throw an message
+  stop("One or more pools totals is greater than 50. Current methods pool mosquitoes in pools smaller than 50.")
+} else {
+   cat("\nAll mosquito pool totals are less than 50\n")
+}
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #-------------------- C H E C K   T R A P   I D S  ----------------------
@@ -290,10 +200,10 @@ fun_gsheet_pull_prompt = function(filename, sheet, key) {
 if(file.exists(fn_trap)) { #if fn_trap already exists read that 
   trap_data = read.csv(fn_trap)
 } else { #use gsheet_pull to get data from google drive
- 
+  
   fun_gsheet_pull_prompt(filename = fn_trap, "data", key = key_foco_trap)
   trap_data = read.csv(fn_trap)
-  }
+}
 
 
 unmatched_trap = data_clean %>%
@@ -303,17 +213,15 @@ if(nrow(unmatched_trap) > 0) {
   write.csv(unmatched_trap, "data_mid/unknown_trap_ids.csv")
   stop("There are unknown trap ids in your data, check the data_mid/unkown_trap_ids.csv file.")
 } else {
-  print("All traps_ids are present in the datasheets.")
+  cat("\nAll traps_ids are present in the datasheets.\n")
 }
+
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #-------------------- W R I T E   T O    F I L E  ----------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-data_clean = data_clean %>%
-  select(any_of(col_database))
-#   filter(values > 0)
 
 write.csv(data_clean, fn_datasheet_clean, row.names = F)
 
