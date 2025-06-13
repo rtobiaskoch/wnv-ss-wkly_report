@@ -1,0 +1,394 @@
+---
+title: "wnv-s_weekly_reports"
+format: html
+editor: visual
+---
+
+# Weekly Data Report
+
+### ------------------ CREATE CONFIGURATION ------------------------
+
+DESC: defines filepaths \| \| defines settings \| \| defines filenames \| \| creates setting for plots\
+INPUT: user arguments\
+OUTPUT: config/config_weekly_settings/config_weekly\_\[sys.time\].RData
+
+```{bash, create config}
+Rscript ../config/config_weekly.R --input ../test --year 2025 --week 23 --cp_threshold 500 --update F --clean F # first arg is year second is week
+#add input dir arg 
+#allows to easily run diff input folders
+```
+
+### ------------------- LOAD CONFIGURATION --------------------
+
+DESC: loads in packages \| \| loads user functions \| \| loads config file
+
+```{r, load config}
+rm(list = ls())
+getwd()
+
+source("../config/load_packages.R")
+
+utils = list.files(path = "../utils",
+                   pattern = "*.R",
+                   full.names = T)
+
+purrr::walk(utils, source)
+
+#get the most recent configuration for the run from the output of running config_weekly.R
+read_latest("../config/config_weekly_settings")
+
+
+```
+
+```{bash}
+#git commit -a -m "weekly commit before data removal"
+#git push
+
+```
+
+```{r, echo=FALSE, eval=TRUE}
+
+if(clean) {
+   
+    clean_dir(dir_mid)
+    clean_dir(dir_output)
+    
+  } else {NULL}
+
+```
+
+### -------------------DATA GDRIVE LOAD -------------------------
+
+DESC: reads in current wnv-s_database \| \| foco_trap \| \| key_rename \| \| standards data to dir_input\
+**DEPENDENCIES:** googlesheets4 \| \| googledrive \| \| argparse \| \| gsheet_pull_prompt\
+**INPUT:** NA\
+**OUTPUT:** **\[dir_input\]/wnv-s_database.csv** \| \| **\[dir_input\]/foco_trap.csv\
+\[dir_input\]/standards_input.csv** \| \| **\[dir_input\]/key_rename.csv**\
+
+```{r}
+if(update) {
+#drive_download()
+gsheet_pull_prompt(fn_key_rename, "Sheet1", key_rename_key)
+gsheet_pull_prompt(fn_trap, "data", key_foco_trap)
+gsheet_pull_prompt(fn_gdrive_database, "data", key_database_gsheet)
+gsheet_pull_prompt(fn_standards, "data", key_standards_gsheet)
+
+}
+
+df_key_rename = read.csv(fn_key_rename)  
+foco_trap = read.csv(fn_trap) %>% filter(active == 1)
+database = read.csv(fn_gdrive_database)
+standards = read.csv(fn_standards)
+```
+
+### ---------------------DATASHEET CLEAN ---------------------------
+
+Readme DESC: - reads in datasheet (pool) data from VDCI and BC, - cleans it into the proper format for the database - checks each column for errors. -
+
+DEPENDENCIES: read_list \| \| key rename \| \| wnv_s_clean \| \| tidyverse \| \| purrr
+
+INPUT: \[dir_input\]/datasheets\* \| \| df_key_rename
+
+OUTPUT: \[mid_dir\]/\[fn_datasheet_clean\]\*
+
+```{r, datasheet_clean}
+datasheet0 = read_list(dir_datasheet, "*")
+saveRDS(datasheet0, fn_weekly_input_format_mid)
+
+datasheet1 = datasheet0 %>%
+  key_rename(rename_df = df_key_rename, 
+             drop_extra = T)
+
+datasheet = datasheet1 %>%
+  wnv_s_clean()
+
+#TO DO fix issue that the csu_id which is the key between the two is being cleaned so they dont match
+#clean_changes = diffs_by_col(datasheet1, datasheet, names(datasheet1), "csu_id")
+```
+
+### ------------------ CHECK DATASHEET——————————————————
+
+DESC:\
+DEPENDENCIES:\
+INPUT:\
+OUTPUT:
+
+```{r}
+#TO DO 
+#make this a function
+
+check_data(df = datasheet, #data you want to check
+           trap = foco_trap, #data with trap_ids you want to ensure traps are available
+           dir = dir_mid,
+           year_filter = year_filter, # The year the dates should be 
+           week_filter = week_filter)
+```
+
+\
+
+----------------- READ ALL SPECIES (TRAP) DATA ————————————–DESC:\
+DEPENDENCIES:\
+INPUT:\
+OUTPUT:
+
+```{r}
+#TO DO add 
+all_spp0 = read_list(dir_all_spp, "*") 
+all_spp = all_spp0 %>%
+  key_rename(rename_df = df_key_rename,
+             drop_extra = T) %>%
+  wnv_s_clean()
+
+write.csv(all_spp, file.path(dir_mid, "all_species_active_trap.csv"))
+
+```
+
+-----------------------------Species Keep Culex\
+DESC:\
+DEPENDENCIES:\
+INPUT:\
+OUTPUT:
+
+```{r}
+all_spp_active = all_spp %>%
+  filter(trap_id %in% foco_trap$trap_id)
+
+check_data(df = all_spp_active, 
+           trap = foco_trap, 
+           dir = dir_mid,
+           year_filter = year_filter, 
+           week_filter = week_filter)
+
+
+abund0 = get_abund(all_spp_active, 
+                  spp_keep = c("Pipiens", "Tarsalis"),
+                  grp_var = c("zone", "year", "week", "spp"),
+                  rm_zone = "BC")
+
+write.csv(abund0$trap, file.path(dir_mid, "abund_trap.csv"))
+write.csv(abund0$grp, file.path(dir_mid, "abund_grp.csv"))
+
+#group FC
+abund_fc = get_abund(all_spp_active, 
+                  spp_keep = c("Pipiens", "Tarsalis"),
+                  grp_var = c("zone2", "year", "week", "spp"),
+                  rm_zone = "BC")
+
+fc0 = abund_fc$grp %>%
+  filter(zone == "FC")
+
+abund = rbind(abund0$grp, fc0)
+```
+
+### --------------------------PCR CLEAN ---------------------------
+
+DESC: Reads in the pcr data from quantstudio that contains the Ct values \| \| reads in platemap data that links the platmap position with sample id\
+\
+DEPENDENCIES: tidyverse \| \| readxl \| \| purrr
+
+INPUT - PCR: \[dir_input\]/pcr/\* \[dir_pcr\] - PLATEMAP: \[dir_input\]/platemap/\* \[dir_platemap\] - week_filter = 37 - year_filter = 2024 - copy_threshold = 500 - rn_threshold = 34000
+
+OUTPUT - Cq combined pcr and platemap csv \[fn_cq_out = 2_mid/y##\_w##\_platemap.csv"\]
+
+```{r}
+#TO DO make a function
+#source("../0_R/2_pcr_platemap_read_clean.R")
+
+fn_path = list.files(path = dir_pcr, #
+               full.names = T,
+               ignore.case = T) 
+
+cat("Reading in the PCR file: ", fn_path)
+
+pcr_input = read_pcr(fn_path, sheet = "Results")
+
+pcr_clean = clean_pcr(pcr_input,
+                      y_pattern = "(?<=y)\\d+", #pcr filename pattern that determines year
+                      w_pattern = "(?<=w)\\d+", #pcr filename pattern that determines week
+                      p_pattern = "(?<=p)\\d+", #pcr filename pattern that determines plate#
+                      undet_val = '55.55') #numeric value to replace "Undetermined" to ensure that the column is numeric without missing values (NA)
+
+check_data(df = pcr_clean, 
+           trap = foco_trap, 
+           dir = dir_mid,
+           year_filter = year_filter, 
+           week_filter = week_filter)
+
+```
+
+### ----------------------PLATEMAP CLEAN ---------------------------
+
+DESC:\
+DEPENDENCIES:\
+INPUT:\
+OUTPUT:
+
+```{r}
+fn_path = list.files(path = dir_platemap,
+                     full.names = T,
+                     ignore.case = T)  
+
+cat("\nReading in the following platemap files:\n", 
+    paste(unlist(fn_path), collapse = "\n"))
+
+platemap_input = read_platemap(fn_path,
+                          sheet = "pcr", #sheet in excel file that contains platemap
+                          range = "A1:M9", #range in the sheet that contains your platemap
+                          col_pattern = "(?<=x)\\d+", #pattern in col name with column number
+                          val_to = "csu_id" #column name you want to identify your sample
+                          )
+
+```
+
+```{r}
+platemap_clean = clean_platemap(platemap_input,
+                      y_pattern = "(?<=y)\\d+", #pcr filename pattern that determines year
+                      w_pattern = "(?<=w)\\d+", #pcr filename pattern that determines week
+                      p_pattern = "(?<=p)\\d+" #pcr filename pattern that determines plate#
+                                )
+
+check_data(df = platemap_clean, 
+           trap = foco_trap, 
+           dir = dir_mid,
+           year_filter = year_filter, 
+           week_filter = week_filter)
+
+```
+
+### -------------MERGE PCR AND PLATEMAP -------------------------
+
+```{r}
+cq_data = merge_pcr_platemap(pcr_clean, platemap_clean)
+
+check_data(df = cq_data, 
+           trap = foco_trap, 
+           dir = dir_mid,
+           year_filter = year_filter, 
+           week_filter = week_filter,
+           copy_threshold = copy_threshold)
+
+
+```
+
+```{r}
+std_new = clean_standards(cq_data)
+
+```
+
+\
+
+### ------------------------- PCR PLOT -----------------------------
+
+```{r pcr plot}
+
+p_std = plot_std(std_new)
+
+p_pcr_wnv = plot_pcr(cq_data, 
+                 virus = "WNV", 
+                 pattern_2_keep = "WNV|CSU|RMRP|CDC|pos|neg",
+                 copy_threshold = copy_threshold, 
+                 week_filter = week_filter)
+
+p_pcr_slev = plot_pcr(cq_data, 
+                 virus = "SLEV", 
+                 pattern_2_keep = "SLEV|CSU|RMRP|CDC|pos|neg",
+                 copy_threshold = copy_threshold, 
+                 week_filter = week_filter)
+
+pcr_plot = p_std / p_pcr_wnv /  p_pcr_slev
+pcr_plot
+
+ggsave("../3_output/plots/pcr_plot.png", pcr_plot,
+       width = 8, height = 8, units = "in")
+
+```
+
+### ------------------ MERGE 4 DATABASE --------------------------
+
+```{r}
+
+```
+
+Code Below:
+
+-   data_input:
+    -   datasheets
+    -   pcr_sheet
+    -   platemap
+    -   fn_func_trap: data_mid/functional_traps.csv \*to be added
+-   data_output:
+    -   fn_database_output
+    -   unmatched traps
+-   description:
+    -   checks to ensure traps match existing list
+    -   pulls database
+    -   merges datasheet pcr and platemap data
+    -   makes archive copy of database
+    -   merges new data with database
+    -   pushes changes from new data to database to googledrive
+
+```{r}
+source("0_R/data_merge_and_push.R")
+```
+
+Code Below: -data_input
+
+```{r}
+source("0_R/weekly_data_input.R")
+```
+
+Code Below:\
+- data input:\
+- data_input file and trap coordinates (if not in data_input)
+
+```{r}
+source("0_R/abundance_v2.R")
+```
+
+```{r}
+source("0_R/pools.R")
+```
+
+Code Below:
+
+Data Input:\
+-output from abundance.R\
+-data_input file:\
+\
+Data Output:\
+-yYYYY_wWW_data_update\
+\
+Description:
+
+\- calculates pooled Infection Rate and Vector Index\
+-calculates all spp for each zone (TBD 24-07-16)
+
+this script will drop weeks that only have a gravid trap. because gravid traps aren't used in abundance calculations
+
+```{r}
+source("0_R/pIR_VI.R")
+```
+
+```{r}
+suppressMessages(
+  source("0_R/historical_weekly.R")
+)
+
+p_hx_current
+```
+
+```{r}
+source("0_R/tables.R")
+```
+
+Before generating tables and report make sure all the stuff is correct\
+
+```{r}
+#source("0_R/QC_report.R")
+```
+
+```{r}
+suppressMessages(
+  source("0_R/generate_report.R")
+)
+```

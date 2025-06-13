@@ -1,6 +1,9 @@
 
 
 read_pcr = function(path, sheet) {
+  library(purrr)
+  library(dplyr)
+  
   path %>% 
     map(~ {
       data = read_excel(.x, col_names = TRUE, sheet = sheet) %>% #iteratively read through all file names in path

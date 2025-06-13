@@ -7,27 +7,14 @@
 #3 checks if input directories exist
 #4 checks if input files exist
 #5 defines google sheet keys
-#6 
 
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#L O A D   P A C K A G E S   F O R   P I P E L I N E 
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-suppressMessages({
-  if (!require("pacman")) install.packages("pacman")
-  pacman::p_unload()
-  pacman::p_load(googlesheets4, googledrive, rio, readxl, openxlsx, googledrive, argparse, #importing and exporting
-                 tidyverse, janitor, lubridate, anytime, rquery, stringr, #manipulation
-                 PooledInfRate, #analysis
-                 ggpubr, wesanderson, paletteer, leaflet, patchwork# plotting
-                 )
-})
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #------ U S E R   D E F  V A R I A B L E   D A T A   P A R A M E T E R S : -----------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #variables that will change from week to week
-week_hardcode = isoweek(Sys.Date())  
-year_hardcode = isoyear(Sys.Date()) 
+week_hardcode = lubridate::isoweek(Sys.Date())  
+year_hardcode = lubridate::isoyear(Sys.Date()) 
 # Create an argument parser
 parser <- ArgumentParser(description = "Script to handle config file data inputs")
 
@@ -280,7 +267,6 @@ col_class_database <- c("csu_id" = "character",
 
 
 
-
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #--------------------------- G R O U P _ B Y  V A R S -------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -319,7 +305,7 @@ curr_hx_pal = c("current" = "#e9724c",
 #----------------------------- E X P O R T   C O N F I G ----------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-config_fn = paste0("../config/config_weekly_",Sys.time(), ".RData")
+config_fn = paste0("../config/config_weekly_settings/config_weekly_",Sys.time(), ".RData")
 
 all_params <- ls(envir = .GlobalEnv)
 
@@ -327,7 +313,5 @@ all_params <- ls(envir = .GlobalEnv)
 all_params_list <- mget(all_params, envir = .GlobalEnv)
 
 saveRDS(all_params_list, config_fn)
-
-if(file.exists(config_fn))
 
 

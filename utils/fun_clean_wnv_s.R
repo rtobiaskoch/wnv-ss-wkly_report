@@ -68,7 +68,6 @@ clean_summary <- function(df0, df, col_name, label = deparse(substitute(col_name
 library(dplyr)
 library(stringr)
 library(purrr)
-#alibrary(anytime)
 library(lubridate)
 
 wnv_s_clean <- function(df, 
@@ -243,7 +242,7 @@ wnv_s_clean <- function(df,
   }
   
   
-  # Convert total count to numeric
+  # CLEAN TOTAL 
   if ("total" %in% names(df) & "total" %in% col_2_clean) {
     df <- df %>%
       mutate(total = as.numeric(total))

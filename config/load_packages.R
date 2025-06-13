@@ -8,7 +8,5 @@ suppressMessages({
                  tidyverse, janitor, lubridate, rquery, stringr, #manipulation
                  PooledInfRate, #analysis
                  ggpubr, wesanderson, paletteer, leaflet, patchwork# plotting
-  )
-  
-  
+                )
 })

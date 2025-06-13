@@ -18,25 +18,25 @@ suppressMessages({
 
 data_input0 = read.csv(fn_cq_out) 
 
-data_input = data_input0 %>%
-  mutate(sample_type = case_when(
-                             grepl("^CSU|^BOU|^CDC", csu_id, ignore.case = T) ~ "mozzy",
-                             grepl("neg|negative", csu_id, ignore.case = T) ~ "neg ctrl",
-                             grepl("pos|positive", csu_id, ignore.case = T) ~ "pos ctrl",
-                             grepl("1e2", csu_id, ignore.case = T) ~ "std 1e2",
-                             grepl("1e4", csu_id, ignore.case = T) ~ "std 1e4",
-                             grepl("1e6", csu_id, ignore.case = T) ~ "std 1e6",
-                             grepl("RMRP", csu_id, ignore.case = T) ~ "bird",
-                             T ~ "undefined" 
-                           )
-         )
+# data_input = data_input0 %>%
+#   mutate(sample_type = case_when(
+#                              grepl("^CSU|^BOU|^CDC", csu_id, ignore.case = T) ~ "mozzy",
+#                              grepl("neg|negative", csu_id, ignore.case = T) ~ "neg ctrl",
+#                              grepl("pos|positive", csu_id, ignore.case = T) ~ "pos ctrl",
+#                              grepl("1e2", csu_id, ignore.case = T) ~ "std 1e2",
+#                              grepl("1e4", csu_id, ignore.case = T) ~ "std 1e4",
+#                              grepl("1e6", csu_id, ignore.case = T) ~ "std 1e6",
+#                              grepl("RMRP", csu_id, ignore.case = T) ~ "bird",
+#                              T ~ "undefined" 
+#                            )
+#          )
 
 
 
 std_database = read.csv(fn_standards) 
 
-if(nrow(data_input %>% filter(sample_type == "undefined"))) {
-  stop("you have undefined sample types in your data")
+# if(nrow(data_input %>% filter(sample_type == "undefined"))) {
+#   stop("you have undefined sample types in your data")
 } else {
 
  

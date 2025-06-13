@@ -8,7 +8,7 @@ clean_pcr = function(df, y_pattern = "(?<=y)\\d+", w_pattern = "(?<=w)\\d+", p_p
     plate = str_extract(file_name, p_pattern),     # Extract plate as the part after "_p" (end of the string)
     plate = if_else(is.na(plate), plate, paste0("plate_", plate)) # make na if na so it will throw an error if it isn't working
   ) %>%
-  mutate(ct = if_else(str_detect(ct, "Undetermined"), '55.55', ct)) %>% # convert "undetermined to numeric 55.55 to avoid errors
+  mutate(ct = if_else(str_detect(ct, "Undetermined"), undet_val, ct)) %>% # convert "undetermined to numeric 55.55 to avoid errors
   mutate(cq = round(as.numeric(ct), 2)) %>%
   mutate(well = as.numeric(well), #convert to numeric to sort
          quantity = replace_na(quantity, "0"),
@@ -17,27 +17,11 @@ clean_pcr = function(df, y_pattern = "(?<=y)\\d+", w_pattern = "(?<=w)\\d+", p_p
   ) %>%
   arrange(plate, well) %>%
   # select(well_position, task, target_name, cq, ct_threshold, copies, plate) %>%
-  select(well_position, target_name, cq, ct_threshold, copies, year, week , plate) %>%
+  select(well_position, target_name, cq, ct_threshold, amp_status, copies, year, week , plate) %>%
   pivot_wider(names_from = target_name, 
               values_from = c(copies,cq)) %>%
   rename(cq = cq_WNV)
   
-    
-  
-  if(any(is.na(df$year))){
-    stop("\nThe year is missing in your pcr data. Please check the pcr filename(s) and ensure it contains y####\n
-         for the year.")
-  }
-  
-  if(any(is.na(df$week))){
-    stop("\nThe week is missing in your pcr data. Please check the pcr filename(s) and ensure it contains w##\n
-         for the week.")
-  }
-  
-  if(any(is.na(df$plate))){
-    stop("\nThe plate number is missing in your pcr data. Please check the pcr filename(s) and ensure it contains p#\n
-         for the plate number.")
-  }
   
   return(df)
   
