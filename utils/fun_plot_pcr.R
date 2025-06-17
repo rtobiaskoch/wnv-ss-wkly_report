@@ -6,7 +6,7 @@ library(rlang)
 
 plot_std = function(df) {
   
-  req_cols = c("sample_type", "year", "week", "plate","target", "ct_threshold", "log_copies")
+  req_cols = c("sample_type", "year", "week", "plate","target", "log_copies")
   
   missing_cols <- setdiff(req_cols, names(df))
   
@@ -18,7 +18,7 @@ plot_std = function(df) {
   p_std = df %>% 
     mutate(sample_type = if_else(str_detect(sample_type, "std"), "std", "pos_ctrl")) %>% 
     mutate(grp = paste(year, week, plate, target, sample_type, sep = "-")) %>%
-    filter(str_to_lower(target) == str_extract(csu_id, "^[^_]*")) %>%
+    filter(str_to_lower(target) == str_extract(csu_id, "^[^_]*")) %>% #match the virus in the standard name to the target
     mutate(cq = if_else(cq == 55.55, 40, cq)) %>%
     ggplot(aes(x = log_copies, y = cq, color = week, group = grp)) +
     geom_point(alpha = 0.4, size = 3) +
@@ -45,7 +45,6 @@ plot_pcr <- function(data, virus, pattern_2_keep = "WNV|CSU|RMRP|CDC|pos|neg",
     filter(str_detect(csu_id, regex(pattern_2_keep, ignore_case = TRUE))) %>%
     mutate(
       !!cq_col := if_else(!!cq_col == 55.55, 40, !!cq_col),
-      test_code = if_else(!!copies_col > copy_threshold, "1", "0"),
       test_code = if_else(amp_status != "Amp", NA_character_, test_code),
       test_code = factor(test_code, levels = c("1", "0"))
     )
