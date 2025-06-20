@@ -12,7 +12,7 @@ read_platemap <- function(fn_path,
   library(purrr)
   library(stringr)
   
-  if(tools::file_ext(fn_path) != "xlsx") {
+  if(any(tools::file_ext(fn_path) != "xlsx")) {
     stop("Warning your platemap file is not an excel.")
   }
   
