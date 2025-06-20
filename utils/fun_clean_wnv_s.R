@@ -205,6 +205,7 @@ wnv_s_clean <- function(df,
     if(!silence) {
     clean_summary(df0, df, zone2) }
   }
+
   
   # #CLEAN DATE
   # if ("trap_date" %in% names(df) & "trap_date" %in% col_2_clean) {
@@ -220,17 +221,28 @@ wnv_s_clean <- function(df,
   #   clean_summary(df0, df, trap_date) 
   # }
   
-  #CLEAN DATE
+  # CLEAN DATE
   if ("trap_date" %in% names(df) & "trap_date" %in% col_2_clean) {
-    if (!exists("parse_flexible_date", mode = "function")) {
-    }
     
+    # First convert to character if not already
+    df <- df %>% 
+      mutate(trap_date = as.character(trap_date))
+    
+    # Then parse with flexible formats
     df <- df %>%
       mutate(
-        trap_date = parse_date_time(trap_date, orders = c("mdy", "dmy", "ymd", "d B Y", "BdY", "Ymd"))
+        trap_date = case_when(
+          is.na(trap_date) | trap_date == "" ~ NA_character_,
+          TRUE ~ as.character(parse_date_time(trap_date, 
+                                              orders = c("ymd", "mdy", "dmy", "Ymd"),
+                                              quiet = TRUE))
+        ),
+        trap_date = as.Date(trap_date)
       )
+    
     if(!silence) {
-    clean_summary(df0, df, trap_date) }
+      clean_summary(df0, df, trap_date) 
+    }
   }
   
   # ADD YEAR
