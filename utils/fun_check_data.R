@@ -1,15 +1,18 @@
 check_data <- function(df, trap, dir, 
                        zones = c("NE", "NW", "SE", "SW", "LV", "BE", "BC"),
-                       year_filter, 
-                       week_filter,
-                       copy_threshold = 500
+                       year_filter = 1:10000,  #any number aka no filter
+                       week_filter = 1:52, #any number aka no filter
+                       copy_threshold = 500,
+                       rn_threshold = 34000
                        ) {
   
   #this function is to be run on cleaned data using wnv_s_clean or some other 
   
   df_name <- deparse(substitute(df))
   
-  cat("Checking ", df_name, " with ", nrow(df), " rows and ", ncol(df), "columns.")
+  cat("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n",
+      "\n Checking ", df_name, " with ", nrow(df), " rows and ", ncol(df), "columns.\n",
+      "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n")
   
   #--------------------- C H E C K   C S U _ I D --------------------------------------
   
@@ -75,7 +78,7 @@ check_data <- function(df, trap, dir,
       cat("no NA method")
     }  #end if NA method
     
-    if(!any(str_detect(df$method, "G|L"))) {
+    if(!all(str_detect(df$method, "G|L"))) {
       
       stop(paste0("\n Some methods aren't L or G in ", df_name, "\n"))
     } else{
@@ -107,10 +110,10 @@ check_data <- function(df, trap, dir,
   #--------------------- C H E C K    Y E A R  --------------------------------------
   # Validate year if year is in your data frame
   if ("year" %in% names(df)) {
-    if(unique(df[,"year"]) != year_filter) {
+    if(!all(as.numeric(df$year) %in% year_filter)) {
       stop("The year in", df_name, " doesn't match the config year filter")
     } else { 
-      cat("\nThe year in ", df_name, "matches ", year_filter, "\n")
+      cat("\nThe year in ", df_name, "matches the year filter. \n")
       
     } #end if year matches year_filter
 
@@ -120,10 +123,10 @@ check_data <- function(df, trap, dir,
   #--------------------- C H E C K    W E E K  --------------------------------------
   # Validate week if week is in your data frame
   if ("week" %in% names(df)) {
-    if(unique(df[,"week"]) != week_filter) {
+    if(!all(as.numeric(df$week) %in% week_filter)) {
       stop("The week in", df_name, " doesn't match the config week filter")
     } else { 
-      cat("\nThe week in ", df_name, "matches ", week_filter, "\n")
+      cat("\nThe week in ", df_name, "matches the week filter \n")
       
     } #end if week matches week_filter
     
@@ -137,10 +140,23 @@ check_data <- function(df, trap, dir,
   # Validate week if week is in your dataframe
   if ("plate" %in% names(df)) {
     if(any(is.na(df$plate))) {
-      stop("\nThe plate number is missing in ", df_name)
+      stop("\nThe plate number is missing in ", df_name, "\n")
     } #end is NA plate
 
   } #end check plate
+  
+  
+  
+  #------------------ C H E C K   C T (Rn)  T H R E S H O L D  ---------------------------
+  # Validate week if week is in your dataframe
+  if ("ct_threshold" %in% names(df)) {
+    if(any(df$ct_threshold < rn_threshold)) {
+      stop("\nThe Ct threshold was not set to ", rn_threshold, "\n")
+    } else {
+      cat("\nThe Ct Threshold (rn_threshold) is set to ", rn_threshold, 
+           ". Nice.\n")} #end is ct_threshold < rn_threshold
+    
+  } #end check ct threshold
   
   
   #---------------- C H E C K   C O N T R O L S  ----------------------
