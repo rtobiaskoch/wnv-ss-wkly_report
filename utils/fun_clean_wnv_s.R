@@ -237,7 +237,7 @@ wnv_s_clean <- function(df,
                                               orders = c("ymd", "mdy", "dmy", "Ymd"),
                                               quiet = TRUE))
         ),
-        trap_date = as.Date(trap_date)
+        trap_date = as.POSIXct(trap_date)
       )
     
     if(!silence) {
