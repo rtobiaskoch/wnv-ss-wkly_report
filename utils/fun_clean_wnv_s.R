@@ -221,29 +221,32 @@ wnv_s_clean <- function(df,
   #   clean_summary(df0, df, trap_date) 
   # }
   
-  # CLEAN DATE
+  # CLEAN DATE (lubridate version)
   if ("trap_date" %in% names(df) & "trap_date" %in% col_2_clean) {
     
-    # First convert to character if not already
-    df <- df %>% 
-      mutate(trap_date = as.character(trap_date))
+    # Convert to character and trim whitespace
+    df <- df %>%
+      mutate(trap_date = trimws(as.character(trap_date)))
     
-    # Then parse with flexible formats
+    # Parse dates with error handling
     df <- df %>%
       mutate(
         trap_date = case_when(
           is.na(trap_date) | trap_date == "" ~ NA_character_,
-          TRUE ~ as.character(parse_date_time(trap_date, 
-                                              orders = c("ymd", "mdy", "dmy", "Ymd"),
-                                              quiet = TRUE))
+          TRUE ~ {
+            parsed <- lubridate::parse_date_time(trap_date, 
+                                                 orders = c("ymd", "mdy", "dmy", "Ymd"),
+                                                 quiet = TRUE)
+            ifelse(is.na(parsed), NA_character_, as.character(parsed))
+          }
         ),
-        trap_date = as.POSIXct(trap_date)
+        trap_date = as.Date(trap_date)
       )
     
     if(!silence) {
       clean_summary(df0, df, trap_date) 
     }
-  }
+  }#end if trap_date
   
   # ADD YEAR
   if ("trap_date" %in% names(df) & !"year" %in% names(df) & "year" %in% col_2_clean) {
