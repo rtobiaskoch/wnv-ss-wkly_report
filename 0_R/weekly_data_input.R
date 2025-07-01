@@ -1,4 +1,4 @@
-list2env(readRDS(config_params_file),           envir = .GlobalEnv)
+#list2env(readRDS(config_params_file),           envir = .GlobalEnv)
 
 data_input0 = read_rds(fn_weekly_input_format_mid)
 
@@ -17,7 +17,7 @@ if(nrow(filtered_samples) > 0) {
 
 order = colnames(data_input)
 
-test_results = check_read_fun(fn_database_update) %>%
+test_results = database_update %>
   select(csu_id, test_code) %>% # keep only the test_code
   rename(`CSU Pool Number (CMC Enters)` = "csu_id",
          `Test Code (CSU Enters)` = "test_code")

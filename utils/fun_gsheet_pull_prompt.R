@@ -49,7 +49,7 @@ gsheet_pull_prompt = function(filename, sheet = "Sheet1", key) {
      #mdata = apply(mdata, 2, as.character) #added because error   unimplemented type 'list' in 'EncodeElement' was occuring
       write.csv(mdata, filename, row.names = F, na = "")
       
-      read.csv(filename)
+      #read.csv(filename)
     
     print("\n...Checking that gdrive download worked...\n")
     

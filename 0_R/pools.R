@@ -1,9 +1,9 @@
-list2env(readRDS(config_params_file),           envir = .GlobalEnv)
+
 
 #check and read in data
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-data_input = check_read_fun(fn_database_update, wk = week_filter_yr)
-
+#data_input = check_read_fun(fn_database_update, wk = week_filter_yr)
+data_input = database_update
 
 suppressMessages({
   
@@ -50,12 +50,13 @@ suppressMessages({
   
   pos_pools =  rbind(pos_pools_zone, fc_pos_pools)
   
-  pools = left_join(n_pools, pos_pools, by = grp_vars)
+  pools = left_join(n_pools, pos_pools, by = grp_vars) %>%
+    mutate(year = as.integer(year),
+           week = as.integer(week))
   
-}
-  
-)
+})
 
 
 
 write.csv(pools, fn_pools_mid, row.names = F)
+

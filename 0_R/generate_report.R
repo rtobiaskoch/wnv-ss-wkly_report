@@ -1,7 +1,7 @@
 #generate report
-list2env(readRDS(config_params_file),           envir = .GlobalEnv)
+#list2env(readRDS(config_params_file),           envir = .GlobalEnv)
 #get tables
-file_names = list.files(path = "data_output",
+file_names = list.files(path = dir_output,
                 pattern = "table",
                 full.names = T)
 
@@ -53,7 +53,7 @@ walk2(dataframes, sheet_names, function(data, sheet) {
 })
 
 # Save the workbook to a file
-saveWorkbook(wb, "data_output/weekly_report_output.xlsx", overwrite = TRUE)
+saveWorkbook(wb, file.path(dir_output, "/weekly_report_output.xlsx"), overwrite = TRUE)
 
 gsheet <- gs4_create("weekly_report_R_output")
 
@@ -65,7 +65,7 @@ walk2(dataframes, sheet_names, function(data, sheet) {
 sheet_delete(gsheet, sheet = "Sheet1")
 
 # Locate the target folder in Google Drive
-target_folder <- drive_get("weekly_report")
+target_folder <- drive_get(weekly_report_folder)
 
 # Move the Google Sheet to the target folder
 drive_mv(gsheet, path = as_id(target_folder))

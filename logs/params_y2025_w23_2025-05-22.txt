@@ -1,5 +1,5 @@
 [1] "1_input/config_params.RDS Log"
-$all_zones
+$zone_lvls
 [1] "NE" "SE" "NW" "SW" "LV" "BC" "BE"
 
 $args

@@ -23,7 +23,7 @@ calc_pools = function(df = database_update,
     df %>% 
       complete(year, week, zone = zone_cmplt, spp = spp_cmplt) %>%
       mutate(n_pools = replace_na(n_pools, 0)) %>%
-      mutate(n_pos_pools = replace_na(n_pools, 0))
+      mutate(n_pos_pools = replace_na(n_pos_pools, 0))
   }
 
   
@@ -51,7 +51,10 @@ calc_pools = function(df = database_update,
     ungroup
   
   #fill in any missing pools
-  fc_pools =  fc_pools %>% cmplt_missing()
+  fc_pools =  fc_pools %>% 
+    complete(year, week, spp = spp_cmplt) %>%
+    mutate(n_pools = replace_na(n_pools, 0)) %>%
+    mutate(n_pos_pools = replace_na(n_pos_pools, 0))
   
   pools =  rbind(pools0, fc_pools)
   

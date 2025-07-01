@@ -2,7 +2,7 @@
 #------------------C O N F I G --------------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
        
-list2env(readRDS(config_params_file),           envir = .GlobalEnv)
+#list2env(readRDS(config_params_file),           envir = .GlobalEnv)
 
 
 
@@ -10,9 +10,9 @@ list2env(readRDS(config_params_file),           envir = .GlobalEnv)
 #------------------R E A D  D A T A ----------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #>
-data_input = check_read_fun(fn_database_update, wk= week_filter_yr)
-abund_zone_wk = check_read_fun(paste0(fn_abund_out, ".csv"), wk = week_filter_yr)
-pools = check_read_fun(fn_pools_mid, wk = week_filter_yr)
+data_input = database_update
+abund_zone_wk = check_read_fun(fn_abund_out, wk = week_filter_yr)
+#pools = check_read_fun(fn_pools_mid, wk = week_filter_yr)
   
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -76,8 +76,8 @@ pools = check_read_fun(fn_pools_mid, wk = week_filter_yr)
  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   #-------------- C O M B I N E   D A T A -----------------------------
  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  data_zone_wk0 = pools %>%
-    left_join(abund_zone_wk, by = grp_vars) %>%
+  data_zone_wk0 = abund %>%
+    left_join(pools, by = grp_vars) %>%
     left_join(df_pir, by = grp_vars) %>%
     mutate(vi = round(abund * pir,4),
           vi_lci = round(abund * pir_lci,4),
@@ -86,26 +86,34 @@ pools = check_read_fun(fn_pools_mid, wk = week_filter_yr)
            week = factor(week),
            zone = factor(zone, levels = zone_lvls),
            spp = factor(spp, levels = c("Pipiens", "Tarsalis"))) %>%
-    arrange(zone, spp)
+    arrange(zone, spp) %>%
+   mutate(across(everything(), ~ replace(.x, is.na(.x), 0)))
+ 
 
   #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   #--------------- S U M    A L L   S P P ----------------------------
   #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   sum_col = c("pools_G", "pools_L", "n_pools",
               "pos_pools_G", "pos_pools_L", "n_pos_pools", 
-              "mosq", "mosq_L", 
+             # "mosq", 
+              "mosq_L", 
               "abund", "vi", "vi_lci", "vi_uci")
  
-  distinct_col = c("trap_L_func")
+  distinct_col = c("trap_L")
+  
+  grp_vars_sym <- syms(c(grp_vars))
   
   suppressMessages({
-  data_zone_wk_spp_all0 = data_zone_wk0 %>%
-    mutate(spp =  "All") %>%
-    group_by(year, week, zone, spp) %>%
-    summarise(spp = "All",
-              across(all_of(sum_col), sum),
-              across(all_of(distinct_col), ~max(.))
-              )
+    data_zone_wk_spp_all0 <- data_zone_wk0 %>%
+      mutate(spp = "All") %>%
+      group_by(!!!grp_vars_sym) %>%
+      summarise(
+        spp = "All",
+        across(all_of(sum_col), ~ sum(.x, na.rm = TRUE)),
+        across(all_of(distinct_col), ~ max(.x, na.rm = TRUE)),
+        .groups = "drop"
+      ) %>%
+      mutate(across(everything(), ~ replace(.x, is.na(.x), 0)))
   
   })
   
@@ -115,11 +123,13 @@ pools = check_read_fun(fn_pools_mid, wk = week_filter_yr)
 
   suppressMessages({
     pir_all_spp = data_zone_wk0 %>%
-      group_by(year, week, zone) %>%
+      mutate(spp = "All") %>%
+      group_by(!!!grp_vars_sym) %>%
       summarize(spp = "All",
-                pir = sum(vi)/sum(abund),
-                pir_lci = sum(vi_lci)/sum(abund),
-                pir_uci = sum(vi_uci)/sum(abund))
+                pir = sum(vi, na.rm = T)/sum(abund, na.rm=T),
+                pir_lci = sum(vi_lci, na.rm = T)/sum(abund, na.rm = T),
+                pir_uci = sum(vi_uci, na.rm = T)/sum(abund, na.rm = T)) %>%
+      mutate(across(everything(), ~ replace(.x, is.na(.x), 0)))
     
   })
 

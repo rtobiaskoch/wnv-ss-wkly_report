@@ -100,8 +100,8 @@ check_data <- function(df, trap, dir,
   
   if("trap_date" %in% names(df)){
     
-    if(!is.POSIXct(df$trap_date)) { 
-      stop(paste0("\nThe trap_date in ", df_name, " is not a POSIXct (date)\n"))
+    if(!is.Date(df$trap_date)) { 
+      stop(paste0("\nThe trap_date in ", df_name, " is not a Date\n"))
     } #end if total numeric
     
   } #end if total in df

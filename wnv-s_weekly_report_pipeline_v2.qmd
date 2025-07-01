@@ -13,9 +13,19 @@ INPUT: user arguments\
 OUTPUT: config/config_weekly_settings/config_weekly\_\[sys.time\].RData
 
 ```{bash, create config}
-Rscript config/config_weekly.R --input test --year 2025 --year_hx 2019 --week 23 --cp_threshold 500 --update F --clean F # first arg is year second is week
+Rscript config/config_weekly.R --input w26 --year 2025 --year_hx 2019 --week 26 --cp_threshold 500 --update T --clean F # first arg is year second is week
 #add input dir arg 
 #allows to easily run diff input folders
+```
+
+```{r}
+knitr::opts_chunk$set(
+  echo = TRUE,       # Keep code visible
+  results = 'hide',  # Hide printed output
+  message = FALSE,   # Hide messages
+  warning = FALSE,   # Hide warnings
+  fig.show = 'show'  # Keep plots visible
+)
 ```
 
 ### -------------LOAD CONFIGURATION --------------------
@@ -46,14 +56,14 @@ read_latest("config/config_weekly_settings")
 
 ```
 
-```{r, echo=FALSE, eval=TRUE}
+```{r}
 
-if(clean) {
-
-    clean_dir(dir_mid)
-    clean_dir(dir_output)
-
-  } else {NULL}
+# if(clean) {
+# 
+#     clean_dir(dir_mid)
+#     clean_dir(dir_output)
+# 
+#   } else {NULL}
 
 ```
 
@@ -93,7 +103,7 @@ standards = read.csv(fn_standards)
 
 ### -------------DATABASE CHECK ---------------------------
 
-```{r}
+```{r, include=FALSE}
 #read in database WNV
 database = read.csv(fn_gdrive_database) %>% 
   wnv_s_clean(distinct_col = c("csu_id", "trap_id", "trap_date", "year", "week", "spp"))
@@ -103,7 +113,7 @@ check_data(df = database, #data you want to check
            dir = dir_mid)
 ```
 
-```{r}
+```{r, include=FALSE}
 #read in database SLEV
 database_slev = read.csv(fn_gdrive_database_slev) %>% 
   wnv_s_clean()
@@ -113,8 +123,9 @@ check_data(df = database_slev, #data you want to check
            dir = dir_mid)
 ```
 
-```{r}
-culex_database = read.csv(fn_gdrive_culex_sheet) %>% 
+```{r, include=FALSE}
+culex_database = read.csv(fn_gdrive_culex_sheet) %>%
+ # filter(trap_status != "missing") %>% #TO DO add to wnv_s_clean and remove
   wnv_s_clean()
 
 check_data(df = culex_database, #data you want to check
@@ -133,7 +144,7 @@ INPUT: \[dir_input\]/datasheets\* \| \| df_key_rename
 
 OUTPUT: \[mid_dir\]/\[fn_datasheet_clean\]\*
 
-```{r, datasheet_clean}
+```{r, include=FALSE}
 datasheet_input = read_list(dir_datasheet, "*")
 saveRDS(datasheet_input, fn_weekly_input_format_mid)
 
@@ -161,7 +172,7 @@ INPUT -PCR: \[dir_input\]/pcr/\* \[dir_pcr\] \| \| PLATEMAP: \[dir_input\]/plate
 
 OUTPUT - Cq combined pcr and platemap csv \[fn_cq_out = 2_mid/y##\_w##\_platemap.csv"\]
 
-```{r}
+```{r, include=F}
 #TO DO make a function
 #source("0_R/2_pcr_platemap_read_clean.R")
 
@@ -185,6 +196,7 @@ check_data(df = pcr_clean,
            year_filter = year_filter, 
            week_filter = week_filter)
 
+write_rds(pcr_clean, paste0(dir_mid_wk, "pcr_clean.RData"))
 rm(fn_path)
 ```
 
@@ -195,7 +207,7 @@ DEPENDENCIES:\
 INPUT:\
 OUTPUT:
 
-```{r}
+```{r, include=FALSE}
 fn_path = list.files(path = dir_platemap,
                      full.names = T,
                      ignore.case = T)  
@@ -221,12 +233,14 @@ check_data(df = platemap_clean,
            year_filter = year_filter, 
            week_filter = week_filter)
 
+write_rds(platemap_clean, paste0(dir_mid_wk, "platemap_clean.RData"))
+
 rm(fn_path)
 ```
 
 ### --------------MERGE PCR AND PLATEMAP -------------------------
 
-```{r}
+```{r, include=FALSE}
 cq_data = merge_pcr_platemap(pcr_clean, platemap_clean) %>%
   wnv_s_clean()
 
@@ -237,18 +251,18 @@ check_data(df = cq_data,
            week_filter = week_filter,
            copy_threshold = copy_threshold)
 
-
+write_rds(cq_data, paste0(dir_mid_wk, "cq_data.RData"))
 ```
 
 ### -------------- STANDARDS -------------------------
 
-```{r}
+```{r, include=FALSE}
 std_new = clean_standards(cq_data)
 
 if(update){
   update_gsheet(new = std_new, 
               old = standards, 
-              by = c("year", "week", "plate", "target", "sample_type"), 
+              by = c("year", "week", "plate", "target", "sample_type", "csu_id"), 
               fn_save = fn_standards, 
               gkey = key_standards_gsheet,
               gfolder = "database_archive", 
@@ -261,7 +275,7 @@ if(update){
 
 ### -------------- BIRDS -----------------------------
 
-```{r}
+```{r, include=FALSE}
 #add birds 
 birds = cq_data %>%
   filter(sample_type == "bird") %>%
@@ -270,18 +284,19 @@ birds = cq_data %>%
   select(csu_id, year, week, target_name, test_code, cq, copies)
 
 
+
 if(update){
   update_gsheet(new = birds, 
               #old = standards, 
-              by = c("csu_id", "year", "week"), 
-              fn_save = fn_standards, 
+              by = c("csu_id", "year", "week", "target_name"), 
+              fn_save = fn_bird_output, 
               gkey = key_birds,
               gfolder = "database_archive", 
               gname = "birds_archive", 
               col_database = names(birds), 
               sheet = "data" )
 }
-rm(birds)
+#rm(birds)
 ```
 
 ### -------------- PCR PLOT --------------------------------
@@ -312,19 +327,19 @@ pcr_plot = p_std / p_pcr_wnv /  p_pcr_slev
 pcr_plot
 
 
-ggsave(paste0(dir_plots, "/pcr_plot.png"), pcr_plot,
+ggsave(paste0(dir_plot_wk, "pcr_plot.png"), pcr_plot,
        width = 8, height = 8, units = "in")
 
 
 rm(p_std, p_pcr_wnv, p_pcr_slev)
-rm(standards, cq_data)
+#rm(standards, cq_data)
 ```
 
 ### -------------- DATABASE UPDATE ---------------------------
 
 DESC: MERGE WNV DATASHEET & PCR
 
-```{r}
+```{r, include=FALSE}
 
 #causing duplicates
 database_new = merge_4_database(datasheet_clean, cq_data,   
@@ -332,6 +347,8 @@ database_new = merge_4_database(datasheet_clean, cq_data,
                             copy_threshold = copy_threshold) %>%
   wnv_s_clean(distinct_col = c("csu_id", "trap_id", "year", "week", "spp"))
 
+
+write_rds(database_new, paste0(dir_mid_wk, "database_new.RData"))
 
 if(update){
   update_gsheet(new = database_new,
@@ -350,7 +367,7 @@ if(update){
 
 ### -------------- MERGE SLEV DATASHEET & PCR -----------------------
 
-```{r}
+```{r, include=FALSE}
 
 database_slev_new = merge_4_database(datasheet_clean, cq_data,   
                             virus = "SLEV",
@@ -391,7 +408,7 @@ Code Below:
 
 Code Below: -data_input
 
-```{r}
+```{r, include=FALSE}
 #source("0_R/check_read_fun.R")
 #source("0_R/weekly_data_input.R")
 
@@ -408,7 +425,7 @@ DEPENDENCIES:\
 INPUT:\
 OUTPUT:
 
-```{r}
+```{r, include=FALSE}
 #TO DO add 
 all_spp0 = read_list(dir_all_spp, "*") 
 all_spp = all_spp0 %>%
@@ -417,7 +434,7 @@ all_spp = all_spp0 %>%
   mutate(spp0 = spp) %>% #keep original
   wnv_s_clean()
 
-write.csv(all_spp, file.path(dir_mid, "all_species_active_trap.csv"))
+write_rds(all_spp, paste0(dir_mid_wk,"all_species_active_trap.RData"))
 
 ```
 
@@ -428,7 +445,7 @@ DEPENDENCIES:\
 INPUT:\
 OUTPUT:
 
-```{r}
+```{r, include=FALSE}
 #keep only traps in routine active traps from surveillance
 culex_new = all_spp %>%
   filter(trap_id %in% foco_trap$trap_id) %>%
@@ -438,14 +455,19 @@ culex_new = all_spp %>%
   trap_complete(trap = foco_trap$trap_id) %>%
   rquery::natural_join(foco_trap %>% select(trap_id, method, zone, zone2), jointype = "FULL", by = "trap_id")
   
-#dunno where this function went
-# zones_check = check_zone(foco_trap, culex_new)
-# write.csv(zones_check, file.path(dir_mid, "zones_check.csv"))
+
+#mosquito count per trap
+ggplot(culex_database %>% filter(!is.na(spp)), aes(total, color = spp, fill = spp)) +
+  geom_histogram(bins = 50, alpha = 0.5, position = "identity") +
+  theme_classic() +
+  facet_wrap(~zone2)
+
 
 #get trap status
 trap_sum = trap_stat_sum(culex_new)
 trap_sum$p
-write.csv(trap_sum$df, file.path(dir_mid, "trap_status_summary.csv"))
+ggsave(plot = trap_sum$p, filename = paste0(dir_mid_wk, "trap_status.png"))
+write.csv(trap_sum$df, paste0(dir_mid_wk,"trap_status_summary.csv"))
 
 
 
@@ -464,123 +486,31 @@ if(update){
 
 ```
 
-\
-
-### -------------- CALC ABUNDANCE —————————————————–
-
-DESC:\
-DEPENDENCIES:\
-INPUT:\
-OUTPUT:
-
-```{r}
-#group by zone
-abund0 = calc_abund(culex_new, 
-                  grp_var = c("zone", "year", "week", "spp"))
-
-#group FC
-abund_fc = calc_abund(culex_new, 
-                  grp_var = c("zone2", "year", "week", "spp"))
-
-#group all spp
-abund_all = calc_abund(culex_new, 
-                  grp_var = c("zone", "year", "week"))
-
-#group all FC
-abund_all_fc = calc_abund(culex_new, 
-                  grp_var = c("zone2", "year", "week"))
-
-abund = bind_rows(abund0, abund_all, 
-                  abund_fc, abund_all_fc) %>%
-  distinct_all() %>%
-  wnv_s_clean(all_cols = names(.)) %>%
-  arrange(year, week, zone, spp)
-
-check_data(df = abund,
-           trap = foco_trap, 
-           dir = dir_mid,
-           year_filter = year_filter, 
-           week_filter = week_filter
-           )
-
-
-write.csv(abund, fn_abund_out, row.names = F)
-
-
-write.csv(culex_new, file.path(dir_mid, "abund_trap.csv"))
-write.csv(abund0$trap, file.path(dir_mid, "abund_trap.csv"))
-write.csv(abund0$grp, file.path(dir_mid, "abund.csv"))
-
-rm(abund0, abund_fc, abund_all, abund_all_fc)
-```
-
-### -------------- CALC POOLS—————————————————– 
+### -------------- CALC POOLS—————————————————–
 
 Code Below: - data input: database_update (weekly data from surveillance) - data_input
 
-```{r}
+```{r, include=FALSE}
 pools = calc_pools(database_new) %>%
-  wnv_s_clean(all_cols = names(.))
+  wnv_s_clean(all_cols = names(.))  %>%
+    mutate(zone = factor(zone, levels = zone_lvls)) %>%
+    arrange(year, week, zone, spp)
 
-skimr::skim(pools)
-
+write_rds(pools, paste0(dir_mid_wk,"pools.RData"))
 ```
 
-### -------------- CALC PIR —————————————————–
-
-Code Below:
-
-Data Input:\
--output from abundance.R\
--data_input file:\
-\
-Data Output:\
--yYYYY_wWW_data_update\
-\
-Description:
-
-\- calculates pooled Infection Rate and Vector Index\
--calculates all spp for each zone (TBD 24-07-16)
-
-this script will drop weeks that only have a gravid trap. because gravid traps aren't used in abundance calculations
+### --------------PLOT POOLS—————————————————–
 
 ```{r}
-#add complete for the different zones
-pir0 = calc_pir(database_new,
-               grp_var = c("zone", "year", "week", "spp"))
-
-pir_fc = calc_pir(database_new , 
-                   grp_var = c("zone2", "year","spp", "week"))
-
-pir_all = calc_pir(database_new , 
-                   grp_var = c("zone", "year", "week"))
-
-pir_fc_all = calc_pir(database_new, 
-                   grp_var = c("zone2", "year", "week"))
-
-pir = bind_rows(pir0, pir_all,
-          pir_fc, pir_fc_all) %>% 
-  distinct_all() %>%
-  wnv_s_clean(all_cols = names(pir0)) %>%
-  arrange(year, week, zone, spp)
-
-write.csv(pir, file.path(dir_mid, "pir.csv"))
-
-rm(pir0, pir_all, pir_fc, pir_fc_all)
-```
-
-### -------------- CALC VI —————————————————–
-
-```{r}
-vi = calc_vi(abund, pir,
-             by = grp_vars) %>%
-   wnv_s_clean(rm_col = c("trap_status"))
-
+p_pools <- plot_pools(pools)
+p_pools
+  
+ggsave(paste0(dir_plot_wk, "pools.png"), p_pools, height = 8, width = 12, units = "in")
 ```
 
 ### -------------- CALC ZONE STATS —————————————————–
 
-```{r}
+```{r, include=FALSE}
 culex_update = read.csv(fn_database_culex_update) %>% wnv_s_clean(silence = T)
 database_update = read.csv(fn_database_update) %>% wnv_s_clean(silence = T)
 
@@ -590,39 +520,146 @@ database_update = read.csv(fn_database_update) %>% wnv_s_clean(silence = T)
 #     filter(year %in% year_filter_hx) 
 
 all_hx = calc_all(culex_update, #input for abundance
-                  database_update)  #input for pir
+                  database_update)%>%
+  arrange(year, week, zone, spp)  #input for pir
+
+write.csv(all_hx, paste0(dir_mid_wk, "zone_stats.csv"), row.names = F)
+
+#how many zones are missing data
+# na_data = all_hx %>% 
+#   filter(year != year_filter) %>%
+#   filter(!zone %in% c("FC", "BC")) %>%
+#   filter(is.na(abund)) %>% 
+#   filter(spp == "All") %>%
+#   group_by(year, week, zone) %>% 
+#   count() %>%
+#   ggplot(aes(x = week, y = n, fill = zone)) +
+#   geom_col() +
+#   facet_wrap(~year) +
+#   theme_classic() +
+#   ggtitle("Zones with Missing Data by Week")
+
+# ggsave(filename = paste0(dir_plots, "/missing_weeks_hx.png"))
 
 current_wk = all_hx %>%
   filter(year == year_filter,
-         week == week_filter)
+         week == week_filter) 
   
 ytd = all_hx %>%
-  filter(year == year_filter)
+  filter(year == year_filter,
+         week %in% 23:week_filter) %>%
+  mutate(type = "current")
 
 hx = all_hx %>%
-  filter(year %in% year_filter_hx) 
+  filter(year %in% year_filter_hx) %>%
+  mutate(type = "hx")
 
-#hx_wide to use for tables for report
-hx_wide = hx %>% clean_wide("hx_")
-ytd_wide = ytd %>% clean_wide("")
+```
 
-#combine
-df_all =  hx_wide %>% left_join(ytd_wide, by = "week")
+### -------------- PLOT ZONE STATS HIST —————————————————–
 
-hx_abund = create_hx_report(df_all, 
-              zones = zone_lvls, 
-              prefix = "abund")
+```{r}
+  hx %>% 
+   filter(spp == "All" & zone %in% c("BE", "LV", "FC")) %>%
+ggplot(aes(abund, color = zone2, fill = zone2)) +
+     geom_density(alpha = 0.4, position = "identity") +
+     theme_classic()
+ 
+ 
+  hx %>% 
+   filter(spp == "All" & zone %in% c("BE", "LV", "FC")) %>%
+ggplot(aes(vi, color = zone2, fill = zone2)) +
+     geom_density(alpha = 0.4, position = "identity") +
+     theme_classic()
+```
+
+### -------------- PLOT ZONE STATS LINE —————————————————–
+
+```{r}
+hx2 = all_hx %>%
+  filter(year %in% c(2015:(year_filter-1))) %>%
+  mutate(type = "hx")
+
+ytd_hx_long = clean_long_hx(hx2, ytd)
+
+p_line = plot_hx_line(df = ytd_hx_long, 
+             text = "Larimer County WNV Surveillance", 
+             color_var = year)
+
+p_line  = ggplotly(p_line) %>% 
+  layout(legend = list(orientation = "h",
+                       y = -0.2))
+library(htmlwidgets)
+saveWidget(p_line, file = paste0(dir_plot_wk, "p_line.html"))
+
+```
+
+### -------------- PLOT ZONE STATS AREA —————————————————–
+
+```{r}
+ytd_hx_wk = clean_long_hx_wk(ytd, hx, 
+                          #  rm_zone = c("BC", fc_zones),
+                            rm_zone = c("BC"),
+                            grp_vars = c("year", "week", "zone", "spp"))
+
+p_abund = plot_hx(ytd_hx_wk, abund, "Abundance")
+p_pir = plot_hx(ytd_hx_wk, pir, "PIR")
+
+p_vi = plot_hx(ytd_hx_wk, vi, "Vector Index") +
+ geom_hline(yintercept = vi_threshold, linetype = "dashed", color = "red") +
+ scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25))
 
 
-hx_pir= create_hx_report(df_all, 
-              zones = zone_lvls, 
-              prefix = "pir")
+description = paste0("*All historical data averaged from ",  
+                     min(year_filter_hx), " to ", max(year_filter_hx))
+
+library(patchwork)
+p_hx_current0 = p_abund + p_pir + p_vi + 
+  plot_annotation(caption = description) +
+  plot_layout(#widths =c(3,3,3,1), 
+              guides = "collect") & theme(legend.position = 'bottom', 
+                                          legend.title = element_blank())
+
+p_hx_current0
+
+fn_p_hx = paste0(dir_plot_wk, "hx_plot_all.png")
+
+ggsave(fn_p_hx, p_hx_current0, height = 8, width = 12, units = "in")
+
+
+# Upload a single file to a specific folder
+drive_upload(
+  media = fn_p_hx,
+  path = as_id(key_plots_dir),  # Replace with your folder ID
+  name = "new_filename.csv"        # Optional: specify a new name
+)
+
 
 ```
 
 \
 
-```{r}
+```{r, include=FALSE}
+#hx_wide to use for tables for report 
+hx_wide = hx %>% clean_wide("hx_") 
+ytd_wide = ytd %>% clean_wide("")
+
+#combine 
+df_all = hx_wide %>% left_join(ytd_wide, by = "week")
+
+hx_abund = create_hx_report(df_all, zones = zone_lvls, prefix = "abund")
+ 
+
+hx_pir = create_hx_report(df_all, zones = zone_lvls, prefix = "pir", sigfig = 4)
+
+hx_vi = create_hx_report(df_all, zones = zone_lvls, prefix = "vi")
+
+write.csv(hx_vi, file.path(dir_output, "table1b_hx_vi.csv"), row.names = F)
+write.csv(hx_abund, file.path(dir_output, "table2b_hx_abund.csv"), row.names = F)
+write.csv(hx_pir, file.path(dir_output, "table3b_hx_pir.csv"), row.names = F)
+```
+
+```{r, include=FALSE}
 source("0_R/tables.R")
 ```
 

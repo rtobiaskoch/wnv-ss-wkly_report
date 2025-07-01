@@ -8,6 +8,7 @@ clean_platemap <- function(df,
   
   df_cleaned <- df %>%
     mutate(
+      csu_id = str_remove(csu_id, "-"),
       year = str_extract(file_name, y_pattern),
       week = str_extract(file_name, w_pattern),
       plate = str_extract(file_name, p_pattern),

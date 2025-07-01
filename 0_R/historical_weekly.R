@@ -1,14 +1,33 @@
-rm(list = ls())
-list2env(readRDS("1_input/config_params.RDS"),          
-         envir = .GlobalEnv)
+#new
+database = read.csv(fn_database_update)
 
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#CURRENT YEAR: WIDER
-#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+data_zone_wk00 = calc_vi(database, grp_var = grp_vars, rm_zone = NULL) %>%
+  mutate(across(everything(), ~ replace(.x, is.na(.x), 0))) #probably want to get rid of this in the future
 
-source("0_R/check_read_fun.R")
+data_zone_wk_spp_all = calc_stats_grp(data_zone_wk00, 
+                                       grp_vars = grp_vars, #variables 
+                                       pattern = "Pipiens|Tarsalis",
+                                       pattern_replace = "All",
+                                       col = "spp"
+                                      )
+
+
+
+data_zone_wk00 = rbind(data_zone_wk00, data_zone_wk_spp_all)
+
+
+data_zone_wk_spp_all_fc = calc_stats_grp(data_zone_wk00, 
+                                         grp_vars = grp_vars, #variables 
+                                         pattern = paste(fc_zones, collapse = "|"),
+                                         pattern_replace = "FC",
+                                         col = "zone"
+)
+
+
+current_year0 = data_zone_wk00 %>% 
+  filter(year == year_filter) 
+
 current_year0 =  check_read_fun(fn_data_output, wk = week_filter_yr)
-
 
 current_year_wide = current_year0 %>%
   filter(spp == "All") %>%
@@ -24,6 +43,7 @@ current_year_long = current_year0 %>%
                values_to = "value") %>%
   mutate(type = "current")
 
+
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #GET HISTORICAL CALCULATIONS
@@ -31,44 +51,42 @@ current_year_long = current_year0 %>%
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 #GET DATA
-data_input = check_read_fun(fn_database_update, 
-                            yr = year_filter_hx, 
-                            wk = week_filter_hx)
+# source("0_R/check_read_fun.R")
+# data_input = check_read_fun(fn_database_update, 
+#                             yr = year_filter_hx, 
+#                             wk = week_filter_hx)
 
+data_input = database %>%
+  filter(year = year_filter_hx)
+
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#---------------------- H X: A  B U N D A N C E ------------------------------------------
+#GET HISTORICAL CALCULATIONS
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-
-#--------------------------------T R A P S ----------------------------------------------
+#-----------------------------L I G H T T R A P S ----------------------------------------
 #GET KNOWN ROUTINE TRAPS
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#get number of active traps. For the purposes of historical calculations not going to consider malfunctioning traps
 
-
-gsheet_pull(key_foco_trap, sheet = "data", out_fn = "data_input/routine_trap_yr.csv")
-routine_traps = read.csv("data_input/routine_trap_yr.csv") %>%
-  filter(year %in% year_filter_hx)
-
-#GET NON-ROUTINE TRAPS
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #get non 0 traps for non-routine areas like BC
-suppressMessages({
-   non_routine = data_input %>%
-    filter(method == "L") %>%
-    filter(zone %in% non_routine_zones) %>%
-    distinct(year,trap_date, week, zone, trap_id) %>% #get unique number of traps by removing traps listed 2x+ with multiple pools and spp
-    group_by(year, zone, week) %>% #get number of traps per week per zone
-    summarise(trap_L = n()) %>%
-    ungroup() %>%
-    group_by(year, zone) %>% #get the average number of traps otherwise it will count too many
-    summarize(trap_L = mean(trap_L)) %>%
-    ungroup()
-})
 
-trap_data = rbind(non_routine, routine_traps)
 
+# For trap_data0 (no filtering or renaming of zones)
+trap_data0 <- get_trap_n(data_input, 
+                         grp = c("year", "zone", "week"),
+                         year_filter = year_filter_hx)
+
+# For trap_data_fc (filter to fc_zones and rename zone to "FC")
+trap_data_fc <- get_trap_n(data_input, 
+                           grp = c("year", "zone", "week"),
+                           year_filter = year_filter_hx,
+                           zone_filter = fc_zones,
+                           zone_rename = "FC")
+
+
+trap_data =rbind(trap_data0, trap_data_fc)
 
 #--------------------------------M O Z Z I E S ----------------------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -80,7 +98,7 @@ suppressMessages({
   m_p_wk0 = data_input %>%
     ungroup() %>%
     filter(method == "L") %>% #remove gravid traps for abundance calculation
-    group_by(year,week,zone,spp) %>% #calc number of mosquitoes per week per zone
+    group_by(!!!grp_var_sym) %>% #calc number of mosquitoes per week per zone
     summarize(mosq_L = sum(total)) %>%
     ungroup()
 })
@@ -105,11 +123,8 @@ suppressMessages({
   df_abund = left_join(m_p_wk, trap_data, by = c("year", "zone")) %>%
     mutate(abund = round(mosq_L/trap_L,2)) %>%
     complete(zone, week) %>% #fill in missing weeks for the non-routine zones
-    filter(!is.na(week)) #%>%
-    #select(-mosq_L, -trap_L)
-  # pivot_wider(names_from = zone, 
-  #             values_from = abund,
-  #             names_prefix = "abund_")
+    filter(!is.na(week)) %>%
+    filter(!is.na(abund)) #added to make w24 work consider removing
 })
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -164,8 +179,6 @@ suppressMessages({
               pir_uci = round(Upper,4)
     )
     })
-  
-  
 
 df_pir = rbind(df_pir0, fc_pir0)
 
@@ -199,7 +212,8 @@ suppressMessages({
     group_by(year, week, zone, spp) %>%
     summarise(spp = "All",
               across(all_of(sum_col), sum),
-              across(all_of(distinct_col), ~max(.))
+              across(all_of(distinct_col), ~max(.)),
+              .groups = "drop"
     )
   
 })
@@ -210,11 +224,13 @@ suppressMessages({
 
 suppressMessages({
   pir_all_spp = data_zone_wk0 %>%
-    group_by(year, week, zone) %>%
+    mutate(spp = "All") %>%
+    group_by(!!!grp_vars_sym) %>%
     summarize(spp = "All",
-              pir = sum(vi)/sum(abund),
-              pir_lci = sum(vi_lci)/sum(abund),
-              pir_uci = sum(vi_uci)/sum(abund))
+              pir = sum(vi, na.rm = T)/sum(abund, na.rm=T),
+              pir_lci = sum(vi_lci, na.rm = T)/sum(abund, na.rm = T),
+              pir_uci = sum(vi_uci, na.rm = T)/sum(abund, na.rm = T)) %>%
+    mutate(across(everything(), ~ replace(.x, is.na(.x), 0)))
   
 })
 
@@ -232,7 +248,7 @@ data_zone_wk_spp_all = left_join(data_zone_wk_spp_all0, pir_all_spp, by = grp_va
 data_zone_wk = rbind(data_zone_wk0, data_zone_wk_spp_all) %>% 
   arrange(year,week, zone , spp)
 
-write.csv(data_zone_wk, "data_output/hx_data.csv", row.names = F)
+write.csv(data_zone_wk, file.path(dir_output, "hx_data.csv"), row.names = F)
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -268,7 +284,9 @@ df_hx_wide = data_zone_wk %>%
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-df_all = df_hx_wide %>% left_join(current_year_wide, by = "week") %>% ungroup()
+df_all = df_hx_wide %>% 
+  left_join(current_year_wide, by = "week") %>% 
+  ungroup()
 
 hx_abund_report = df_all %>%
   arrange(week) %>%
@@ -282,6 +300,7 @@ hx_abund_report = df_all %>%
             "abund_BE", "abund_hx_BE",
             "abund_BC", "abund_hx_BC"
   )) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 2))) %>%
   mutate(across(.cols = -week, ~ ifelse(is.na(.), "", .)))
 
 
@@ -301,7 +320,8 @@ hx_pir_report = df_all %>%
     "pir_LV", "pir_hx_LV", 
     "pir_BE", "pir_hx_BE",
     "pir_BC", "pir_hx_BC"
-  ))%>%
+  ))  %>%
+  mutate(across(where(is.numeric), ~ round(.x, 2))) %>%
   mutate(across(.cols = -week, ~ ifelse(is.na(.), "", .)))
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -319,13 +339,14 @@ hx_vi_report = df_all %>%
             "vi_LV", "vi_hx_LV", 
             "vi_BE", "vi_hx_BE",
             "vi_BC", "vi_hx_BC"
-  )) %>%
+  ))  %>%
+  mutate(across(where(is.numeric), ~ round(.x, 2))) %>%
   mutate(across(.cols = -week, ~ ifelse(is.na(.), "", .)))
 
 
-write.csv(hx_vi_report, "data_output/table1b_hx_vi.csv", row.names = F)
-write.csv(hx_abund_report, "data_output/table2b_hx_abund.csv", row.names = F)
-write.csv(hx_pir_report, "data_output/table3b_hx_pir.csv", row.names = F)
+write.csv(hx_vi_report, file.path(dir_output, "table1b_hx_vi.csv"), row.names = F)
+write.csv(hx_abund_report, file.path(dir_output, "table2b_hx_abund.csv"), row.names = F)
+write.csv(hx_pir_report, file.path(dir_output, "table3b_hx_pir.csv"), row.names = F)
 
 
 
@@ -337,100 +358,6 @@ write.csv(hx_pir_report, "data_output/table3b_hx_pir.csv", row.names = F)
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#--------------------------------------- C I ---------------------------------------------
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-df_ci_hx = data_zone_wk %>%
-  ungroup() %>%
-  filter(week == week_filter) %>%
-  select(zone, week, spp, vi, vi_lci, vi_uci) %>%
-  group_by(zone, week, spp) %>%
-  summarize_if(is.numeric, ~mean(.x)) %>%
-  mutate(type = "hx")
-
-df_ci_curr = current_year0 %>%
-  filter(week == week_filter) %>%
-  select(year, zone, week, spp, vi, vi_lci, vi_uci) %>%
-  mutate(type = "current",
-         week = factor(week),
-         year = factor(year))
-
-  
-df_ci_spp = rbind(df_ci_hx, df_ci_curr) %>%
-   filter(type != "hx") %>%
-  #filter(spp != "All") %>%
-  mutate(vi_uci = if_else(vi == 0, 0, vi_uci)) #make uci 0 if vi 0 otherwise makes it look like there was a positive
-
-
-df_ci_all = data_zone_wk %>%
-  ungroup() %>%
-  filter(week == week_filter) %>%
-  select(year, zone, week, spp, vi, vi_lci, vi_uci)  %>%
-  mutate(type = "hx")  %>%
-  rbind(df_ci_curr) %>%
-  mutate(year = as.integer(as.character(year))) %>%
-   #filter(type != "hx") %>%
-  filter(spp == "All") %>%
-  mutate(vi_uci = if_else(vi == 0, 0, vi_uci))
-
-
-pd = position_dodge(0.3)
-
-p_df_ci_spp = ggplot(df_ci_spp, aes(x = week, y = vi, color = spp)) +
-  geom_errorbar(aes(ymin = vi_lci, ymax = vi_uci), size = 0.8, width = .2, position = pd) +
-  geom_point(size = 2, position = pd) +
-  geom_hline(yintercept = 0) +
-  facet_grid(zone~.) +
-  theme_classic() +
-  scale_color_manual(values = pal_mozzy2) +
-  geom_hline(yintercept = vi_threshold, linetype = "dashed", color = "red") +
-  scale_y_continuous(breaks = seq(0, 1, by = 0.25)) +
-  coord_cartesian(ylim = c(0, 1)) +
-  ggtitle("VI 95% CI") +
-  labs(y = element_blank()) +
-  theme(plot.title = element_text(hjust = 0.5),
-        legend.position = "none")
-
-
-p_df_ci_all = ggplot(df_ci_all, aes(x = year, y = vi, color = type)) +
-  geom_errorbar(aes(ymin = vi_lci, ymax = vi_uci), size = 0.8, width = .2, position = pd) +
-  geom_point(size = 2, position = pd) +
-  geom_hline(yintercept = 0) +
-  facet_grid(zone~.) +
-  theme_classic() +
-  scale_color_manual(values = curr_hx_pal) +
-  geom_hline(yintercept = vi_threshold, linetype = "dashed", color = "red") +
-  scale_y_continuous(breaks = seq(0, 1, by = 0.25)) +
-  scale_x_reverse(breaks = seq(min(df_ci_all$year, na.rm = T), max(df_ci_all$year, na.rm = T), by = 2)) +
-  coord_cartesian(ylim = c(0, 1)) +
-  ggtitle(paste("VI Week", week_filter, sep = " ")) +
-  #labs(y = element_blank()) +
-  theme(plot.title = element_text(hjust = 0.5),
-        legend.position = "none",
-        axis.text.x = element_text(angle = 90))
-
-p_df_ci_all
-
-#generate description of time frames
-yr_calc = data_zone_wk %>%
-  filter(!zone %in% fc_zones) %>%
-  group_by(zone) %>%
-  summarize(min = min(as.numeric(as.character(year)), na.rm = T),
-            max = max(as.numeric(as.character(year)), na.rm = T)) 
-
-description = paste0(yr_calc$zone, " Historical Data was calculated from year ", 
-                     yr_calc$min, 
-                     " to ", 
-                     yr_calc$max)
-
-description = paste0(description, collapse = "\n")
-
-
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#--------------------------------- P L O T : S P P ( A L L ) -----------------------------
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 df_all_long = rbind(current_year_long, df_all_hx_long) %>%
    mutate(type = factor(type, levels = c("hx", "current")),
           zone = factor(zone, levels = zone_lvls)) %>%
@@ -440,22 +367,6 @@ df_all_long = rbind(current_year_long, df_all_hx_long) %>%
             pir = mean(pir), 
             vi = mean(vi)) %>%
   filter(spp == "All")
-
-
-
-
-p_df_all_fun = function(df, value, text) {
-  
-  ggplot(df, aes(x = week, y = {{value}}, 
-             color = type, fill = type, group = type)) +
-  geom_hline(yintercept = 0) +
-  geom_area(position = "dodge", alpha = 0.3) +
-  facet_grid(zone ~ .) +
-  theme_classic() +
-  ggtitle(text) +
-  scale_color_manual(values = curr_hx_pal) +
-  scale_fill_manual(values = curr_hx_pal)
-}   
 
 p_abund = p_df_all_fun(df_all_long, abund, "Abundance")
 p_abund 
@@ -477,64 +388,6 @@ p_hx_current0 = p_abund + p_pir + p_vi +
 
 
 
-ggsave("data_output/plots/hx_plot_all.png", p_hx_current0, height = 8, width = 12, units = "in")
+ggsave(file.path(dir_plots, "hx_plot_all.png"), p_hx_current0, height = 8, width = 12, units = "in")
 
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#--------------------------------- P L O T : S P P -----------------------------
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-df_all_long = rbind(current_year_long, df_all_hx_long) %>%
-  mutate(type = factor(type, levels = c("hx", "current")),
-         zone = factor(zone, levels = zone_lvls)) %>%
-  pivot_wider(names_from = est, values_from = value) %>%
-  group_by(zone, week, spp, type) %>%
-  summarise(abund = mean(abund), 
-            pir = mean(pir), 
-            vi = mean(vi)) %>%
-  mutate(type2 = paste0(type,"_", spp)) %>%
-  filter(spp != "All")
-
-write.csv(df_all_long, "df_all_long_hx.csv", row.names = F)
-
-
-
-
-p_df_all_fun2 = function(df, value, text) {
-  
-  ggplot(df, aes(x = week, y = {{value}}, group = interaction(type2, spp))) +
-    # Separate geom_area for stacking
-    geom_area(data = df %>% filter(type == "hx"), aes(fill = type2, color = type2), position = "stack", alpha = 0.5) +
-    geom_area(data = df %>% filter(type == "current"), aes(fill = type2, color = type2), position = "stack", alpha = 0.5) +
-    # geom_point(data = df %>% filter(week == week_filter & type = "current") %>% 
-    #              group_by(zone, week)) %>% summarise(vi = sum(vi)), aes(fill = )
-    geom_hline(yintercept = 0) +
-    # Separate geom_area for dodging
-  #  geom_area(data = df %>% filter(type %in% c("hx", "current")), aes(fill = type2), position = "dodge", alpha = 0.5) +
-    facet_grid(zone ~ .) +
-    theme_classic() +
-    ggtitle(text) +
-    scale_color_manual(values = pal_mozzy) +
-    scale_fill_manual(values = pal_mozzy)
-}
-
-
-p_abund = p_df_all_fun2(df_all_long, abund, "Abundance")
-p_abund 
-
-p_pir = p_df_all_fun2(df_all_long, pir, "Pooled Infection Rate")
-p_pir 
-
-p_vi = p_df_all_fun2(df_all_long, vi, "Vector Index") + 
-  geom_hline(yintercept = vi_threshold, linetype = "dashed", color = "red") +
-  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25))
-p_vi
-
-
-  
-p_hx_current = p_abund + p_pir + p_vi + p_df_ci_all + 
-  plot_annotation(caption = c(description)) +
-  plot_layout(widths =c(3,3,3,1), guides = "collect") & theme(legend.position = 'bottom', legend.title = element_blank())
-
-p_hx_current
-
-ggsave("data_output/plots/hx_plot.png", p_hx_current, height = 8, width = 12, units = "in")
 

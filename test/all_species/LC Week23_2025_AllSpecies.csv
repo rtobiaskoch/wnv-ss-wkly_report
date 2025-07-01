@@ -2,8 +2,7 @@ date_trap_set,contract,location,zone,mosquito_species,mosquito_count,trap_type,t
 6/2/25,Fort Collins,422 Lake Dr,NE,Aedes increpitus,4,CDC Light Trap,FC-072
 6/2/25,Fort Collins,422 Lake Dr,NE,Culiseta inornata,1,CDC Light Trap,FC-072
 6/2/25,Fort Collins,Hemlock,NW,Aedes increpitus,7,CDC Light Trap,FC-036 
-6/2/25,Fort Collins,N. Linden,NE,Aedes vexans,7,CDC Light Trap,FC-006
-6/2/25,Fort Collins,N. Linden,NE,Aedes increpitus,4,CDC Light Trap,FC-006
+6/2/25,Fort Collins,N. Linden,NE,Trap Malfunction,4,CDC Light Trap,FC-006
 6/2/25,Fort Collins,Udall Natural Gravid,NE,No Mosquitoes,0,Gravid Trap,FC-092gr
 6/2/25,Fort Collins,Lochside Lane,NE,Aedes dorsalis,4,CDC Light Trap,FC-038
 6/2/25,Fort Collins,Lochside Lane,NE,Aedes vexans,6,CDC Light Trap,FC-038

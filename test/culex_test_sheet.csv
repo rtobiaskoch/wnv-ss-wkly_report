@@ -1,0 +1,4 @@
+﻿trap_id,year,week,zone,zone2,trap_status,method,spp,total
+LV-020,2020,23,LV,LV,culex,L,Tarsalis,1
+FC-011,2020,24,NW,FC,culex,L,Pipiens,2
+FC015,2021,25,NW,FC,culex,L,Tarsalis,2

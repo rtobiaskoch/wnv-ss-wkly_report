@@ -15,6 +15,7 @@ trap_data = read.csv(fn_trap) %>%
 new_data0 = read.csv(fn_datasheet_clean) %>% 
   full_join(cq_data, by = "csu_id") %>%
   left_join(trap_data, by = c("trap_id")) %>%
+
   mutate(test_code = if_else(copies_WNV > copy_threshold, 1, 0)) %>%
   mutate(seq = NA) 
 

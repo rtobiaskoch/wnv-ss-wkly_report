@@ -4,7 +4,7 @@ clean_standards = function(df, std_pattern = "std|pos ctrl") {
   #and the platemap data that provides the id and associated metadata
   
   req_cols = c("sample_type", "ct_threshold", "well_position",
-               "cq_WNV", "plate", "csu_id")
+               "cq","copies",  "plate", "csu_id")
   
   missing_cols <- setdiff(req_cols, names(df))
   
@@ -15,18 +15,12 @@ clean_standards = function(df, std_pattern = "std|pos ctrl") {
   
   df = df %>%
   filter(str_detect(pattern = std_pattern, sample_type)) %>%
-  select(-ct_threshold, -well_position) %>%
-  pivot_longer(cols = -c(plate, csu_id, sample_type, amp_status, year, week),
-               names_to = "type",
-               values_to = "value") %>%
-  mutate(target = if_else(str_detect(type, "WNV"), "WNV", "SLEV")) %>%
-  mutate(type = str_extract(type, "^[^_]*")) %>%
-  pivot_wider(names_from = type, 
-              values_from = value) %>%
-  mutate(year = year, 
-         week = week_filter,
-         log_copies = if_else(copies == 0, 0, log10(copies))) %>%
-  select(year, week, plate, target, csu_id, sample_type, cq, log_copies) 
+  rename(target = target_name) %>%
+  mutate(year = as.double(year)) %>%
+  mutate(week = as.double(week)) %>%
+  mutate(log_copies = if_else(copies == 0, 0, log10(copies))) %>%
+  select(year, week, well_position, plate, target, csu_id, sample_type, cq, log_copies) %>%
+  #select(-ct_threshold, well_position) %>%
   
   return(df)
   

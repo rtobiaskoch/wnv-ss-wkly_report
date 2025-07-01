@@ -1,0 +1,90 @@
+-------------- CALC ABUNDANCE —————————————————–
+
+DESC:DEPENDENCIES:INPUT:OUTPUT:
+
+```{r}
+#group by zone
+abund0 = calc_abund(culex_new, 
+                  grp_var = c("zone", "year", "week", "spp"))
+
+#group FC
+abund_fc = calc_abund(culex_new, 
+                  grp_var = c("zone2", "year", "week", "spp"))
+
+#group all spp
+abund_all = calc_abund(culex_new, 
+                  grp_var = c("zone", "year", "week"))
+
+#group all FC
+abund_all_fc = calc_abund(culex_new, 
+                  grp_var = c("zone2", "year", "week"))
+
+abund = bind_rows(abund0, abund_all, 
+                  abund_fc, abund_all_fc) %>%
+  distinct_all() %>%
+  wnv_s_clean(all_cols = names(.)) %>%
+  arrange(year, week, zone, spp)
+
+check_data(df = abund,
+           trap = foco_trap, 
+           dir = dir_mid,
+           year_filter = year_filter, 
+           week_filter = week_filter
+           )
+
+
+write.csv(abund, fn_abund_out, row.names = F)
+
+
+write.csv(culex_new, file.path(dir_mid, "abund_trap.csv"))
+write.csv(abund0$trap, file.path(dir_mid, "abund_trap.csv"))
+write.csv(abund0$grp, file.path(dir_mid, "abund.csv"))
+
+rm(abund0, abund_fc, abund_all, abund_all_fc)
+```
+
+
+-------------- CALC PIR —————————————————–
+
+Code Below:
+
+Data Input:-output from abundance.R-data_input file:Data Output:-yYYYY_wWW_data_updateDescription:
+
+- calculates pooled Infection Rate and Vector Index-calculates all spp for each zone (TBD 24-07-16)
+
+this script will drop weeks that only have a gravid trap. because gravid traps aren't used in abundance calculations
+
+```{r}
+#add complete for the different zones
+pir0 = calc_pir(database_new,
+               grp_var = c("zone", "year", "week", "spp"))
+
+pir_fc = calc_pir(database_new , 
+                   grp_var = c("zone2", "year","spp", "week"))
+
+pir_all = calc_pir(database_new , 
+                   grp_var = c("zone", "year", "week"))
+
+pir_fc_all = calc_pir(database_new, 
+                   grp_var = c("zone2", "year", "week"))
+
+pir = bind_rows(pir0, pir_all,
+          pir_fc, pir_fc_all) %>% 
+  distinct_all() %>%
+  wnv_s_clean(all_cols = names(pir0)) %>%
+  arrange(year, week, zone, spp)
+
+write.csv(pir, file.path(dir_mid, "pir.csv"))
+
+rm(pir0, pir_all, pir_fc, pir_fc_all)
+```
+
+-------------- CALC VI —————————————————–
+
+```{r}
+vi = calc_vi(abund, pir,
+             by = grp_vars) %>%
+   wnv_s_clean(rm_col = c("trap_status"))
+
+
+

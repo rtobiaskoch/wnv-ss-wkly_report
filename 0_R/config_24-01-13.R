@@ -46,7 +46,7 @@ if(!drive_has_token()) {
 
 fc_zones = c("NE", "SE", "NW", "SW")
 non_fc_zones = c("LV", "BC", "BE")
-all_zones = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
+zone_lvls = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
 
 copy_threshold = 500
 rn_threshold = 34000

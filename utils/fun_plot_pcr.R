@@ -36,23 +36,23 @@ plot_std = function(df) {
 
 plot_pcr <- function(data, virus, pattern_2_keep = "WNV|CSU|RMRP|CDC|pos|neg",
                      copy_threshold, week_filter) {
-  virus <- toupper(virus)
   
-  cq_col <- sym(paste0("cq_", virus))
-  copies_col <- sym(paste0("copies_", virus))
+  #cq_col <- sym(paste0("cq_", virus))
+  #copies_col <- sym(paste0("copies_", virus))
   
   data_filtered <- data %>%
+    filter(target_name == virus) %>%
     filter(str_detect(csu_id, regex(pattern_2_keep, ignore_case = TRUE))) %>%
     mutate(
-      !!cq_col := if_else(!!cq_col == 55.55, 40, !!cq_col),
-      test_code = if_else(amp_status != "Amp", NA_character_, test_code),
+      cq = if_else(cq == 55.55, 40, cq),
+      test_code = if_else(amp_status == "No Amp", 0, test_code),
       test_code = factor(test_code, levels = c("1", "0"))
     )
   
   
   # Plot
   p <- ggplot(data_filtered) +
-    geom_jitter(aes(x = sample_type, y = !!cq_col, color = test_code), size = 3, alpha = 0.6) +
+    geom_jitter(aes(x = sample_type, y = cq, color = test_code), size = 3, alpha = 0.6) +
     scale_y_reverse() +
     theme_minimal() +
     ggtitle(paste0("Week ", week_filter, " ", virus)) +
