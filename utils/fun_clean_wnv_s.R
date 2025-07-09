@@ -308,7 +308,7 @@ wnv_s_clean <- function(df,
 
   
   # CREATE TRAP_STATUS
-  if ("spp" %in% names(df) & "trap_status" %in% col_2_clean) {
+  if ("spp" %in% names(df) & !"trap_status" %in% names(df) & "trap_status" %in% col_2_clean) {
     
     # Define grouped status logic
     df <- df %>%
@@ -317,7 +317,7 @@ wnv_s_clean <- function(df,
         trap_status = case_when(
           any(str_detect(spp, "(?i)malfunction|stolen")) ~ "malfunction",
           any(str_detect(spp, "(?i)no mosquitoes")) ~ "no mosquitoes",
-          any(str_detect(spp, "(?i)tar|pip|Culex pipiens|Culex tarsalis")) ~ "culex",
+          any(str_detect(spp, "(?i)tar|pip|Culex pipiens|Culex tarsalis")) & any(total > 0) ~ "culex",
           TRUE ~ "other spp"
         )
       ) %>%

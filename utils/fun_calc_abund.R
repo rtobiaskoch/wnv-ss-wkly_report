@@ -42,9 +42,14 @@ calc_abund = function(df,
     summarize(
       trap_L = if (all(is.na(trap_id))) 0 else n_distinct(trap_id, na.rm = TRUE), #if all na make 0 from filling in missing zones else count distinct
       mosq_L = sum(total, na.rm = TRUE),
+      abund_sd = round(sd(total),4),
       .groups = 'drop'
-            ) %>%
-    mutate(abund = round(mosq_L/trap_L, 2))
+     ) %>%
+    mutate(abund = round(mosq_L/trap_L, 4),
+           abund_lci = round(abund - (1.96*(abund_sd/trap_L^0.5)),4),
+           abund_uci = round(abund + (1.96*(abund_sd/trap_L^0.5)),4)
+    ) %>%
+    mutate(abund_lci = if_else(abund_lci < 0, 0, abund_lci))
   
   #rename to zone if zone2 exists
   if("zone2" %in% names(abund)) {
