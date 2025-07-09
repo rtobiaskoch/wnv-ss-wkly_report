@@ -56,7 +56,7 @@ plot_pcr <- function(data, virus, pattern_2_keep = "WNV|CSU|RMRP|CDC|pos|neg",
     scale_y_reverse() +
     theme_minimal() +
     ggtitle(paste0("Week ", week_filter, " ", virus)) +
-    theme(legend.position = "none")
+    theme(legend.position = "bottom")
   
   return(p)
 }

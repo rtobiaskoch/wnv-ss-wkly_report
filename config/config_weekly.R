@@ -34,6 +34,7 @@ parser$add_argument("--cp_threshold", help = "copy threshold for positive", type
 parser$add_argument("--rn_threshold", help = "flourescent threshold for determining ct", type = "integer", default = 34000)
 parser$add_argument("--vi_threshold", help = "vi threshold for plots", type = "integer", default = 0.75)
 parser$add_argument("--update", help = "logical argument whether or not to update directory with data from gdrive", type = "logical", default = F)
+parser$add_argument("--download", help = "logical argument whether or not to download data from gdrive", type = "logical", default = F)
 parser$add_argument("--clean", help = "logical argument whether or not to clean directory with data in repository", type = "logical", default = F)
 
 # Parse arguments
@@ -45,6 +46,7 @@ dir_input <- args$input
 copy_threshold <- args$cp_threshold
 rn_threshold = args$rn_threshold
 vi_threshold = args$vi_threshold
+download <- args$download
 update <- args$update
 clean <- args$clean
 
@@ -179,6 +181,7 @@ if (length(empty_dirs) > 0) {
 key_database_gsheet = "12Mf-w9I9NHTTDjzEPRoxUE08ka4WZ6RE-RM1s-FW7qA"
 key_database_gsheet_slev = "1JsOz5wVl5WSpv1KGqiBFGVjoypL8xZMti5Syg07cPbo"
 key_database_culex_sheet = "15icsYx5SkmQIPXV3Vzj6PhyX81M55mIAYfKDj5K3gac"
+key_database_folder = "1AIpZAIRSG-DZug74Av3u_7kdyXYsrjKF"
 key_trap_gsheet = "1G5UcRmcVsVpMtKW_-4WLKX8WT_fvyIYj7sGcoNxDmr4"
 key_rename_key = "1UDLN-K4TJ-Ok_6NXUQNwUTKMNgfAq1xx9HABALCYRNQ"
 key_standards_gsheet = "1bSMYQ4bZ9uBfrOQ6ylsegNmmGYdf9YFVbxB4qBhnFQo"
@@ -257,6 +260,8 @@ weekly_report_folder = "25_weekly_report"
 fn_bird_output = paste0(dir_output, "/rmrp_", year_filter,"_", week_filter, ".csv")
 dir_plots = file.path(dir_output, "plots")
 dir_plot_wk = paste0(dir_plots,"/y",fn_year, "_", "w",fn_week, "_")
+fn_pcr_plot = paste0(dir_plot_wk, "pcr_plot.png")
+fn_p_hx = paste0(dir_plot_wk, "hx_plot_all.png")
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
