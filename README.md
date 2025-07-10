@@ -131,8 +131,6 @@ Rscript config/config_weekly.R \
 --input <w##> \          #input directory where weekly input data is located
 --year <####> \          #year filter to ensure correct data
 --week <##> \          #week filter to ensure correct data
---year_hx 2019 \       #how far back hx data is calculated
---cp_threshold 500 \   #threshold for calling positives
 --download T \         #logical to download files from google drive or not
 --update T           #logical whether to update gsheet databases with weekly data
 ```

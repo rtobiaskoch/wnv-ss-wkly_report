@@ -13,22 +13,13 @@ project:
 
 ### ------------ CREATE CONFIGURATION ------------------------
 
-DESC: defines filepaths \| \| defines settings \| \| defines filenames \| \| creates setting for
-plots\
+DESC: defines filepaths \| \| defines settings \| \| defines filenames \| \| creates setting for plots\
 INPUT: user arguments\
 OUTPUT: config/config_weekly_settings/config_weekly\_\[sys.time\].RData
 
-Example Run in Bash
+Example Run in run_config.sh
 
-Rscript config/config_weekly.R \\\
---input w27 \\\
---year 2025 \\\
---year_hx 2019 \\\
---week 27 \\\
---cp_threshold 500 \\\
---download F \\\
---update F \\\
---clean F
+Rscript config/config_weekly.R --input w27 --year 2025 --week 27 --download F --update F
 
 ### -------------LOAD CONFIGURATION --------------------
 
@@ -44,7 +35,9 @@ utils = list.files(path = "utils",
                    pattern = "*.R",
                    full.names = T)
 
+
 purrr::walk(utils, source)
+
 
 #get the most recent configuration for the run from the output of running config_weekly.R
 read_latest("config/config_weekly_settings")
@@ -54,8 +47,7 @@ read_latest("config/config_weekly_settings")
 
 ### -------------DATA GDRIVE LOAD -------------------------
 
-DESC: reads in current wnv-s_database \| \| foco_trap \| \| key_rename \| \| standards data to
-dir_input\
+DESC: reads in current wnv-s_database \| \| foco_trap \| \| key_rename \| \| standards data to dir_input\
 **DEPENDENCIES:** googlesheets4 \| \| googledrive \| \| argparse \| \| gsheet_pull_prompt\
 **INPUT:** NA\
 **OUTPUT:** **\[dir_input\]/wnv-s_database.csv** \| \| **\[dir_input\]/foco_trap.csv\
@@ -122,8 +114,7 @@ check_data(df = culex_database, #data you want to check
 
 ### -------------DATASHEET CLEAN ---------------------------
 
-Readme DESC: - reads in datasheet (pool) data from VDCI and BC, - cleans it into the proper format
-for the database - checks each column for errors. -
+Readme DESC: - reads in datasheet (pool) data from VDCI and BC, - cleans it into the proper format for the database - checks each column for errors. -
 
 DEPENDENCIES: read_list \| \| key rename \| \| wnv_s_clean \| \| tidyverse \| \| purrr
 
@@ -151,14 +142,11 @@ check_data(df = datasheet_clean, #data you want to check
 
 ### --------------PCR CLEAN -----------------------------------
 
-DESC: Reads in the pcr data from quantstudio that contains the Ct values \| \| reads in platemap
-data that links the platmap position with sample id\
+DESC: Reads in the pcr data from quantstudio that contains the Ct values \| \| reads in platemap data that links the platmap position with sample id\
 \
 DEPENDENCIES: tidyverse \| \| readxl \| \| purrr
 
-INPUT -PCR: \[dir_input\]/pcr/\* \[dir_pcr\] \| \| PLATEMAP: \[dir_input\]/platemap/\*
-\[dir_platemap\] \| \| week_filter = 37 \| \| year_filter = 2024 \| \| copy_threshold = 500 \| \|
-rn_threshold = 34000
+INPUT -PCR: \[dir_input\]/pcr/\* \[dir_pcr\] \| \| PLATEMAP: \[dir_input\]/platemap/\* \[dir_platemap\] \| \| week_filter = 37 \| \| year_filter = 2024 \| \| copy_threshold = 500 \| \| rn_threshold = 34000
 
 OUTPUT - Cq combined pcr and platemap csv \[fn_cq_out = 2_mid/y##\_w##\_platemap.csv"\]
 

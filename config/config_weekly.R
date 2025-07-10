@@ -9,13 +9,12 @@
 #5 defines google sheet keys
 suppressMessages({
   if (!require("pacman")) install.packages("pacman")
-  pacman::p_unload()
   pacman::p_load(argparse, #importing and exporting
-                 here,
-                 lubridate,
-                 wesanderson
+                 lubridate
   )
 })
+
+
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #------ U S E R   D E F  V A R I A B L E   D A T A   P A R A M E T E R S : -----------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -71,6 +70,7 @@ cat("Copy threshold set to:", copy_threshold, "\n")
 cat("Fluorescent threshold set to:", args$rn_threshold, "\n")
 cat("VI threshold set to:", args$vi_threshold, "\n")
 cat("Update directory set to:", update, "\n")
+cat("Download Googledrive files set to:", download, "\n")
 cat("Clean directory set to:", clean, "\n")
 
 
@@ -310,9 +310,7 @@ col_class_database <- c("csu_id" = "character",
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #------------------------------- C O L O R  S E T T I N G S -------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-color_palette = wes_palette('Darjeeling1')
 
-#https://coolors.co/palette/fb8b24-d90368-820263
 
 pal_mozzy = c("hx_Tarsalis" = "grey50",
               "hx_Pipiens" = "grey30",
