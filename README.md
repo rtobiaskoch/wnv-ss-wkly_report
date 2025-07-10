@@ -22,7 +22,10 @@ universal cleaning function to ensure all data follows the same formatting
 rules.
 
 Indepth notes can be found here:
-<https://docs.google.com/document/d/1gUdxBmV-fIB8R1mVgvBGPy5UIVws_OQNCkH_ia1f8vQ/edit?tab=t.0>\
+<https://docs.google.com/document/d/1gUdxBmV-fIB8R1mVgvBGPy5UIVws_OQNCkH_ia1f8vQ/edit?tab=t.0>
+
+Workflow Diagrams can be found here:
+<https://docs.google.com/drawings/d/1UVtAzJrcSCYUQgDfj5BYL3X9ZKuU0JnDyr0SHTLvAag/edit?usp=sharing>\
 
 ## ---------------------------------------------------------------------------------------
 
@@ -30,11 +33,16 @@ Indepth notes can be found here:
 
 ## ---------------------------------------------------------------------------------------
 
-wnv-s_weekly_reportpipeline_v2.qmd: where the magic happens. calls all function
-in utils/ utils/: contains all functions called in qmd file config/: contains
-config_weekly.R file and load_packages\_.R 2_mid/: contains intermediary files
-that are useful for debugging 3_output/: contains the final output files are
-used for reporting
+-   **wnv-s_weekly_reportpipeline_v2.qmd:** where the magic happens. calls all
+    function in utils
+
+-   **utils/:** contains all functions called in qmd file \\
+
+-   **config/:** contains config_weekly.R file and load_packages\_.R
+
+-   **2_mid/:** contains intermediary files that are useful for debugging
+
+-   **3_output/:** contains the final output files are used for reporting
 
 # V2
 
@@ -85,14 +93,23 @@ source("config/install_packages.R")
     process:
     <https://drive.google.com/drive/folders/1VC1i8D-2_8WEapmW2hrBqMzdHz3vsbqW?usp=sharing>
 
--   files should contain the following folders all_species: trap level data we
-    use to calculate the abundance datasheet: pool level data from traps we use
-    to calculate PIR and test pcr: Quantstudio3 results that are the output from
-    the qPCR test platemap: a completed version of the template below that
-    provides the platemap that links pcr: results to our csu_id in the
-    datasheets. the pcr name MUST CONTAIN A 4 DIGIT YEAR AND TWO DIGIT WEEK AND
-    A 1 DIGIT PLATE #: example: SS_y2025_w28_p1_rna_extract_and_pcr_notebook
-    <https://docs.google.com/spreadsheets/d/1KOq6ARqPM9J1V7lNUnsB07vC-UEVcEIyl9dVLWEPpas/edit?usp=drive_link>
+-   If the files aren't present for the week message Greg to have him foward you
+    the email.
+
+-   files should contain the following folders:
+
+    -   **all_species:** trap level data we use to calculate the abundance
+
+    -   **datasheet:** pool level data from traps we use to calculate PIR and
+        test
+
+    -   **pcr:** Quantstudio3 results that are the output from the qPCR test
+
+    -   **platemap:** a completed version of the template below that provides
+        the platemap that links pcr results to our csu_id in the datasheets. The
+        pcr name MUST CONTAIN A 4 DIGIT YEAR AND TWO DIGIT WEEK AND A 1 DIGIT
+        PLATE #: example: SS_y2025_w28_p1_rna_extract_and_pcr_notebook
+        <https://docs.google.com/spreadsheets/d/1KOq6ARqPM9J1V7lNUnsB07vC-UEVcEIyl9dVLWEPpas/edit?usp=drive_link>
 
 -   note: you may need to change Boulders week to match the year to date week
     #\*
@@ -102,7 +119,7 @@ source("config/install_packages.R")
 
 ## --------------------------------------------------------------------------
 
-## STEP 4: Run Configuration
+## STEP 4A: Run Configuration
 
 ## ------------------------------------------------------------------------
 
@@ -126,15 +143,15 @@ Rscript config/config_weekly.R \
 
 ## ---------------------------------------------------------------------------
 
-## STEP 4: Authorize Googledrive API
+## STEP 4B: Authorize Googledrive API
 
 ## --------------------------------------------------------------------------
 
-The pipline utilizes googledrive API for R to download & update databases
-related to the pipeline.
+-   The pipline utilizes googledrive API for R to download & update databases
+    related to the pipeline.
 
-You will need to authorize your email account by installing and running the
-following:\
+-   You will need to authorize your email account by installing and running the
+    following:\
 
 ``` r
 install.packages(googledrive)
@@ -166,14 +183,14 @@ Rscript -e "rmarkdown::render('pipeline/wnv-s_multiweek_report_pipeline.qmd')"
 
 ## ----------------------------------------------------------------------------------
 
-Navigate to the YY_weekly_report where the output file is generated:
-<https://drive.google.com/drive/folders/1VC1i8D-2_8WEapmW2hrBqMzdHz3vsbqW?usp=drive_link>
+-   Navigate to the YY_weekly_report where the output file is generated:
+    <https://drive.google.com/drive/folders/1VC1i8D-2_8WEapmW2hrBqMzdHz3vsbqW?usp=drive_link>
 
-YYYY -\> YY_weekly_report -\> weekly_report_R_output
+-   YYYY -\> YY_weekly_report -\> weekly_report_R_output
 
-add this silly graphs sheet to the report that the city used and copy and paste
-the appropriate table to the corresponding table in the graph tab.
+-   add this silly graphs sheet to the report that the city used and copy and
+    paste the appropriate table to the corresponding table in the graph tab.
 
-<https://docs.google.com/spreadsheets/d/1E-imgI_WWU5Pnw9gDPtitONWqbG0yLKeQqIlHNCLtLI/edit?usp=drive_link>
+-   <https://docs.google.com/spreadsheets/d/1E-imgI_WWU5Pnw9gDPtitONWqbG0yLKeQqIlHNCLtLI/edit?usp=drive_link>
 
-TELL GREG I DID A GOOD JOB HERE IS THE REPORT.
+-   TELL GREG I DID A GOOD JOB HERE IS THE REPORT.

@@ -41,7 +41,7 @@ gsheet_pull_prompt <- function(filename, sheet = "Sheet1", key, force_update = F
             " columns and following headers:\n", paste(names(mdata), collapse = ", "), "\n")
     
     mdata <- mdata %>%
-      mutate(across(where(is.list), ~ sapply(., paste, collapse = ", ")))
+      dplyr::mutate(across(where(is.list), ~ sapply(., paste, collapse = ", ")))
     
     write.csv(mdata, filename, row.names = FALSE, na = "")
     message("\n...Checking that gdrive download worked...\n")
