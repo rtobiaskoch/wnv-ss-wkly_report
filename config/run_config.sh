@@ -1,3 +1,3 @@
 #!/bin/sh
 
-Rscript config/config_weekly.R --input w27 --year 2025 --week 27 --download F --update F
+Rscript config/config_weekly.R --input w29 --year 2025 --week 29 --download T --update T

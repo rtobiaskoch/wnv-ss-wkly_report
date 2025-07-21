@@ -80,7 +80,7 @@ cd path/to/repo
 -   in repo directory wnv-ss-weekly_report install packages
 
 ``` bash
-source("config/install_packages.R")
+source("config/load_packages.R")
 ```
 
 ## ---------------------------------------------------------------------------
@@ -124,15 +124,10 @@ source("config/install_packages.R")
 ## ------------------------------------------------------------------------
 
 -   run script below to generate a configuration file
--   change the name of the input folder and the week \#
+-   change the name of the input folder and the week \# in run_config.sh
 
 ``` bash
-Rscript config/config_weekly.R \
---input <w##> \          #input directory where weekly input data is located
---year <####> \          #year filter to ensure correct data
---week <##> \          #week filter to ensure correct data
---download T \         #logical to download files from google drive or not
---update T           #logical whether to update gsheet databases with weekly data
+bash config/run_config.sh
 ```
 
 -   settings are saved to a dynamically named file to the

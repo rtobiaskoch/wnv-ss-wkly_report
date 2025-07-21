@@ -20,7 +20,7 @@ clean_pcr = function(df,
          copies = if_else(cq >= 55.55, 0, round(as.numeric(quantity),2))
          #ct_threshold = as.numeric(ct_threshold)
   ) %>%
-  mutate(test_code = if_else(copies > copy_threshold & amp_status == "Amp", 1, 0)) %>%
+  mutate(test_code = if_else(copies > copy_threshold & amp_status != "No Amp", 1, 0)) %>%
   arrange(plate, well) %>%
   # select(well_position, task, target_name, cq, ct_threshold, copies, plate) %>%
   select(well_position, target_name, cq, copies, test_code, ct_threshold, amp_status,  year, week , plate)# %>%

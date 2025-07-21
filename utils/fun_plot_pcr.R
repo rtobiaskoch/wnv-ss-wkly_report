@@ -52,9 +52,10 @@ plot_pcr <- function(data, virus, pattern_2_keep = "WNV|CSU|RMRP|CDC|pos|neg",
   
   # Plot
   p <- ggplot(data_filtered) +
-    geom_jitter(aes(x = sample_type, y = cq, color = test_code), size = 3, alpha = 0.6) +
+    geom_jitter(aes(x = sample_type, y = cq, color = test_code, shape = amp_status), size = 3, alpha = 0.6) +
     scale_y_reverse() +
     theme_minimal() +
+    scale_shape_manual(values = c("Amp" = 16, "No Amp" = 1, "Inconclusive" = 8)) +  # 16=circle, 1 = empty circle, 8 = star
     ggtitle(paste0("Week ", week_filter, " ", virus)) +
     theme(legend.position = "bottom")
   

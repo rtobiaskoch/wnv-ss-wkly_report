@@ -34,7 +34,7 @@ calc_all = function(abund_input, pir_input) {
   pir_fc = calc_pir(pir_input , 
                     grp_var = c("zone2", "year","spp", "week"))
   
-  pir_all = calc_pir(pir_input , 
+  pir_all = calc_pir(pir_input, 
                      grp_var = c("zone", "year", "week"))
   
   pir_fc_all = calc_pir(pir_input , 

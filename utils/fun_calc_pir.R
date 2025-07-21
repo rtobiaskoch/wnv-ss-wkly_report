@@ -44,6 +44,7 @@ if(any(!req_var %in% colnames(df))) {
   #-------------------------------------------------------------------------------
 
   grp_var_sym <- syms(grp_var)
+  
   #don't fill zones that you don't want in your analysis
   zone_complete = setdiff(zone_complete, rm_zone)
   

@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>wnv-s_weekly_reports</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="wnv-s_weekly_report_pipeline_v2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="wnv-s_weekly_report_pipeline_v2_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="wnv-s_weekly_report_pipeline_v2_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="wnv-s_weekly_report_pipeline_v2_files/libs/quarto-html/popper.min.js"></script>
+<script src="wnv-s_weekly_report_pipeline_v2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="wnv-s_weekly_report_pipeline_v2_files/libs/quarto-html/anchor.min.js"></script>
+<link href="wnv-s_weekly_report_pipeline_v2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="wnv-s_weekly_report_pipeline_v2_files/libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="wnv-s_weekly_report_pipeline_v2_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="wnv-s_weekly_report_pipeline_v2_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="wnv-s_weekly_report_pipeline_v2_files/libs/bootstrap/bootstrap-81267100e462c21b3d6c0d5bf76a3417.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">wnv-s_weekly_reports</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="weekly-data-report" class="level1">
+<h1>Weekly Data Report</h1>
+<section id="create-configuration" class="level3">
+<h3 class="anchored" data-anchor-id="create-configuration">CREATE CONFIGURATION</h3>
+<hr>
+<p>DESC: defines filepaths | | defines settings | | defines filenames | | creates setting for plots<br>
+INPUT: user arguments<br>
+OUTPUT: config/config_weekly_settings/config_weekly_[sys.time].RData</p>
+<p>Example Run in run_config.sh</p>
+<p>Rscript config/config_weekly.R –input w27 –year 2025 –week 27 –download F –update F</p>
+</section>
+<section id="load-configuration" class="level3">
+<h3 class="anchored" data-anchor-id="load-configuration">LOAD CONFIGURATION</h3>
+<hr>
+<p>DESC: loads in packages | | loads user functions | | loads config file</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "/Users/user/Programming_Directory/Ebel Lab/wnv-ss-wkly_report"</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rlang'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:wrapr':
+
+    :=</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:purrr':
+
+    %@%, flatten, flatten_chr, flatten_dbl, flatten_int, flatten_lgl,
+    flatten_raw, invoke, splice</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in check_files_date("config/config_weekly_settings/"): Warning: Your
+config file was from a previous week. You may need to edit and run
+config/run_config.sh with the appropriate arguments</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+</section>
+<section id="data-gdrive-load" class="level3">
+<h3 class="anchored" data-anchor-id="data-gdrive-load">DATA GDRIVE LOAD</h3>
+<hr>
+<p>DESC: reads in current wnv-s_database | | foco_trap | | key_rename | | standards data to dir_input<br>
+<strong>DEPENDENCIES:</strong> googlesheets4 | | googledrive | | argparse | | gsheet_pull_prompt<br>
+<strong>INPUT:</strong> NA<br>
+<strong>OUTPUT:</strong> <strong>[dir_input]/wnv-s_database.csv</strong> | | <strong>[dir_input]/foco_trap.csv<br>
+[dir_input]/standards_input.csv</strong> | | <strong>[dir_input]/key_rename.csv</strong><br>
+</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>w29/wnv-s_database.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+File w29/wnv-s_database.csv download skipped.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>w29/wnv-s_database.csv exists.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>w29/slev-s_database.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+File w29/slev-s_database.csv download skipped.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>w29/slev-s_database.csv exists.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>w29/culex_sheet_database.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+File w29/culex_sheet_database.csv download skipped.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>w29/culex_sheet_database.csv exists.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>w29/key_rename.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+File w29/key_rename.csv download skipped.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>w29/key_rename.csv exists.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>w29/foco_trap.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+File w29/foco_trap.csv download skipped.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>w29/foco_trap.csv exists.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>w29/standards_input.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+File w29/standards_input.csv download skipped.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>w29/standards_input.csv exists.</code></pre>
+</div>
+</div>
+</section>
+<section id="database-check" class="level3">
+<h3 class="anchored" data-anchor-id="database-check">DATABASE CHECK</h3>
+<hr>
+</section>
+<section id="datasheet-clean" class="level3">
+<h3 class="anchored" data-anchor-id="datasheet-clean">DATASHEET CLEAN</h3>
+<hr>
+<p>Readme DESC: - reads in datasheet (pool) data from VDCI and BC, - cleans it into the proper format for the database - checks each column for errors. -</p>
+<p>DEPENDENCIES: read_list | | key rename | | wnv_s_clean | | tidyverse | | purrr</p>
+<p>INPUT: [dir_input]/datasheets* | | df_key_rename</p>
+<p>OUTPUT: [mid_dir]/[fn_datasheet_clean]*</p>
+</section>
+<section id="pcr-clean" class="level3">
+<h3 class="anchored" data-anchor-id="pcr-clean">PCR CLEAN</h3>
+<hr>
+<p>DESC: Reads in the pcr data from quantstudio that contains the Ct values | | reads in platemap data that links the platmap position with sample id<br>
+<br>
+DEPENDENCIES: tidyverse | | readxl | | purrr</p>
+<p>INPUT -PCR: [dir_input]/pcr/* [dir_pcr] | | PLATEMAP: [dir_input]/platemap/* [dir_platemap] | | week_filter = 37 | | year_filter = 2024 | | copy_threshold = 500 | | rn_threshold = 34000</p>
+<p>OUTPUT - Cq combined pcr and platemap csv [fn_cq_out = 2_mid/y##_w##_platemap.csv”]</p>
+</section>
+<section id="platemap-clean" class="level3">
+<h3 class="anchored" data-anchor-id="platemap-clean">PLATEMAP CLEAN</h3>
+<hr>
+<p>DESC:<br>
+DEPENDENCIES:<br>
+INPUT:<br>
+OUTPUT:</p>
+</section>
+<section id="merge-pcr-and-platemap" class="level3">
+<h3 class="anchored" data-anchor-id="merge-pcr-and-platemap">MERGE PCR AND PLATEMAP</h3>
+<hr>
+</section>
+<section id="standards" class="level3">
+<h3 class="anchored" data-anchor-id="standards">STANDARDS</h3>
+<hr>
+</section>
+<section id="birds" class="level3">
+<h3 class="anchored" data-anchor-id="birds">BIRDS</h3>
+<hr>
+</section>
+<section id="pcr-plot" class="level3">
+<h3 class="anchored" data-anchor-id="pcr-plot">PCR PLOT</h3>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wnv-s_weekly_report_pipeline_v2_files/figure-html/pcr%20plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Local file:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• '3_output/plots/y2025_w29_pcr_plot.png'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Uploaded into Drive file:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• 'y2025_w29_pcr_plot.png' &lt;id: 1Ue00NCHjcSlavZ8U7JKQQrnitmfTKXZB&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>With MIME type:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>• 'image/png'</code></pre>
+</div>
+</div>
+</section>
+<section id="database-update" class="level3">
+<h3 class="anchored" data-anchor-id="database-update">DATABASE UPDATE</h3>
+<hr>
+<p>DESC: MERGE WNV DATASHEET &amp; PCR</p>
+</section>
+<section id="merge-slev-datasheet-pcr" class="level3">
+<h3 class="anchored" data-anchor-id="merge-slev-datasheet-pcr">MERGE SLEV DATASHEET &amp; PCR</h3>
+<hr>
+<p>Code Below:</p>
+<ul>
+<li>data_input:
+<ul>
+<li>datasheets</li>
+<li>pcr_sheet</li>
+<li>platemap</li>
+<li>fn_func_trap: data_mid/functional_traps.csv *to be added</li>
+</ul></li>
+<li>data_output:
+<ul>
+<li>fn_database_output</li>
+<li>unmatched traps</li>
+</ul></li>
+<li>description:
+<ul>
+<li>checks to ensure traps match existing list</li>
+<li>pulls database</li>
+<li>merges datasheet pcr and platemap data</li>
+<li>makes archive copy of database</li>
+<li>merges new data with database</li>
+<li>pushes changes from new data to database to googledrive</li>
+</ul></li>
+</ul>
+<p>Code Below: -data_input</p>
+</section>
+<section id="clean-app-species-trap-data" class="level3">
+<h3 class="anchored" data-anchor-id="clean-app-species-trap-data">CLEAN APP SPECIES (TRAP) DATA</h3>
+<hr>
+<p>DESC:<br>
+DEPENDENCIES:<br>
+INPUT:<br>
+OUTPUT:</p>
+</section>
+<section id="complete-trap-data" class="level3">
+<h3 class="anchored" data-anchor-id="complete-trap-data">COMPLETE TRAP DATA</h3>
+<hr>
+<p>DESC:<br>
+DEPENDENCIES:<br>
+INPUT:<br>
+OUTPUT:</p>
+</section>
+<section id="calc-pools" class="level3">
+<h3 class="anchored" data-anchor-id="calc-pools">CALC POOLS</h3>
+<hr>
+<p>Code Below: - data input: database_update (weekly data from surveillance) - data_input</p>
+</section>
+<section id="plot-pools" class="level3">
+<h3 class="anchored" data-anchor-id="plot-pools">PLOT POOLS</h3>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wnv-s_weekly_report_pipeline_v2_files/figure-html/plot-pools-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="calc-zone-stats" class="level3">
+<h3 class="anchored" data-anchor-id="calc-zone-stats">CALC ZONE STATS</h3>
+<hr>
+</section>
+<section id="plot-zone-stats-line" class="level3">
+<h3 class="anchored" data-anchor-id="plot-zone-stats-line">PLOT ZONE STATS LINE</h3>
+<hr>
+</section>
+<section id="plot-zone-stats-area" class="level3">
+<h3 class="anchored" data-anchor-id="plot-zone-stats-area">PLOT ZONE STATS AREA</h3>
+<hr>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using an external vector in selections was deprecated in tidyselect 1.1.0.
+ℹ Please use `all_of()` or `any_of()` instead.
+  # Was:
+  data %&gt;% select(grp_vars)
+
+  # Now:
+  data %&gt;% select(all_of(grp_vars))
+
+See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'zone', 'week', 'spp'. You can override
+using the `.groups` argument.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 3 rows containing non-finite outside the scale range
+(`stat_align()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Width not defined
+ℹ Set with `position_dodge(width = ...)`
+Width not defined
+ℹ Set with `position_dodge(width = ...)`</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 3 rows containing non-finite outside the scale range
+(`stat_align()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Width not defined
+ℹ Set with `position_dodge(width = ...)`</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wnv-s_weekly_report_pipeline_v2_files/figure-html/plot-zone-stats-area-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 3 rows containing non-finite outside the scale range (`stat_align()`).
+Width not defined
+ℹ Set with `position_dodge(width = ...)`
+Width not defined
+ℹ Set with `position_dodge(width = ...)`</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 3 rows containing non-finite outside the scale range
+(`stat_align()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Width not defined
+ℹ Set with `position_dodge(width = ...)`</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Local file:
+• '3_output/plots/y2025_w29_hx_plot_all.png'
+Uploaded into Drive file:
+• 'y2025_w29_hx_plot_all.png' &lt;id: 1q3iG6h3Sh6MZ4Npjty_7PxBydm-VmDdz&gt;
+With MIME type:
+• 'image/png'</code></pre>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

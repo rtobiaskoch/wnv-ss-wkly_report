@@ -10,13 +10,16 @@ calc_vi <- function(abund, pir,
   #FOR BOTH ABUNDANCE AND PIR
   if (!require("tidyverse")) install.packages("tidyverse")
 
+  #if spp0 in the df then remove it
   if("spp0" %in% names(abund)) {
     abund = abund %>% select(-spp0)
   }
   
+    #if spp0 in the df then remove it
   if("spp0" %in% names(pir)) {
     pir = pir %>% select(-spp0)
   }
+  
   
   vi = full_join(abund, pir, by = grp_vars) %>%
     filter(!zone %in% rm_zone) %>%
