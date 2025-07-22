@@ -45,7 +45,7 @@ utils = list.files(path = "utils",
 
 purrr::walk(utils, source)
 
-check_files_date("config/config_weekly_settings/")
+check_files_date("config/config_weekly_settings")
 #get the most recent configuration for the run from the output of running config_weekly.R
 read_latest("config/config_weekly_settings")
 
@@ -571,6 +571,7 @@ current_wk = all_hx %>%
   
 ytd = all_hx %>%
   filter(year == year_filter,
+         
          week %in% 23:week_filter) %>%
   mutate(type = "current")
 

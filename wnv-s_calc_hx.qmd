@@ -4,23 +4,122 @@ format: html
 editor: visual
 ---
 
-## Quarto
+# Weekly Data Report
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+### CREATE CONFIGURATION
 
-## Running Code
+------------------------------------------------------------------------
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+DESC: defines filepaths \| \| defines settings \| \| defines filenames \| \| creates setting for plots\
+INPUT: user arguments\
+OUTPUT: config/config_weekly_settings/config_weekly\_\[sys.time\].RData
 
-```{r}
-1 + 1
+Example Run in run_config.sh
+
+Rscript config/config_hx.R --input 1_input --year 2025 --download T --update F
+
+### LOAD CONFIGURATION
+
+------------------------------------------------------------------------
+
+DESC: loads in packages \| \| loads user functions \| \| loads config file
+
+```{r, load config}
+rm(list = ls())
+getwd()
+
+source("config/load_packages.R")
+
+utils = list.files(path = "utils",
+                   pattern = "*.R",
+                   full.names = T)
+
+
+purrr::walk(utils, source)
+
+
+#get the most recent configuration for the run from the output of running config_weekly.R
+list2env(readRDS("config/config_hx_settings.RData"), #fix config
+        envir = .GlobalEnv)
+
+
 ```
 
-You can add options to executable code like this
+### DATA GDRIVE LOAD
 
 ```{r}
-#| echo: false
-2 * 2
+#
+
+if(download){
+gsheet_pull_prompt(fn_trap, "data", key_foco_trap)
+#WNV DATABASE
+gsheet_pull_prompt(fn_gdrive_database, "data", key_database_gsheet)
+#CULEX SHEET
+gsheet_pull_prompt(fn_gdrive_culex_sheet, "data", key_database_culex_sheet)
+}
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+```{r}
+#TRAP 
+foco_trap = read.csv(fn_trap)  %>% filter(active == 1)
+```
+
+```{r}
+database_update  = read.csv(fn_gdrive_database) %>%
+  filter(csu_id != "CSU00000") %>%
+  filter(year %in% year_filter_hx) %>%
+  mutate(zone2 = if_else(zone %in% fc_zones, "FC", zone))
+
+get_dupes(database_update, csu_id)
+```
+
+```{r}
+culex_update = read.csv("1_input/culex_sheet_database2025-06-19 16_45_27.258215 - data.csv") %>%
+  filter(year %in% year_filter_hx) %>%
+  mutate(zone2 = if_else(zone %in% fc_zones, "FC", zone)) %>%
+  wnv_s_clean()
+
+culex_dupes = get_dupes(culex_update, year, week, zone, spp, trap_id)
+
+```
+
+```{r}
+hx = calc_all(culex_update, #input for abundance
+              database_update) %>% #input for pir
+  arrange(desc(year), desc(week), zone, spp) %>%  #input for pir
+  mutate(type = "hx") 
+
+hx_wide = hx %>% clean_wide("hx_") 
+```
+
+CHECK NW DUPES
+
+```{r}
+culex_nw = culex_update %>%
+  filter(zone == "NW") %>%
+  filter(year == 2019) %>%
+  filter(week == 25) %>%
+  filter(trap_id == "FC-036")
+
+
+database_nw = database_update %>%
+  filter(zone == "NW") %>%
+  filter(year == 2019) %>%
+  filter(week == 25) %>%
+  filter(trap_id == "FC-036")
+```
+
+```{r}
+
+
+#combine 
+df_all = hx_wide %>% left_join(ytd_wide, by = "week")
+
+hx_abund = create_hx_report(df_all, zones = zone_lvls, prefix = "abund")
+ 
+
+hx_pir = create_hx_report(df_all, zones = zone_lvls, prefix = "pir", sigfig = 4)
+
+hx_vi = create_hx_report(df_all, zones = zone_lvls, prefix = "vi")
+
+```

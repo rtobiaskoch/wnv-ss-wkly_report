@@ -1,4 +1,6 @@
-check_data <- function(df, trap, dir, 
+check_data <- function(df, 
+                       trap = data.frame("trap_id" = c()), 
+                       dir = "", 
                        zones = c("NE", "NW", "SE", "SW", "LV", "BE", "BC"),
                        year_filter = 1:10000,  #any number aka no filter
                        week_filter = 1:52, #any number aka no filter
