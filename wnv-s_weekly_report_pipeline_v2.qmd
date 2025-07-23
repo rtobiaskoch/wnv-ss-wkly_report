@@ -13,7 +13,7 @@ INPUT: user arguments\
 OUTPUT: config/config_weekly_settings/config_weekly\_\[sys.time\].RData
 
 ```{bash, create config}
-Rscript config/config_weekly.R --input w26 --year 2025 --year_hx 2019 --week 26 --cp_threshold 500 --update T --clean F # first arg is year second is week
+Rscript config/config_weekly.R --input w29 --year 2025 --year_hx 2019 --week 29 --cp_threshold 500 --update F --clean F # first arg is year second is week
 #add input dir arg 
 #allows to easily run diff input folders
 ```

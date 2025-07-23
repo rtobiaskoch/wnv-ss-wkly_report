@@ -161,7 +161,6 @@ wnv_s_clean <- function(df,
       "\n        C L E A N I N G  C O L U M N S                 \n",
       "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n")
   
-  
   # CLEAN csu_id
   if("csu_id" %in% names(df) & "csu_id" %in% col_2_clean) {
     
@@ -235,7 +234,7 @@ wnv_s_clean <- function(df,
           is.na(trap_date) | trap_date == "" ~ NA_character_,
           TRUE ~ {
             parsed <- lubridate::parse_date_time(trap_date, 
-                                                 orders = c("ymd", "mdy", "dmy", "Ymd"),
+                                                 orders = c("mdy", "ymd", "dmy", "Ymd"),
                                                  quiet = TRUE)
             ifelse(is.na(parsed), NA_character_, as.character(parsed))
           }
@@ -246,7 +245,7 @@ wnv_s_clean <- function(df,
     if(!silence) {
       clean_summary(df0, df, trap_date) 
     }
-  }#end if trap_date
+  } #end if trap_date
   
   # ADD YEAR
   if ("trap_date" %in% names(df) & !"year" %in% names(df) & "year" %in% col_2_clean) {

@@ -1,0 +1,211 @@
+"year","week","well_position","plate","target","csu_id","sample_type","cq","log_copies"
+2025,23,"F6","plate_1","SLEV","pos extract ctl","pos ctrl",18.42,6.05920740044063
+2025,23,"F12","plate_1","SLEV","slev_std_1e2","std 1e2",32.46,2
+2025,23,"C12","plate_1","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,23,"E12","plate_1","SLEV","slev_std_1e4","std 1e4",25.13,4
+2025,23,"B12","plate_1","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,23,"D12","plate_1","SLEV","slev_std_1e6","std 1e6",18.78,6
+2025,23,"A12","plate_1","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2025,23,"F6","plate_1","WNV","pos extract ctl","pos ctrl",16.38,6.6952031922013
+2025,23,"F12","plate_1","WNV","slev_std_1e2","std 1e2",36.67,0.709269960975831
+2025,23,"C12","plate_1","WNV","wnv_std_1e2","std 1e2",32.39,2
+2025,23,"E12","plate_1","WNV","slev_std_1e4","std 1e4",55.55,0
+2025,23,"B12","plate_1","WNV","wnv_std_1e4","std 1e4",25.32,4
+2025,23,"D12","plate_1","WNV","slev_std_1e6","std 1e6",33.7,1.58602438238698
+2025,23,"A12","plate_1","WNV","wnv_std_1e6","std 1e6",18.83,6
+2025,24,"H11","plate_1","SLEV","pos extract ctl","pos ctrl",18.07,6.2214502632273
+2025,24,"F12","plate_1","SLEV","slev_std_1e2","std 1e2",31.44,2
+2025,24,"C12","plate_1","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,24,"E12","plate_1","SLEV","slev_std_1e4","std 1e4",25.17,4
+2025,24,"B12","plate_1","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,24,"D12","plate_1","SLEV","slev_std_1e6","std 1e6",18.75,6
+2025,24,"A12","plate_1","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2025,24,"H11","plate_1","WNV","pos extract ctl","pos ctrl",15.9,7.26273170042874
+2025,24,"F12","plate_1","WNV","slev_std_1e2","std 1e2",36.61,0.615950051656401
+2025,24,"C12","plate_1","WNV","wnv_std_1e2","std 1e2",32.16,2
+2025,24,"E12","plate_1","WNV","slev_std_1e4","std 1e4",55.55,0
+2025,24,"B12","plate_1","WNV","wnv_std_1e4","std 1e4",26.35,4
+2025,24,"D12","plate_1","WNV","slev_std_1e6","std 1e6",33.2,1.71130095991617
+2025,24,"A12","plate_1","WNV","wnv_std_1e6","std 1e6",19.69,6
+2025,25,"H11","plate_1","SLEV","pos extract ctl","pos ctrl",17.73,6.32461473838011
+2025,25,"F12","plate_1","SLEV","slev_std_1e2","std 1e2",31.77,2
+2025,25,"C12","plate_1","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,25,"E12","plate_1","SLEV","slev_std_1e4","std 1e4",25.32,4
+2025,25,"B12","plate_1","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,25,"D12","plate_1","SLEV","slev_std_1e6","std 1e6",18.77,6
+2025,25,"A12","plate_1","SLEV","wnv_std_1e6","std 1e6",38.86,-0.173925197299174
+2025,25,"H11","plate_1","WNV","pos extract ctl","pos ctrl",14.78,9.92033366095849
+2025,25,"F12","plate_1","WNV","slev_std_1e2","std 1e2",38.06,-1.69897000433602
+2025,25,"C12","plate_1","WNV","wnv_std_1e2","std 1e2",31.64,2
+2025,25,"E12","plate_1","WNV","slev_std_1e4","std 1e4",38.94,-2
+2025,25,"B12","plate_1","WNV","wnv_std_1e4","std 1e4",24.97,4
+2025,25,"D12","plate_1","WNV","slev_std_1e6","std 1e6",32.97,0.904174368284164
+2025,25,"A12","plate_1","WNV","wnv_std_1e6","std 1e6",23.57,6
+2025,25,"B5","plate_2","SLEV","pos extract ctl","pos ctrl",16.95,6.52678332967515
+2025,25,"F12","plate_2","SLEV","slev_std_1e2","std 1e2",31.31,2
+2025,25,"C12","plate_2","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,25,"E12","plate_2","SLEV","slev_std_1e4","std 1e4",25.11,4
+2025,25,"B12","plate_2","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,25,"D12","plate_2","SLEV","slev_std_1e6","std 1e6",18.58,6
+2025,25,"A12","plate_2","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2025,25,"B5","plate_2","WNV","pos extract ctl","pos ctrl",14.48,7.68939890594417
+2025,25,"F12","plate_2","WNV","slev_std_1e2","std 1e2",55.55,0
+2025,25,"C12","plate_2","WNV","wnv_std_1e2","std 1e2",32.07,2
+2025,25,"E12","plate_2","WNV","slev_std_1e4","std 1e4",55.55,0
+2025,25,"B12","plate_2","WNV","wnv_std_1e4","std 1e4",25.61,4
+2025,25,"D12","plate_2","WNV","slev_std_1e6","std 1e6",33.28,1.57391544042155
+2025,25,"A12","plate_2","WNV","wnv_std_1e6","std 1e6",19.78,6
+2025,26,"H11","plate_1","SLEV","positive extraction","pos ctrl",17.15,6.42226880123478
+2025,26,"F12","plate_1","SLEV","slev_std_1e2","std 1e2",31.55,2
+2025,26,"C12","plate_1","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,26,"E12","plate_1","SLEV","slev_std_1e4","std 1e4",24.94,4
+2025,26,"B12","plate_1","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,26,"D12","plate_1","SLEV","slev_std_1e6","std 1e6",18.56,6
+2025,26,"A12","plate_1","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2025,26,"H11","plate_1","WNV","positive extraction","pos ctrl",14.47,7.46288168226295
+2025,26,"F12","plate_1","WNV","slev_std_1e2","std 1e2",55.55,0
+2025,26,"C12","plate_1","WNV","wnv_std_1e2","std 1e2",30.51,2
+2025,26,"E12","plate_1","WNV","slev_std_1e4","std 1e4",55.55,0
+2025,26,"B12","plate_1","WNV","wnv_std_1e4","std 1e4",24.48,4
+2025,26,"D12","plate_1","WNV","slev_std_1e6","std 1e6",33.61,0.918554530550273
+2025,26,"A12","plate_1","WNV","wnv_std_1e6","std 1e6",18.81,6
+2025,26,"H11","plate_2","SLEV","positive extraction","pos ctrl",17.93,6.2316863980937
+2025,26,"F12","plate_2","SLEV","slev_std_1e2","std 1e2",31.55,2
+2025,26,"C12","plate_2","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,26,"E12","plate_2","SLEV","slev_std_1e4","std 1e4",24.92,4
+2025,26,"B12","plate_2","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,26,"D12","plate_2","SLEV","slev_std_1e6","std 1e6",18.75,6
+2025,26,"A12","plate_2","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2025,26,"H11","plate_2","WNV","positive extraction","pos ctrl",15.64,7.0960250273374
+2025,26,"F12","plate_2","WNV","slev_std_1e2","std 1e2",55.55,0
+2025,26,"C12","plate_2","WNV","wnv_std_1e2","std 1e2",31.42,2
+2025,26,"E12","plate_2","WNV","slev_std_1e4","std 1e4",55.55,0
+2025,26,"B12","plate_2","WNV","wnv_std_1e4","std 1e4",24.83,4
+2025,26,"D12","plate_2","WNV","slev_std_1e6","std 1e6",34.02,1.10174707394637
+2025,26,"A12","plate_2","WNV","wnv_std_1e6","std 1e6",19.15,6
+2025,27,"H11","plate_1","SLEV","pos extract ctl","pos ctrl",30.65,2.08965788162153
+2025,27,"F12","plate_1","SLEV","slev_std_1e2","std 1e2",30.82,2
+2025,27,"C12","plate_1","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,27,"E12","plate_1","SLEV","slev_std_1e4","std 1e4",25.02,4
+2025,27,"B12","plate_1","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,27,"D12","plate_1","SLEV","slev_std_1e6","std 1e6",18.63,6
+2025,27,"A12","plate_1","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2025,27,"H11","plate_1","WNV","pos extract ctl","pos ctrl",20.63,5.3200644897445
+2025,27,"F12","plate_1","WNV","slev_std_1e2","std 1e2",55.55,0
+2025,27,"C12","plate_1","WNV","wnv_std_1e2","std 1e2",31.32,2
+2025,27,"E12","plate_1","WNV","slev_std_1e4","std 1e4",55.55,0
+2025,27,"B12","plate_1","WNV","wnv_std_1e4","std 1e4",24.6,4
+2025,27,"D12","plate_1","WNV","slev_std_1e6","std 1e6",34.72,0.899273187317604
+2025,27,"A12","plate_1","WNV","wnv_std_1e6","std 1e6",18.57,6
+2025,27,"H11","plate_2","SLEV","pos extract ctl","pos ctrl",18.98,5.87069620062948
+2025,27,"F12","plate_2","SLEV","slev_std_1e2","std 1e2",31.8,2
+2025,27,"C12","plate_2","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,27,"E12","plate_2","SLEV","slev_std_1e4","std 1e4",25.02,4
+2025,27,"B12","plate_2","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,27,"D12","plate_2","SLEV","slev_std_1e6","std 1e6",18.61,6
+2025,27,"A12","plate_2","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2025,27,"H11","plate_2","WNV","pos extract ctl","pos ctrl",15.5,6.70678995966515
+2025,27,"F12","plate_2","WNV","slev_std_1e2","std 1e2",55.55,0
+2025,27,"C12","plate_2","WNV","wnv_std_1e2","std 1e2",30.59,2
+2025,27,"E12","plate_2","WNV","slev_std_1e4","std 1e4",55.55,0
+2025,27,"B12","plate_2","WNV","wnv_std_1e4","std 1e4",24.06,4
+2025,27,"D12","plate_2","WNV","slev_std_1e6","std 1e6",34.27,0.834420703681533
+2025,27,"A12","plate_2","WNV","wnv_std_1e6","std 1e6",17.81,6
+2025,27,"H11","plate_3","SLEV","pos extract ctl","pos ctrl",19.84,5.63338420437832
+2025,27,"F12","plate_3","SLEV","slev_std_1e2","std 1e2",31.33,2
+2025,27,"C12","plate_3","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,27,"E12","plate_3","SLEV","slev_std_1e4","std 1e4",24.93,4
+2025,27,"B12","plate_3","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,27,"D12","plate_3","SLEV","slev_std_1e6","std 1e6",18.72,6
+2025,27,"A12","plate_3","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2025,27,"H11","plate_3","WNV","pos extract ctl","pos ctrl",17.05,6.56964909019855
+2025,27,"F12","plate_3","WNV","slev_std_1e2","std 1e2",55.55,0
+2025,27,"C12","plate_3","WNV","wnv_std_1e2","std 1e2",31.32,2
+2025,27,"E12","plate_3","WNV","slev_std_1e4","std 1e4",55.55,0
+2025,27,"B12","plate_3","WNV","wnv_std_1e4","std 1e4",24.65,4
+2025,27,"D12","plate_3","WNV","slev_std_1e6","std 1e6",35.03,0.741939077729199
+2025,27,"A12","plate_3","WNV","wnv_std_1e6","std 1e6",18.97,6
+2025,28,"H11","plate_1","SLEV","pos extract ctl","pos ctrl",18.51,5.9973192295889
+2025,28,"F12","plate_1","SLEV","slev_std_1e2","std 1e2",31.21,2
+2025,28,"C12","plate_1","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,28,"E12","plate_1","SLEV","slev_std_1e4","std 1e4",24.95,4
+2025,28,"B12","plate_1","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,28,"D12","plate_1","SLEV","slev_std_1e6","std 1e6",18.46,6
+2025,28,"A12","plate_1","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2025,28,"H11","plate_1","WNV","pos extract ctl","pos ctrl",15.49,6.72876182708307
+2025,28,"F12","plate_1","WNV","slev_std_1e2","std 1e2",39.94,-1.15490195998574
+2025,28,"C12","plate_1","WNV","wnv_std_1e2","std 1e2",30.1,2
+2025,28,"E12","plate_1","WNV","slev_std_1e4","std 1e4",55.55,0
+2025,28,"B12","plate_1","WNV","wnv_std_1e4","std 1e4",24.09,4
+2025,28,"D12","plate_1","WNV","slev_std_1e6","std 1e6",33,1.08421868673924
+2025,28,"A12","plate_1","WNV","wnv_std_1e6","std 1e6",17.68,6
+2025,28,"H11","plate_2","SLEV","pos extract ctl","pos ctrl",18.47,6.09506102592584
+2025,28,"F12","plate_2","SLEV","slev_std_1e2","std 1e2",31.62,2
+2025,28,"C12","plate_2","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,28,"E12","plate_2","SLEV","slev_std_1e4","std 1e4",25.19,4
+2025,28,"B12","plate_2","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,28,"D12","plate_2","SLEV","slev_std_1e6","std 1e6",18.78,6
+2025,28,"A12","plate_2","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2025,28,"H11","plate_2","WNV","pos extract ctl","pos ctrl",16.43,6.85051231217562
+2025,28,"F12","plate_2","WNV","slev_std_1e2","std 1e2",55.55,0
+2025,28,"C12","plate_2","WNV","wnv_std_1e2","std 1e2",31.62,2
+2025,28,"E12","plate_2","WNV","slev_std_1e4","std 1e4",55.55,0
+2025,28,"B12","plate_2","WNV","wnv_std_1e4","std 1e4",24.89,4
+2025,28,"D12","plate_2","WNV","slev_std_1e6","std 1e6",34.29,1.07990446766672
+2025,28,"A12","plate_2","WNV","wnv_std_1e6","std 1e6",19.24,6
+2025,28,"H11","plate_3","SLEV","pos extract ctl","pos ctrl",19.38,5.78270551841607
+2025,28,"F12","plate_3","SLEV","slev_std_1e2","std 1e2",31.35,2
+2025,28,"C12","plate_3","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,28,"E12","plate_3","SLEV","slev_std_1e4","std 1e4",25.08,4
+2025,28,"B12","plate_3","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,28,"D12","plate_3","SLEV","slev_std_1e6","std 1e6",18.66,6
+2025,28,"A12","plate_3","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2025,28,"H11","plate_3","WNV","pos extract ctl","pos ctrl",17.73,6.28838344029065
+2025,28,"F12","plate_3","WNV","slev_std_1e2","std 1e2",55.55,0
+2025,28,"C12","plate_3","WNV","wnv_std_1e2","std 1e2",31.42,2
+2025,28,"E12","plate_3","WNV","slev_std_1e4","std 1e4",55.55,0
+2025,28,"B12","plate_3","WNV","wnv_std_1e4","std 1e4",24.7,4
+2025,28,"D12","plate_3","WNV","slev_std_1e6","std 1e6",34.11,1.10720996964787
+2025,28,"A12","plate_3","WNV","wnv_std_1e6","std 1e6",18.78,6
+2025,29,"H12","plate_1","SLEV","pos extract ctl","pos ctrl",19.6,5.81749178445434
+2025,29,"F12","plate_1","SLEV","slev_std_1e2","std 1e2",31.22,2
+2025,29,"C12","plate_1","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,29,"E12","plate_1","SLEV","slev_std_1e4","std 1e4",25.41,4
+2025,29,"B12","plate_1","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,29,"D12","plate_1","SLEV","slev_std_1e6","std 1e6",18.93,6
+2025,29,"A12","plate_1","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2025,29,"H12","plate_1","WNV","pos extract ctl","pos ctrl",16.89,6.54219686302844
+2025,29,"F12","plate_1","WNV","slev_std_1e2","std 1e2",55.55,0
+2025,29,"C12","plate_1","WNV","wnv_std_1e2","std 1e2",31.31,2
+2025,29,"E12","plate_1","WNV","slev_std_1e4","std 1e4",55.55,0
+2025,29,"B12","plate_1","WNV","wnv_std_1e4","std 1e4",24.73,4
+2025,29,"D12","plate_1","WNV","slev_std_1e6","std 1e6",35.11,0.766412847112399
+2025,29,"A12","plate_1","WNV","wnv_std_1e6","std 1e6",18.69,6
+2025,29,"H12","plate_2","SLEV","pos extract ctl","pos ctrl",18.18,6.12822316279605
+2025,29,"F12","plate_2","SLEV","slev_std_1e2","std 1e2",31.31,2
+2025,29,"C12","plate_2","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,29,"E12","plate_2","SLEV","slev_std_1e4","std 1e4",25.18,4
+2025,29,"B12","plate_2","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,29,"D12","plate_2","SLEV","slev_std_1e6","std 1e6",18.5,6
+2025,29,"A12","plate_2","SLEV","wnv_std_1e6","std 1e6",38.99,-0.366531544420413
+2025,29,"H12","plate_2","WNV","pos extract ctl","pos ctrl",15.01,6.75105858965805
+2025,29,"F12","plate_2","WNV","slev_std_1e2","std 1e2",37.1,-0.0132282657337552
+2025,29,"C12","plate_2","WNV","wnv_std_1e2","std 1e2",30.64,2
+2025,29,"E12","plate_2","WNV","slev_std_1e4","std 1e4",55.55,0
+2025,29,"B12","plate_2","WNV","wnv_std_1e4","std 1e4",23.76,4
+2025,29,"D12","plate_2","WNV","slev_std_1e6","std 1e6",33.22,1.17435059747938
+2025,29,"A12","plate_2","WNV","wnv_std_1e6","std 1e6",17.58,6
+2025,29,"H10","plate_3","SLEV","pos extract ctl","pos ctrl",17.98,6.16639451326253
+2025,29,"F12","plate_3","SLEV","slev_std_1e2","std 1e2",31.65,2
+2025,29,"C12","plate_3","SLEV","wnv_std_1e2","std 1e2",55.55,0
+2025,29,"E12","plate_3","SLEV","slev_std_1e4","std 1e4",24.4,4
+2025,29,"B12","plate_3","SLEV","wnv_std_1e4","std 1e4",55.55,0
+2025,29,"D12","plate_3","SLEV","slev_std_1e6","std 1e6",18.79,6
+2025,29,"A12","plate_3","SLEV","wnv_std_1e6","std 1e6",55.55,0
+2025,29,"H10","plate_3","WNV","pos extract ctl","pos ctrl",15.85,6.88192182804856
+2025,29,"F12","plate_3","WNV","slev_std_1e2","std 1e2",55.55,0
+2025,29,"C12","plate_3","WNV","wnv_std_1e2","std 1e2",31.47,2
+2025,29,"E12","plate_3","WNV","slev_std_1e4","std 1e4",36.04,0.537819095073274
+2025,29,"B12","plate_3","WNV","wnv_std_1e4","std 1e4",24.86,4
+2025,29,"D12","plate_3","WNV","slev_std_1e6","std 1e6",34.97,0.875639937004168
+2025,29,"A12","plate_3","WNV","wnv_std_1e6","std 1e6",18.74,6
