@@ -34,7 +34,7 @@ parser$add_argument("--rn_threshold", help = "flourescent threshold for determin
 parser$add_argument("--vi_threshold", help = "vi threshold for plots", type = "integer", default = 0.75)
 parser$add_argument("--update", help = "logical argument whether or not to update directory with data from gdrive", type = "logical", default = F)
 parser$add_argument("--download", help = "logical argument whether or not to download data from gdrive", type = "logical", default = F)
-parser$add_argument("--clean", help = "logical argument whether or not to clean directory with data in repository", type = "logical", default = F)
+parser$add_argument("--push", help = "logical argument whether or not to push directory with data to repository", type = "logical", default = F)
 
 # Parse arguments
 args <- parser$parse_args()
@@ -47,7 +47,7 @@ rn_threshold = args$rn_threshold
 vi_threshold = args$vi_threshold
 download <- args$download
 update <- args$update
-clean <- args$clean
+push <- args$push
 
 #DATES
 week_filter <- args$week
@@ -59,9 +59,6 @@ week_filter_hx = 23:37
 
 rm(week_hardcode, year_hardcode)
 
-
-
-
 # Output the values
 cat("Input folder set to:", dir_input, "\n")
 cat("Week filter set to:", week_filter, "\n")
@@ -71,7 +68,7 @@ cat("Fluorescent threshold set to:", args$rn_threshold, "\n")
 cat("VI threshold set to:", args$vi_threshold, "\n")
 cat("Update directory set to:", update, "\n")
 cat("Download Googledrive files set to:", download, "\n")
-cat("Clean directory set to:", clean, "\n")
+cat("push directory set to:", push, "\n")
 
 
 
@@ -188,6 +185,7 @@ key_standards_gsheet = "1bSMYQ4bZ9uBfrOQ6ylsegNmmGYdf9YFVbxB4qBhnFQo"
 key_foco_trap = "1G5UcRmcVsVpMtKW_-4WLKX8WT_fvyIYj7sGcoNxDmr4"
 key_birds = "1YYjQmgNV92y1D39Nt5Y5NG0f_j4sVqVsJSSoUuc2u8k"
 key_plots_dir = "1yVA3bOcQ3i4a_GyAagHIYDGPAkeaDY02"
+key_inconclusive = "1l90THbcNgUgdO6dUbFXYo6IxVc3VwutKVlx3Cu9cgEQ"
 
 fn_gdrive_database = file.path(dir_input,"wnv-s_database.csv") # <<<<<<<--------------------------------------------------- U S E R   I N P U T
 fn_gdrive_database_slev = file.path(dir_input,"slev-s_database.csv") # <<<<<<<--------------------------------------------------- U S E R   I N P U T
@@ -195,6 +193,7 @@ fn_gdrive_culex_sheet = file.path(dir_input,"culex_sheet_database.csv") # <<<<<<
 fn_key_rename <- file.path(dir_input, "key_rename.csv")
 fn_trap <- file.path(dir_input, "foco_trap.csv")
 fn_standards <- file.path(dir_input, "standards_input.csv")
+fn_inconclusive = file.path(dir_input, "amp_inconclusive_negatives.csv")
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -227,20 +226,24 @@ if(length(week_filter) > 1){ #if looking at multiple years then create YYYY-YYYY
 }
 
 
+
+file_prefix = paste0("y", fn_year, "_", "w", fn_week, "_")
+
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #--------------------- F I L E  N A M E S  M I D ------------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-dir_mid_wk = paste0(dir_mid,"/y",fn_year, "_", "w",fn_week, "_")
+dir_mid_wk = paste0(dir_mid,"/", file_prefix)
 
 fn_database_update = file.path(dir_mid, "wnv-s_database_update.csv")
 fn_database_slev_update = file.path(dir_mid, "slev-s_database_update.csv")
 fn_database_culex_update = file.path(dir_mid, "culex_database_update.csv")
-fn_datasheet_clean = paste0(dir_mid,"/y",fn_year, "_", "w",fn_week, "_datasheet.csv")
-fn_datasheet_clean_test = paste0(dir_mid,"/y",fn_year, "_", "w",fn_week, "_datasheet_test.csv")
+fn_datasheet_clean = paste0(dir_mid,"/", file_prefix, "datasheet.csv")
+fn_datasheet_clean_test = paste0(dir_mid,"/", file_prefix, "_datasheet_test.csv")
 fn_weekly_input_format_mid = file.path(dir_mid, "weekly_data_input_format_mid.RData")
-fn_cq_out = paste0(dir_mid,"/y",fn_year, "_", "w",fn_week, "_platemap.csv")
-fn_abund_out = paste0(dir_mid,"/y",fn_year, "_", "w",fn_week, "_abundance.csv")
-fn_pools_mid = paste0(dir_mid,"/y",fn_year, "_", "w",fn_week, "_pools.csv")
+fn_cq_out = paste0(dir_mid,"/", file_prefix, "pcr_clean.RData")
+fn_cq_data = paste0(dir_mid_wk, "cq_data.RData")
+fn_abund_out = paste0(dir_mid,"/", file_prefix, "abundance.csv")
+fn_pools_mid = paste0(dir_mid,"/", file_prefix, "pools.csv")
 fn_inactive_trap = file.path(dir_mid, "inactive_traps.csv")
 fn_func_trap = file.path(dir_mid, "functional_traps.csv")
 fn_max_trap_yr = file.path(dir_mid, "max_trap_zone_yr.csv")
@@ -251,18 +254,18 @@ fn_trap_p_wk = file.path(dir_mid, "trap_p_wk.csv")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 fn_gdrive_archive = paste0("wnv-s_database_pre_y",year_filter, "_w", week_filter,".gsheet")
-fn_data_output = paste0(dir_output,"/y",fn_year, "_", "w",fn_week, "_data_update.csv")
+fn_data_output = paste0(dir_output,"/", file_prefix, "_data_update.csv")
 fn_weekly_input_format = file.path(dir_output, "weekly_data_input_format.csv")
 fn_stds_ctrl_slev_bird = file.path(dir_output, "std_ctrl_slev_bird.csv")
 fn_non_database_sample = file.path(dir_output, "non_database_samples(std-ctrl-bird-etc).csv")
 fn_standards_output = file.path(dir_output, "standards_new.csv")
 weekly_report_folder = "25_weekly_report"
-fn_bird_output = paste0(dir_output, "/rmrp_", year_filter,"_", week_filter, ".csv")
+fn_bird_output = paste0(dir_output, "/",  file_prefix, "rmrp.csv")
 dir_plots = file.path(dir_output, "plots")
-dir_plot_wk = paste0(dir_plots,"/y",fn_year, "_", "w",fn_week, "_")
+dir_plot_wk = paste0(dir_plots,"/", file_prefix)
 fn_pcr_plot = paste0(dir_plot_wk, "pcr_plot.png")
 fn_p_hx = paste0(dir_plot_wk, "hx_plot_all.png")
-
+fn_report = paste0("y", year_filter, "_w", week_filter, "_weekly_report_output")
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #---------------------------- C O L U M N  S E L E C T I O N -------------------------
@@ -304,9 +307,6 @@ col_class_database <- c("csu_id" = "character",
 
 
 
-
-
-
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #------------------------------- C O L O R  S E T T I N G S -------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -329,12 +329,11 @@ curr_hx_pal = c("current" = "#e9724c",
 
 
 
-
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #----------------------------- E X P O R T   C O N F I G ----------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-config_fn = paste0("config/config_weekly_settings/config_weekly_",Sys.time(), ".RData")
+config_fn = paste0("config/config_weekly_settings/", file_prefix, "config_weekly_",Sys.time(), ".RData")
 
 all_params <- ls(envir = .GlobalEnv)
 
