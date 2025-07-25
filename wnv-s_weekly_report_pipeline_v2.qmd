@@ -24,7 +24,8 @@ OUTPUT: config/config_weekly_settings/config_weekly\_\[sys.time\].RData
 
 Example Run in run_config.sh
 
-Rscript config/config_weekly.R --input w27 --year 2025 --week 27 --download F --update F
+Rscript config/config_weekly.R --input 1_input/w25 --year 2025 --week 25 --download T --update T
+--push F
 
 ### LOAD CONFIGURATION
 
@@ -78,6 +79,8 @@ gsheet_pull_prompt(fn_key_rename, "Sheet1", key_rename_key)
 gsheet_pull_prompt(fn_trap, "data", key_foco_trap)
 #STANDARDS
 gsheet_pull_prompt(fn_standards, "data", key_standards_gsheet)
+#INCONCLUSIVE
+gsheet_pull_prompt(fn_inconclusive, "data", key_inconclusive)
 
 }
 
@@ -235,7 +238,7 @@ write_rds(platemap_clean, paste0(dir_mid_wk, "platemap_clean.RData"))
 rm(fn_path)
 ```
 
-### MERGE PCR AND PLATEMAP
+### MERGE PCR & PLATEMAP DEFINE POSITIVES
 
 ----------------------------------------------------------------------------------------------------
 
@@ -244,10 +247,11 @@ cq_data = merge_pcr_platemap(pcr_clean, platemap_clean) %>%
   wnv_s_clean()
 
   #alternate test_code
-inconclusive = read.csv(paste0(dir_input, "/inconclusive_decision.csv"))
+inconclusive = read.csv(fn_inconclusive)
+
 
 cq_data = cq_data %>%
-     mutate(test_code = if_else(csu_id %in% c("CSU23913"), 0, test_code))
+     mutate(test_code = if_else(csu_id %in% inconclusive$csu_id, 0, test_code))
 
 check_data(df = cq_data, 
            trap = foco_trap, 
@@ -457,12 +461,18 @@ all_spp0 = read_list(dir_all_spp, "*")
 all_spp = all_spp0 %>%
   key_rename(rename_df = df_key_rename,
              drop_extra = T) %>%
+   mutate(trap_date = lubridate::parse_date_time(trap_date, 
+                                                 orders = c("ymd", "mdy", "dmy", "Ymd"),
+                                                 quiet = TRUE),
+        trap_date = as.Date(trap_date)) %>%
   mutate(spp0 = spp) %>% #keep original
-  wnv_s_clean()
+  wnv_s_clean(rm_col = c("trap_date"))
 
 write_rds(all_spp, paste0(dir_mid_wk,"all_species_active_trap.RData"))
 
 ```
+
+\
 
 ### COMPLETE TRAP DATA
 
@@ -475,13 +485,10 @@ OUTPUT:
 
 ```{r, clean-update-all-spp-culex, include=FALSE}
 #add in the trap data for the pools they send
-bc_test_traps = database_new %>%
-    filter(zone == "BC") %>%
-    distinct(trap_id)
 
 #keep only traps in routine active traps from surveillance
 culex_new = all_spp %>%
-  filter(trap_id %in% c(foco_trap$trap_id, bc_test_traps$trap_id)) %>%
+  filter(trap_id %in% c(foco_trap$trap_id)) %>%
   select(-spp0) %>% #combine non culex species totals
   group_by(across(-total)) %>%
   summarise(total = sum(total), .groups = "drop") %>%
@@ -612,7 +619,7 @@ write.csv(ytd_hx_long, "3_output/ytd_hx_long.csv")
 ```{r, plot-zone-stats-area}
 ytd_hx_wk = clean_long_hx_wk(ytd, hx, 
                           #  rm_zone = c("BC", fc_zones),
-                            rm_zone = c("BC"),
+                            #rm_zone = c("BC"),
                             grp_vars = c("year", "week", "zone", "spp"))
 
 p_abund = plot_hx(ytd_hx_wk, abund, "Abundance")
@@ -680,6 +687,17 @@ if(update){
   suppressMessages(
   source("0_R/generate_report.R")
 )
+}
+
+```
+
+```{r}
+if(push) {
+  try({
+  system("git add --all")
+  system('git commit -m "weekly commit after report generation for the week"')
+  system("git push")
+})
 }
 
 ```
