@@ -1,7 +1,7 @@
 
 
 clean_long_hx_wk = function(ytd, hx,
-                         rm_zone = "BC", 
+                         rm_zone = NULL, 
                          comb_zone = T, 
                          grp_vars = c("year", "week", "zone", "spp")) {
   
@@ -23,20 +23,30 @@ clean_long_hx_wk = function(ytd, hx,
     return(curr_hx_df)
 }
     
+
 plot_hx = function(df, value, text, pallette = c("current" = "#e9724c",
-                                                "hx"      = "grey50") ) {
+                                                 "hx"      = "grey50")) {
   
-    p = ggplot(df, aes(x = week, y = {{value}}, 
-                   color = type, fill = type, group = type)) +
-      geom_hline(yintercept = 0) +
-      geom_area(position = "dodge", alpha = 0.3) +
-      facet_grid(zone ~ .) +
-      theme_classic() +
-      ggtitle(text) +
-      scale_color_manual(values = pallette) +
-      scale_fill_manual(values = pallette)
- return(p)
-}   
+  # Get min and max weeks from the dataframe
+  min_week <- min(df$week, na.rm = TRUE)
+  max_week <- max(df$week, na.rm = TRUE)
+  
+  p = ggplot(df, aes(x = week, y = {{value}}, 
+                     color = type, fill = type, group = type)) +
+    geom_hline(yintercept = 0) +
+    geom_area(position = "dodge", alpha = 0.3) +
+    facet_grid(zone ~ .) +
+    theme_classic() +
+    ggtitle(text) +
+    scale_x_continuous(
+      limits = c(min_week, max_week),  # Set min and max from data
+      breaks = seq(min_week, max_week, by = 2)  # Breaks every 2 weeks
+    ) +
+    scale_color_manual(values = pallette) +
+    scale_fill_manual(values = pallette)
+  
+  return(p)
+}
 
 
 clean_long_hx = function(ytd, hx,

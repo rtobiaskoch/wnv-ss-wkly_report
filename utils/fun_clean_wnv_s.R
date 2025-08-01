@@ -228,7 +228,7 @@ wnv_s_clean <- function(df,
     df <- df %>%
       mutate(trap_date = trimws(as.character(trap_date)))
     
-    # Parse dates with error handling
+  #CLEAN TRAP_DATE
     df <- df %>%
       mutate(
         trap_date = case_when(

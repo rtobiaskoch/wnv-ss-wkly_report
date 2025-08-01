@@ -6,11 +6,9 @@ editor_options:
 
 # wnv-ss-wkly_report
 
-## ----------------------------------------------------------------------
+## -----------------------------------------------------
 
-Version Notes:\
-\##
----------------------------------------------------------------------------------------
+## Version [[Notes:\\\\](Notes:){.uri}](%5BNotes:%5D(Notes:)%7B.uri%7D){.uri} \#
 
 V2 config file now run separately from qmd pipeline file. This allows all
 options to be set once. Then user can run pipeline and make any adjustments
@@ -27,11 +25,11 @@ Indepth notes can be found here:
 Workflow Diagrams can be found here:
 <https://docs.google.com/drawings/d/1UVtAzJrcSCYUQgDfj5BYL3X9ZKuU0JnDyr0SHTLvAag/edit?usp=sharing>\
 
-## ---------------------------------------------------------------------------------------
+## -----------------------------------------------------
 
 ## NAVIGATING THE REPOSITORY
 
-## ---------------------------------------------------------------------------------------
+## -----------------------------------------------------
 
 -   **wnv-s_weekly_reportpipeline_v2.qmd:** where the magic happens. calls all
     function in utils
@@ -46,11 +44,11 @@ Workflow Diagrams can be found here:
 
 # V2
 
-## -----------------------------------------------------------------------------
+## -----------------------------------------------------
 
 ## STEP 1: Installation
 
-## ----------------------------------------------------------------------------
+## -----------------------------------------------------
 
 -   install R if you do not already have it installed:
     <https://cran.r-project.org/bin/macosx/>
@@ -71,11 +69,11 @@ git clone https://github.com/rtobiaskoch/wnv-ss-wkly_report.git
 cd path/to/repo
 ```
 
-## -------------------------------------------------------------------------
+## -----------------------------------------------------
 
 ## STEP 2: Install R packages
 
-## -------------------------------------------------------------------------
+## -----------------------------------------------------
 
 -   in repo directory wnv-ss-weekly_report install packages
 
@@ -83,11 +81,11 @@ cd path/to/repo
 source("config/load_packages.R")
 ```
 
-## ---------------------------------------------------------------------------
+## -----------------------------------------------------
 
-## STEP 3: Download Weekly Files
+## STEP 3: Upload Weekly Files to Google Drive
 
-## ---------------------------------------------------------------------------
+## -----------------------------------------------------
 
 -   Using the link below navigate to the year and week you are trying to
     process:
@@ -109,7 +107,10 @@ source("config/load_packages.R")
         the platemap that links pcr results to our csu_id in the datasheets. The
         pcr name MUST CONTAIN A 4 DIGIT YEAR AND TWO DIGIT WEEK AND A 1 DIGIT
         PLATE #: example: SS_y2025_w28_p1_rna_extract_and_pcr_notebook
-        <https://docs.google.com/spreadsheets/d/1KOq6ARqPM9J1V7lNUnsB07vC-UEVcEIyl9dVLWEPpas/edit?usp=drive_link>
+        [[template]
+        SS_y####\_w##\_p#\_rna_extract_and_pcr_notebook](https://docs.google.com/spreadsheets/d/1Uzqa316NGH-0WLR6WBUmLDND4-BEZ_Ga9O1PJlmxoNY/edit?usp=drive_link){.uri}
+
+    -   eds file from the qPCR output
 
 -   note: you may need to change Boulders week to match the year to date week
     #\*
@@ -117,13 +118,39 @@ source("config/load_packages.R")
 -   if all files are present download to your repository root folder and unzip
     the file.
 
-## --------------------------------------------------------------------------
+## -----------------------------------------------------
+
+## STEP 3b: Check the Input Data
+
+## -----------------------------------------------------
+
+-   You may need to change Boulders week to the current reporting week. They
+    start at 1 instead of week 23.
+
+-   **Check Inconclusive Amp Status:**
+
+    -   upload the .eds file output from the qPCR to thermofishers online tool:
+        [Quantstudio
+        Software](https://www.thermofisher.com/us/en/home/technical-resources/software-downloads/quantstudio-3-5-real-time-pcr-systems.html){.uri}
+
+        -   You may need to create an account. The software is free
+
+    -   Find samples with inconclusive amp status. Check the multicomponent plot
+
+    -   If the multicomponent plot shows an increasing curve the sample is
+        likely positive.
+
+    -   if it is flat, and the sample has a copy number of greater than 500 you
+        will need to manually change the test_code result by adding that csu_id
+        to
+        [amp_inconclusive_negatives](https://docs.google.com/spreadsheets/d/1l90THbcNgUgdO6dUbFXYo6IxVc3VwutKVlx3Cu9cgEQ/edit?usp=drive_link)
+
+## -----------------------------------------------------
 
 ## STEP 4A: Run Configuration
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------run script below to generate a configuration file
 
--   run script below to generate a configuration file
 -   change the name of the input folder and the week \# in run_config.sh
 
 ``` bash
@@ -134,11 +161,11 @@ bash config/run_config.sh
     config/config_weekly_settings/ Chunk: load_config in the qmd file will read
     in the latest config file
 
-## ---------------------------------------------------------------------------
+## -----------------------------------------------------
 
 ## STEP 4B: Authorize Googledrive API
 
-## --------------------------------------------------------------------------
+## -----------------------------------------------------
 
 -   The pipline utilizes googledrive API for R to download & update databases
     related to the pipeline.
@@ -152,7 +179,7 @@ library(googledrive)
 drive_auth()
 ```
 
-## ---------------------------------------------------------------------------
+## -----------------------------------------------------
 
 ## STEP 5: Run the Pipeline
 
@@ -170,11 +197,11 @@ or
 Rscript -e "rmarkdown::render('pipeline/wnv-s_multiweek_report_pipeline.qmd')"
 ```
 
-## --------------------------------------------------------------------------------
+## -----------------------------------------------------
 
 ## STEP 5: Edit the Report
 
-## ----------------------------------------------------------------------------------
+## -----------------------------------------------------
 
 -   Navigate to the YY_weekly_report where the output file is generated:
     <https://drive.google.com/drive/folders/1VC1i8D-2_8WEapmW2hrBqMzdHz3vsbqW?usp=drive_link>
@@ -187,3 +214,19 @@ Rscript -e "rmarkdown::render('pipeline/wnv-s_multiweek_report_pipeline.qmd')"
 -   <https://docs.google.com/spreadsheets/d/1E-imgI_WWU5Pnw9gDPtitONWqbG0yLKeQqIlHNCLtLI/edit?usp=drive_link>
 
 -   TELL GREG I DID A GOOD JOB HERE IS THE REPORT.
+
+## -----------------------------------------------------
+
+## STEP 6: COMMIT TO GITHUB
+
+## -----------------------------------------------------
+
+-   In order to help track the state of the pipeline that produced the results
+    for each week. save the changed to github\
+    \
+
+```{bash}
+git add --all
+git commit -m "weekly commit after report generation for the week"
+git push
+```

@@ -9,8 +9,8 @@
 "FC-037","SW","FC",2025-06-19,2025,25,"Tarsalis","L","culex",47
 "FC-054","SE","FC",2025-06-19,2025,25,"Pipiens","L","culex",1
 "FC-054","SE","FC",2025-06-19,2025,25,"Tarsalis","L","culex",5
-"FC-057","SW","FC",2025-06-19,2025,25,"Pipiens","L","culex",0
-"FC-057","SW","FC",2025-06-19,2025,25,"Tarsalis","L","culex",0
+"FC-057","SW","FC",2025-06-19,2025,25,"Pipiens","L","no mosquitoes",0
+"FC-057","SW","FC",2025-06-19,2025,25,"Tarsalis","L","no mosquitoes",0
 "FC-062","SW","FC",2025-06-19,2025,25,"Pipiens","L","culex",1
 "FC-062","SW","FC",2025-06-19,2025,25,"Tarsalis","L","culex",2
 "FC-068","SW","FC",2025-06-19,2025,25,"Pipiens","L","culex",0
@@ -23,14 +23,14 @@
 "FC-093","SW","FC",2025-06-19,2025,25,"Tarsalis","L","culex",12
 "FC-011","NW","FC",2025-06-18,2025,25,"Pipiens","L","culex",2
 "FC-011","NW","FC",2025-06-18,2025,25,"Tarsalis","L","culex",2
-"FC-015","NW","FC",2025-06-18,2025,25,"Pipiens","L","culex",0
-"FC-015","NW","FC",2025-06-18,2025,25,"Tarsalis","L","culex",0
+"FC-015","NW","FC",2025-06-18,2025,25,"Pipiens","L","other spp",0
+"FC-015","NW","FC",2025-06-18,2025,25,"Tarsalis","L","other spp",0
 "FC-041","NW","FC",2025-06-18,2025,25,"Pipiens","L","culex",1
 "FC-041","NW","FC",2025-06-18,2025,25,"Tarsalis","L","culex",1
 "FC-049","SW","FC",2025-06-18,2025,25,"Pipiens","L","culex",2
 "FC-049","SW","FC",2025-06-18,2025,25,"Tarsalis","L","culex",2
-"FC-052","NW","FC",2025-06-18,2025,25,"Pipiens","L","culex",0
-"FC-052","NW","FC",2025-06-18,2025,25,"Tarsalis","L","culex",0
+"FC-052","NW","FC",2025-06-18,2025,25,"Pipiens","L","other spp",0
+"FC-052","NW","FC",2025-06-18,2025,25,"Tarsalis","L","other spp",0
 "FC-058","SW","FC",2025-06-18,2025,25,"Pipiens","L","culex",2
 "FC-058","SW","FC",2025-06-18,2025,25,"Tarsalis","L","culex",1
 "FC-060","NW","FC",2025-06-18,2025,25,"Pipiens","L","culex",2
@@ -39,12 +39,12 @@
 "FC-061","NW","FC",2025-06-18,2025,25,"Tarsalis","L","culex",0
 "FC-063","NW","FC",2025-06-18,2025,25,"Pipiens","L","culex",0
 "FC-063","NW","FC",2025-06-18,2025,25,"Tarsalis","L","culex",1
-"FC-063GR","NW","FC",2025-06-18,2025,25,"Pipiens","G","culex",0
-"FC-063GR","NW","FC",2025-06-18,2025,25,"Tarsalis","G","culex",0
+"FC-063GR","NW","FC",2025-06-18,2025,25,"Pipiens","G","other spp",0
+"FC-063GR","NW","FC",2025-06-18,2025,25,"Tarsalis","G","other spp",0
 "FC-073","NW","FC",2025-06-18,2025,25,"Pipiens","L","culex",0
 "FC-073","NW","FC",2025-06-18,2025,25,"Tarsalis","L","culex",1
-"FC-090GR","NW","FC",2025-06-18,2025,25,"Pipiens","G","culex",0
-"FC-090GR","NW","FC",2025-06-18,2025,25,"Tarsalis","G","culex",0
+"FC-090GR","NW","FC",2025-06-18,2025,25,"Pipiens","G","no mosquitoes",0
+"FC-090GR","NW","FC",2025-06-18,2025,25,"Tarsalis","G","no mosquitoes",0
 "LC-001","BE","BE",2025-06-18,2025,25,"Pipiens","L","culex",3
 "LC-001","BE","BE",2025-06-18,2025,25,"Tarsalis","L","culex",8
 "LC-049","BE","BE",2025-06-18,2025,25,"Pipiens","L","culex",1
@@ -75,8 +75,8 @@
 "FC-027","SE","FC",2025-06-17,2025,25,"Tarsalis","L","culex",58
 "FC-031","SE","FC",2025-06-17,2025,25,"Pipiens","L","culex",0
 "FC-031","SE","FC",2025-06-17,2025,25,"Tarsalis","L","culex",1
-"FC-039","SE","FC",2025-06-17,2025,25,"Pipiens","L","culex",0
-"FC-039","SE","FC",2025-06-17,2025,25,"Tarsalis","L","culex",0
+"FC-039","SE","FC",2025-06-17,2025,25,"Pipiens","L","no mosquitoes",0
+"FC-039","SE","FC",2025-06-17,2025,25,"Tarsalis","L","no mosquitoes",0
 "FC-046","SE","FC",2025-06-17,2025,25,"Pipiens","L","culex",0
 "FC-046","SE","FC",2025-06-17,2025,25,"Tarsalis","L","culex",22
 "FC-047","SE","FC",2025-06-17,2025,25,"Pipiens","L","culex",0
@@ -22832,7 +22832,8 @@
 "FC-091GR","NE","FC",2012-09-05,2016,36,"Tarsalis","G","culex",0
 "FC-092GR","NE","FC",2012-09-05,2016,36,"Pipiens","G","culex",7
 "FC-092GR","NE","FC",2012-09-05,2016,36,"Tarsalis","G","culex",0
-,"BC",,,2025,24,,,"missing",
+,"BC",,,2025,25,,,"missing",
+,"BC","BC",,2025,24,"other spp","L","missing",
 ,"BC","BC",,2025,25,"other spp","L","other spp",
 ,"BC","BC",,2025,23,"other spp","L","other spp",
 "LC-060","BE","BE",,2025,23,"Pipiens","L","culex",

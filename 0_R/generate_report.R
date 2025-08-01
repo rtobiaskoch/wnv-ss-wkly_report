@@ -52,10 +52,14 @@ walk2(dataframes, sheet_names, function(data, sheet) {
   writeData(wb, sheet, data)
 })
 
-# Save the workbook to a file
-saveWorkbook(wb, file.path(dir_output, "/weekly_report_output.xlsx"), overwrite = TRUE)
+#IN config
+#fn_report = paste0("y", year_filter, "_w", week_filter, "_weekly_report_output")
 
-gsheet <- gs4_create("weekly_report_R_output")
+# Save the workbook to a file
+saveWorkbook(wb, paste0(dir_output, "/", fn_report, ".xlsx"), overwrite = TRUE)
+
+
+gsheet <- gs4_create(fn_report)
 
 # Write each data frame to a new sheet in the Google Sheet
 walk2(dataframes, sheet_names, function(data, sheet) {

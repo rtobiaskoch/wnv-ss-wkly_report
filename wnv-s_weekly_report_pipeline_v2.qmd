@@ -24,7 +24,7 @@ OUTPUT: config/config_weekly_settings/config_weekly\_\[sys.time\].RData
 
 Example Run in run_config.sh
 
-Rscript config/config_weekly.R --input 1_input/w25 --year 2025 --week 25 --download T --update T
+Rscript config/config_weekly.R --input 1_input/w30 --year 2025 --week 30 --download T --update T
 --push F
 
 ### LOAD CONFIGURATION
@@ -194,7 +194,7 @@ check_data(df = pcr_clean,
            year_filter = year_filter, 
            week_filter = week_filter)
 
-write_rds(pcr_clean, paste0(dir_mid_wk, "pcr_clean.RData"))
+write_rds(pcr_clean, fn_cq_out)
 rm(fn_path)
 ```
 
@@ -294,7 +294,8 @@ birds = cq_data %>%
   filter(sample_type == "bird") %>%
   mutate(year = as.double(year),
          week = as.double(week)) %>% #for natural merge
-  select(csu_id, year, week, target_name, test_code, cq, copies, amp_status)
+  select(csu_id, year, week, target_name, test_code, cq, copies, amp_status) %>%
+  arrange(year, week, csu_id)
 
 
 
@@ -497,24 +498,27 @@ culex_new = all_spp %>%
 
 #get trap status
 trap_sum = trap_stat_sum(culex_new)
-trap_sum$p
 
 ggsave(plot = trap_sum$p, filename = paste0(dir_mid_wk, "trap_status.png"))
 write.csv(trap_sum$df, paste0(dir_mid_wk,"trap_status_summary.csv"))
 
-if(update){
-update_gsheet(new = culex_new,
-              old = culex_database,
-              by = c("trap_id", "trap_date", "spp", "zone"),
-              fn_save = fn_database_culex_update,
-              gkey = key_database_culex_sheet,
-              gfolder = "database_archive",
-              gname = "culex_sheet_database",
-              col_database = names(culex_database),
-              sheet = "data")
-}
+# if(update){
+# update_gsheet(new = culex_new,
+#               old = culex_database,
+#               by = c("trap_id", "trap_date", "spp", "zone"),
+#               fn_save = fn_database_culex_update,
+#               gkey = key_database_culex_sheet,
+#               gfolder = "database_archive",
+#               gname = "culex_sheet_database",
+#               col_database = names(culex_database),
+#               sheet = "data")
+# }
 
 
+```
+
+```{r plot-pool}
+trap_sum$p
 ```
 
 ### CALC POOLS
@@ -619,7 +623,7 @@ write.csv(ytd_hx_long, "3_output/ytd_hx_long.csv")
 ```{r, plot-zone-stats-area}
 ytd_hx_wk = clean_long_hx_wk(ytd, hx, 
                           #  rm_zone = c("BC", fc_zones),
-                            #rm_zone = c("BC"),
+                            rm_zone = c("BC"),
                             grp_vars = c("year", "week", "zone", "spp"))
 
 p_abund = plot_hx(ytd_hx_wk, abund, "Abundance")
