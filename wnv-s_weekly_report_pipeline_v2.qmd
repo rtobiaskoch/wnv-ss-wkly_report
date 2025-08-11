@@ -24,7 +24,7 @@ OUTPUT: config/config_weekly_settings/config_weekly\_\[sys.time\].RData
 
 Example Run in run_config.sh
 
-Rscript config/config_weekly.R --input 1_input/w30 --year 2025 --week 30 --download T --update T
+Rscript config/config_weekly.R --input 1_input/w32 --year 2025 --week 32 --download T --update T
 --push F
 
 ### LOAD CONFIGURATION
@@ -310,6 +310,35 @@ if(update){
               col_database = names(birds), 
               sheet = "data" )
 }
+
+bird_report = birds %>% 
+  filter(target_name == "WNV") %>%
+  arrange(desc(test_code)) %>%
+  mutate(wnv_result = if_else(test_code == 1, "positive", "negative")) %>%
+  select(csu_id, year, week, wnv_result) 
+
+
+if(file_prefix %in% sheet_names(key_birds)) {
+  # Either delete the existing sheet first
+  sheet_delete(key_birds, sheet = file_prefix)
+  # Or use a different name
+}
+
+bird_sheet = paste0("y", year_filter, "_w", week_filter)
+
+# Create a version of sheet_add that won't stop on this error
+safe_sheet_add <- possibly(sheet_add, otherwise = NULL)
+
+safe_sheet_add(ss = key_birds,
+               sheet = bird_sheet,
+               .after = 1)
+
+safe_sheet_write <- possibly(sheet_write, otherwise = NULL)
+
+# Then write the data separately
+safe_sheet_write(bird_report, 
+            ss = key_birds,
+            sheet = file_prefix)
 #rm(birds)
 ```
 
@@ -502,17 +531,17 @@ trap_sum = trap_stat_sum(culex_new)
 ggsave(plot = trap_sum$p, filename = paste0(dir_mid_wk, "trap_status.png"))
 write.csv(trap_sum$df, paste0(dir_mid_wk,"trap_status_summary.csv"))
 
-# if(update){
-# update_gsheet(new = culex_new,
-#               old = culex_database,
-#               by = c("trap_id", "trap_date", "spp", "zone"),
-#               fn_save = fn_database_culex_update,
-#               gkey = key_database_culex_sheet,
-#               gfolder = "database_archive",
-#               gname = "culex_sheet_database",
-#               col_database = names(culex_database),
-#               sheet = "data")
-# }
+if(update){
+update_gsheet(new = culex_new,
+              old = culex_database,
+              by = c("trap_id", "trap_date", "spp", "zone"),
+              fn_save = fn_database_culex_update,
+              gkey = key_database_culex_sheet,
+              gfolder = "database_archive",
+              gname = "culex_sheet_database",
+              col_database = names(culex_database),
+              sheet = "data")
+}
 
 
 ```
@@ -626,6 +655,7 @@ ytd_hx_wk = clean_long_hx_wk(ytd, hx,
                             rm_zone = c("BC"),
                             grp_vars = c("year", "week", "zone", "spp"))
 
+#PLOT ABUNDANCE
 p_abund = plot_hx(ytd_hx_wk, abund, "Abundance")
 p_pir = plot_hx(ytd_hx_wk, pir, "PIR")
 
@@ -661,7 +691,9 @@ drive_upload(
 
 ```
 
-```{r, format-hx, include=FALSE}
+### FORMAT B TABLES
+
+```{r, format-hx-B-tables, include=FALSE}
 #hx_wide to use for tables for report 
 hx_wide = hx %>% clean_wide("hx_") 
 ytd_wide = ytd %>% clean_wide("")
@@ -669,19 +701,31 @@ ytd_wide = ytd %>% clean_wide("")
 #combine 
 df_all = hx_wide %>% left_join(ytd_wide, by = "week")
 
-hx_abund = create_hx_report(df_all, zones = zone_lvls, prefix = "abund")
+hx_abund = create_hx_report(df_all, 
+                            zones = zone_lvls, 
+                            prefix = "abund",
+                            rm_col = c("abund_hx_LV", "abund_hx_BE", "abund_hx_BC"))
  
 
-hx_pir = create_hx_report(df_all, zones = zone_lvls, prefix = "pir", sigfig = 4)
+hx_pir = create_hx_report(df_all, 
+                          zones = zone_lvls, 
+                          prefix = "pir", 
+                          multiplier = 1000,
+                          rm_col = c("pir_hx_LV", "pir_hx_BE", "pir_hx_BC"))
 
-hx_vi = create_hx_report(df_all, zones = zone_lvls, prefix = "vi")
+hx_vi = create_hx_report(df_all, 
+                         zones = zone_lvls, 
+                         prefix = "vi",
+                         rm_col = c("vi_hx_LV", "vi_hx_BE", "vi_hx_BC"))
 
 write.csv(hx_vi, file.path(dir_output, "table1b_hx_vi.csv"), row.names = F)
 write.csv(hx_abund, file.path(dir_output, "table2b_hx_abund.csv"), row.names = F)
 write.csv(hx_pir, file.path(dir_output, "table3b_hx_pir.csv"), row.names = F)
 ```
 
-```{r format-tables, include=FALSE}
+### FORMAT A TABLES
+
+```{r format-A-tables, include=FALSE}
 source("0_R/tables.R")
 ```
 

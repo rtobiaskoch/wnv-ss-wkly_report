@@ -19,7 +19,12 @@ clean_wide = function(df, prefix) {
 }
 
 
-create_hx_report <- function(df, zones, prefix, sigfig = 2) {
+create_hx_report <- function(df, #dataframe you want to manipulate
+                             zones, #zones you want to include
+                             prefix, #variable you want to include ie pir, abund, vi
+                             multiplier = 1, #amount to multiply your variable by ie 1000 for pir in report
+                             sigfig = 2,
+                             rm_col = NULL) { #columns you want to remove
   # Create interleaved column names (current then historical for each zone)
   col_pairs <- purrr::map(zones, ~ c(paste0(prefix, "_", .x), 
                                      paste0(prefix, "_hx_", .x))) %>%
@@ -34,7 +39,8 @@ create_hx_report <- function(df, zones, prefix, sigfig = 2) {
   df %>%
     arrange(week) %>%
     select(all_of(existing_cols)) %>%
-    mutate(across(where(is.numeric), ~ round(.x, sigfig))) %>%
-    mutate(across(.cols = -week, ~ ifelse(is.na(.), "", .)))
+    mutate(across(.cols = -week, ~ round(.x * multiplier, sigfig))) %>%
+    mutate(across(.cols = -week, ~ ifelse(is.na(.), "", .))) %>%
+    select(-rm_col)
 }
 

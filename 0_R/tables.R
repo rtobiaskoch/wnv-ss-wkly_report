@@ -18,7 +18,9 @@ t1a_vi = t1a(current_wk, vi, "vi_")
   
 t1a = t1a_abund %>%
   left_join(t1a_pir, by = "zone") %>%
-  left_join(t1a_vi, by = "zone") 
+  left_join(t1a_vi, by = "zone") %>%
+  select(-abund_All, -pir_All) %>%
+  insert_blank_row(5)
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #>TABLE 2A
@@ -47,7 +49,10 @@ t2a_abund = t1a_abund
 
 t2a = t2a_collected %>%
   left_join(t2a_traps, by = "zone") %>%
-  left_join(t2a_abund, by = "zone") #%>%
+  left_join(t2a_abund, by = "zone") %>%
+  mutate(across(.cols = -zone, ~ round(.x, 2))) %>%
+  insert_blank_row(5)
+  
  # mutate(across(everything(), ~ ifelse(is.na(.), "", .)))
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -79,11 +84,25 @@ t3a_p_pools = pools %>%
 t3a_pir = t1a_pir %>%
   mutate(across(-zone, ~ round(. * 1000,2)))
 
+t3a_cols = c("zone",
+             "examined_Pipiens", "examined_Tarsalis", "examined_All", 
+             "pool_Pipiens", "pool_Tarsalis", "pool_all", 
+             "pos_pool_Pipiens","pos_pool_Tarsalis", "pos_pool_all", 
+             "pir_Pipiens", "pir_Tarsalis", "pir_All")
+
 t3a = t3a_examined %>%
   left_join(t3a_pools, by = "zone") %>%
   left_join(t3a_p_pools, by = "zone") %>%
-  left_join(t3a_pir, by = "zone") # %>%
+  left_join(t3a_pir, by = "zone")  %>%
+  mutate(pool_all = pool_Pipiens + pool_Tarsalis,
+         pos_pool_all = pos_pool_Pipiens + pos_pool_Tarsalis ) %>%
+  insert_blank_row(5) %>% 
+  select(all_of(t3a_cols))# %>%
  # mutate(across(everything(), ~ ifelse(is.na(.), "", .)))
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#>TABLE 3A
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 rm(t3a_examined, t3a_pools, t3a_pir)
 

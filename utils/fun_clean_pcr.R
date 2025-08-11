@@ -4,6 +4,13 @@ clean_pcr = function(df,
                      w_pattern = "(?<=w)\\d+", 
                      p_pattern = "(?<=p)\\d+", 
                      undet_val = '55.55') {
+  
+  #rename Cq if output is from online software
+  if("Cq" %in% names(df)) {
+    df = df %>% 
+      rename(ct = Cq)
+  }
+  
   df = df %>%
   clean_names() %>%
   mutate(
@@ -12,9 +19,10 @@ clean_pcr = function(df,
     plate = str_extract(file_name, p_pattern),     # Extract plate as the part after "_p" (end of the string)
     plate = if_else(is.na(plate), plate, paste0("plate_", plate)) # make na if na so it will throw an error if it isn't working
   )    %>%
-  mutate(ct = if_else(str_detect(ct, "Undetermined"), undet_val, ct)) %>% # convert "undetermined to numeric 55.55 to avoid errors
+  mutate(ct = if_else(str_detect(ct, regex("Undetermined", ignore_case = T)), undet_val, ct)) %>% # convert "undetermined to numeric 55.55 to avoid errors
   mutate(cq = round(as.numeric(ct), 2)) %>%
   mutate(well = as.numeric(well)) %>%#convert to numeric to sort
+  mutate(amp_status = str_to_title(str_remove_all(amp_status, "_"))) %>% #new incase the input is output from the online software
   mutate(quantity = as.numeric(quantity), #should produce NA's
          quantity = replace_na(quantity, 0),
          copies = if_else(cq >= 55.55, 0, round(as.numeric(quantity),2))
