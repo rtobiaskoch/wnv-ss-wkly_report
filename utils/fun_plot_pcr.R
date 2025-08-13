@@ -34,8 +34,11 @@ plot_std = function(df) {
 
 
 
+
 plot_pcr <- function(data, virus, pattern_2_keep = "WNV|CSU|RMRP|CDC|pos|neg",
                      copy_threshold, week_filter) {
+  
+  log_threshold = log(copy_threshold)
   
   #cq_col <- sym(paste0("cq_", virus))
   #copies_col <- sym(paste0("copies_", virus))
@@ -46,15 +49,17 @@ plot_pcr <- function(data, virus, pattern_2_keep = "WNV|CSU|RMRP|CDC|pos|neg",
     mutate(
       cq = if_else(cq == 55.55, 40, cq),
       test_code = if_else(amp_status == "No Amp", 0, test_code),
-      test_code = factor(test_code, levels = c("1", "0"))
+      test_code = factor(test_code, levels = c("1", "0")),
+      log_copies = log(copies)
     )
   
   
   # Plot
   p <- ggplot(data_filtered) +
-    geom_jitter(aes(x = sample_type, y = cq, color = test_code, shape = amp_status), size = 3, alpha = 0.6) +
-    scale_y_reverse() +
+    geom_jitter(aes(x = sample_type, y = log_copies, color = test_code, shape = amp_status), size = 3, alpha = 0.6) +
+    #scale_y_reverse() + only if plotting cq
     theme_minimal() +
+    geom_hline(yintercept = log_threshold, linetype = "dashed", color = "red") +
     scale_shape_manual(values = c("Amp" = 16, "No Amp" = 1, "Inconclusive" = 8)) +  # 16=circle, 1 = empty circle, 8 = star
     ggtitle(paste0("Week ", week_filter, " ", virus)) +
     theme(legend.position = "bottom")
