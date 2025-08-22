@@ -24,7 +24,7 @@ OUTPUT: config/config_weekly_settings/config_weekly\_\[sys.time\].RData
 
 Example Run in run_config.sh
 
-Rscript config/config_weekly.R --input 1_input/w32 --year 2025 --week 32 --download T --update T
+Rscript config/config_weekly.R --input 1_input/w33 --year 2025 --week 33 --download T --update T
 --push F
 
 ### LOAD CONFIGURATION
@@ -317,14 +317,14 @@ bird_report = birds %>%
   mutate(wnv_result = if_else(test_code == 1, "positive", "negative")) %>%
   select(csu_id, year, week, wnv_result) 
 
+bird_sheet = paste0("y", year_filter, "_w", week_filter)
 
-if(file_prefix %in% sheet_names(key_birds)) {
+if(bird_sheet %in% sheet_names(key_birds)) {
   # Either delete the existing sheet first
-  sheet_delete(key_birds, sheet = file_prefix)
+  sheet_delete(key_birds, sheet = bird_sheet)
   # Or use a different name
 }
 
-bird_sheet = paste0("y", year_filter, "_w", week_filter)
 
 # Create a version of sheet_add that won't stop on this error
 safe_sheet_add <- possibly(sheet_add, otherwise = NULL)
@@ -338,7 +338,7 @@ safe_sheet_write <- possibly(sheet_write, otherwise = NULL)
 # Then write the data separately
 safe_sheet_write(bird_report, 
             ss = key_birds,
-            sheet = file_prefix)
+            sheet = bird_sheet)
 #rm(birds)
 ```
 

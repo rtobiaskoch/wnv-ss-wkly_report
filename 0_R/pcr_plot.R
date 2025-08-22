@@ -140,17 +140,20 @@ plotly::ggplotly(p_std2)
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+log_threshold = log(copy_threshold)
+
  wnv =  data_input %>% 
     filter(!str_detect(pattern = "slev", csu_id)) %>%
     mutate(cq = if_else(cq == 55.55, 40, cq),
            test_code = if_else(copies_WNV > copy_threshold, "1", "0")) %>%
+           log_copies = log(copies_WNV) %>%
    mutate(test_code = factor(test_code, levels = c("1", "0")))
   
-  p_pcr_wnv = ggplot(wnv, aes(x = sample_type, y = cq, 
+  p_pcr_wnv = ggplot(wnv, aes(x = sample_type, y = log_copies 
                                  color = test_code)) +
     geom_jitter(size = 3, alpha = 0.6) +
     scale_y_reverse() +
-   # geom_hline(yintercept = log10(copy_threshold), linetype = "dashed", color = "red") +
+   geom_hline(yintercept = log_threshold, linetype = "dashed", color = "red") +
     theme_minimal() +
     ggtitle(paste0("Week ", week_filter, " WNV")) +
     theme(legend.position = "none")
@@ -159,18 +162,20 @@ plotly::ggplotly(p_std2)
   
   plotly::ggplotly(p_pcr_wnv)
   
+
   
   slev =  data_input %>% 
     filter(!str_detect(pattern = "wnv", csu_id)) %>%
     mutate(cq_SLEV = if_else(cq_SLEV == 55.55, 40, cq_SLEV),
            test_code = if_else(copies_SLEV > copy_threshold, "1", "0")) %>%
+           log_copies = log(copies_SLEV) %>%
     mutate(test_code = factor(test_code, levels = c("1", "0")))
   
-  p_pcr_slev = ggplot(slev, aes(x = sample_type, y = cq_SLEV, 
+  p_pcr_slev = ggplot(slev, aes(x = sample_type, y = log_copies, 
                               color = test_code)) +
     geom_jitter(size = 3, alpha = 0.6) +
     scale_y_reverse() +
-    # geom_hline(yintercept = log10(copy_threshold), linetype = "dashed", color = "red") +
+    geom_hline(yintercept = log_threshold, linetype = "dashed", color = "red") +
     theme_minimal() +
     ggtitle(paste0("Week ", week_filter, " SLEV")) +
     theme(legend.position = "none")

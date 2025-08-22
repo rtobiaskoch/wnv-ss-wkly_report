@@ -63,6 +63,8 @@ if(any(!req_var %in% colnames(df))) {
     separate(grp,
              into = {{grp_var}},
              sep = "_") %>%
+    mutate(year = as.numeric(year),
+           week = as.numeric(week)) %>%
     mutate(pir = round(P,4),
            pir_lci = round(Lower,4),
            pir_uci = round(Upper,4)

@@ -34,3 +34,51 @@ plot_p_pool_pt = function(df) {
     ggtitle("Mosquito Pool qPCR Test Results")
   return(p)
 }
+
+
+#claude
+plot_p_pool_pt = function(df) {
+  df = df %>%
+    mutate(
+      test_code = as.factor(test_code),
+      zone = factor(zone, levels = zone_lvls)
+    ) %>%
+    group_by(year, week, zone, trap_id) %>%
+    arrange(year, week, zone, desc(test_code)) %>%
+    mutate(n = row_number()) %>%
+    ungroup() 
+  
+  # Create a factor for trap_id within each zone to control y-axis
+  df = df %>%
+    group_by(zone) %>%
+    mutate(
+      trap_id_factor = factor(trap_id, levels = unique(trap_id))
+    ) %>%
+    ungroup()
+  
+  p = df %>%
+    ggplot(aes(x = trap_id_factor, y = n, size = total, color = test_code, shape = spp)) +
+    geom_point(alpha = 0.7) +
+    scale_color_manual(values = c("1" = "red", "0" = "blue"), 
+                       name = "Test Result",
+                       labels = c("0" = "Negative", "1" = "Positive")) +
+    scale_shape_manual(values = c("Tarsalis" = 16, "Pipiens" = 1), 
+                       name = "Species") +
+    facet_wrap(~ zone, scales = "free_x", ncol = 4) +  # Free y-axis scales
+    theme_classic() +
+    theme(
+      strip.background = element_rect(fill = "lightblue", color = "black"),
+      strip.text = element_text(face = "bold"),
+      axis.text.y = element_text(size = 8),  # Smaller text for trap IDs
+      axis.text.x = element_text(size = 8, angle = 90),  # Smaller text for trap IDs
+      panel.grid.major.y = element_line(color = "gray90", linetype = "dashed")
+    ) +
+    labs(
+      title = "Mosquito Pool qPCR Test Results by Zone",
+      x = "Trap ID",
+      y = "Pools",
+      size = "Total Mosquitos"
+    )
+  
+  return(p)
+}

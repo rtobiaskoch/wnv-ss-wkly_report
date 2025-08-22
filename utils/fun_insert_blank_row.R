@@ -13,4 +13,4 @@ insert_blank_row <- function(df, after_row) {
 }
 
 # Usage: insert blank row after row 2
-df_new <- insert_blank_row(df, 2)
+#df_new <- insert_blank_row(df, 2)

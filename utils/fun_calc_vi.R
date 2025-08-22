@@ -21,7 +21,7 @@ calc_vi <- function(abund, pir,
   }
   
   
-  vi = full_join(abund, pir, by = grp_vars) %>%
+  vi = full_join(abund, pir, by = by) %>%
     filter(!zone %in% rm_zone) %>%
     mutate(vi = round(abund*pir,2),
            vi_lci = round(abund*pir_lci,2),

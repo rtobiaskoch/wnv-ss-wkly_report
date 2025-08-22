@@ -71,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
 INPUT: user arguments<br>
 OUTPUT: config/config_weekly_settings/config_weekly_[sys.time].RData</p>
 <p>Example Run in run_config.sh</p>
-<p>Rscript config/config_weekly.R –input 1_input/w27 –year 2025 –week 27 –download T –update T –push F</p>
+<p>Rscript config/config_weekly.R –input 1_input/w33 –year 2025 –week 33 –download T –update T –push F</p>
 </section>
 <section id="load-configuration" class="level3">
 <h3 class="anchored" data-anchor-id="load-configuration">LOAD CONFIGURATION</h3>
@@ -97,10 +97,12 @@ Attaching package: 'rlang'</code></pre>
     flatten_raw, invoke, splice</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>14 file(s) found from current week</code></pre>
+<pre><code>Warning in check_files_date("config/config_weekly_settings"): Warning: Your
+config file was from a previous week. You may need to edit and run
+config/run_config.sh with the appropriate arguments</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] TRUE</code></pre>
+<pre><code>[1] FALSE</code></pre>
 </div>
 </div>
 </section>
@@ -115,118 +117,74 @@ Attaching package: 'rlang'</code></pre>
 </p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w25/wnv-s_database.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+<pre><code>1_input/w32/wnv-s_database.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
-File 1_input/w25/wnv-s_database.csv download skipped.</code></pre>
+File 1_input/w32/wnv-s_database.csv download skipped.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w25/wnv-s_database.csv exists.</code></pre>
+<pre><code>1_input/w32/wnv-s_database.csv exists.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w25/slev-s_database.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-File 1_input/w25/slev-s_database.csv download skipped.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1_input/w25/slev-s_database.csv exists.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1_input/w25/culex_sheet_database.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+<pre><code>1_input/w32/slev-s_database.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
-File 1_input/w25/culex_sheet_database.csv download skipped.</code></pre>
+File 1_input/w32/slev-s_database.csv download skipped.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w25/culex_sheet_database.csv exists.</code></pre>
+<pre><code>1_input/w32/slev-s_database.csv exists.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w25/key_rename.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-File 1_input/w25/key_rename.csv download skipped.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1_input/w25/key_rename.csv exists.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1_input/w25/foco_trap.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+<pre><code>1_input/w32/culex_sheet_database.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
-File 1_input/w25/foco_trap.csv download skipped.</code></pre>
+File 1_input/w32/culex_sheet_database.csv download skipped.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w25/foco_trap.csv exists.</code></pre>
+<pre><code>1_input/w32/culex_sheet_database.csv exists.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w25/standards_input.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-File 1_input/w25/standards_input.csv download skipped.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1_input/w25/standards_input.csv exists.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>! Using an auto-discovered, cached token.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>  To suppress this message, modify your code or options to clearly consent to
-  the use of a cached token.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>  See gargle's "Non-interactive auth" vignette for more details:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>  &lt;https://gargle.r-lib.org/articles/non-interactive-auth.html&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>ℹ The googledrive package is using a cached token for 'r.tobiaskoch@gmail.com'.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>! Using an auto-discovered, cached token.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>  To suppress this message, modify your code or options to clearly consent to
-  the use of a cached token.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>  See gargle's "Non-interactive auth" vignette for more details:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>  &lt;https://gargle.r-lib.org/articles/non-interactive-auth.html&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>ℹ The googlesheets4 package is using a cached token for
-  'r.tobiaskoch@gmail.com'.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Auto-refreshing stale OAuth token.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>✔ Reading from "amp_inconclusive_negatives".</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>✔ Range ''data''.</code></pre>
+<pre><code>1_input/w32/key_rename.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
-Read googlesheet with 1 rows and 1 columns and following headers:
-csu_id</code></pre>
+File 1_input/w32/key_rename.csv download skipped.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>1_input/w32/key_rename.csv exists.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>1_input/w32/foco_trap.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
-...Checking that gdrive download worked...</code></pre>
+File 1_input/w32/foco_trap.csv download skipped.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w25/amp_inconclusive_negatives.csv exists.</code></pre>
+<pre><code>1_input/w32/foco_trap.csv exists.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>1_input/w32/standards_input.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+File 1_input/w32/standards_input.csv download skipped.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>1_input/w32/standards_input.csv exists.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>1_input/w32/amp_inconclusive_negatives.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+File 1_input/w32/amp_inconclusive_negatives.csv download skipped.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>1_input/w32/amp_inconclusive_negatives.csv exists.</code></pre>
 </div>
 </div>
 </section>
@@ -286,13 +244,13 @@ OUTPUT:</p>
 <pre><code>Local file:</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>• '3_output/plots/y2025_w25_pcr_plot.png'</code></pre>
+<pre><code>• '3_output/plots/y2025_w32_pcr_plot.png'</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Uploaded into Drive file:</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>• 'y2025_w25_pcr_plot.png' &lt;id: 1YaT-8gV1rJHCsxbB0sG8W9CKmLOnupY3&gt;</code></pre>
+<pre><code>• 'y2025_w32_pcr_plot.png' &lt;id: 18bEeCJukDOv9xE-ToxnAfJdDC1WVd4OP&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>With MIME type:</code></pre>
@@ -353,6 +311,15 @@ OUTPUT:</p>
 DEPENDENCIES:<br>
 INPUT:<br>
 OUTPUT:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wnv-s_weekly_report_pipeline_v2_files/figure-html/plot-pool-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="calc-pools" class="level3">
 <h3 class="anchored" data-anchor-id="calc-pools">CALC POOLS</h3>
@@ -400,7 +367,7 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 using the `.groups` argument.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 7 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 3 rows containing non-finite outside the scale range
 (`stat_align()`).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
@@ -410,7 +377,7 @@ Width not defined
 ℹ Set with `position_dodge(width = ...)`</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 7 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 3 rows containing non-finite outside the scale range
 (`stat_align()`).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
@@ -425,14 +392,14 @@ Width not defined
 </div>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 7 rows containing non-finite outside the scale range (`stat_align()`).
+<pre><code>Warning: Removed 3 rows containing non-finite outside the scale range (`stat_align()`).
 Width not defined
 ℹ Set with `position_dodge(width = ...)`
 Width not defined
 ℹ Set with `position_dodge(width = ...)`</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 7 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 3 rows containing non-finite outside the scale range
 (`stat_align()`).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
@@ -441,13 +408,19 @@ Width not defined
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Local file:
-• '3_output/plots/y2025_w25_hx_plot_all.png'
+• '3_output/plots/y2025_w32_hx_plot_all.png'
 Uploaded into Drive file:
-• 'y2025_w25_hx_plot_all.png' &lt;id: 1jkxCt44Pc7EQWxVhi0VBrs9bIKdKF4QV&gt;
+• 'y2025_w32_hx_plot_all.png' &lt;id: 1Fju2NUdSVOSkxq6I0VZiCFTc1o6eNUqK&gt;
 With MIME type:
 • 'image/png'</code></pre>
 </div>
 </div>
+</section>
+<section id="format-b-tables" class="level3">
+<h3 class="anchored" data-anchor-id="format-b-tables">FORMAT B TABLES</h3>
+</section>
+<section id="format-a-tables" class="level3">
+<h3 class="anchored" data-anchor-id="format-a-tables">FORMAT A TABLES</h3>
 </section>
 </section>
 
