@@ -13,6 +13,15 @@ project:
 
 # Weekly Data Report
 
+### DATA Prep checklist
+
+1.  Change Boulder week to epiweek
+2.  check that all files have been uploaded to the googledrive
+3.  check the quanstudio eds files on diomni pcr software on thermofisher and look to see if any
+    inconclusives with a Ct are positive or negative. If any are negative add them to the
+    amp_inconclusive_negative database sheet in the google drive
+4.  download the entire wXX folder from googledrive into the input folder in this repository
+
 ### CREATE CONFIGURATION
 
 ----------------------------------------------------------------------------------------------------
@@ -24,8 +33,8 @@ OUTPUT: config/config_weekly_settings/config_weekly\_\[sys.time\].RData
 
 Example Run in run_config.sh
 
-Rscript config/config_weekly.R --input 1_input/w33 --year 2025 --week 33 --download T --update T
---push F
+Rscript config/config_weekly.R --input 1_input/w35 --year 2025 --week 35 --download T --update T
+--push T
 
 ### LOAD CONFIGURATION
 
@@ -140,7 +149,8 @@ INPUT: \[dir_input\]/datasheets\* \| \| df_key_rename
 OUTPUT: \[mid_dir\]/\[fn_datasheet_clean\]\*
 
 ```{r, datasheet-clean, include=FALSE}
-datasheet_input = read_list(dir_datasheet, "*")
+datasheet_input = read_list(dir_datasheet, "*")  %>%
+  filter(!is.na(`Collection Site       (Trap ID)`)) #remove the csu-id at the end that will be for the following week
 saveRDS(datasheet_input, fn_weekly_input_format_mid)
 
 datasheet_clean = datasheet_input %>%
