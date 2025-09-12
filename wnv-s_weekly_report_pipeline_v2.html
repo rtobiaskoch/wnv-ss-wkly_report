@@ -64,6 +64,15 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="weekly-data-report" class="level1">
 <h1>Weekly Data Report</h1>
+<section id="data-prep-checklist" class="level3">
+<h3 class="anchored" data-anchor-id="data-prep-checklist">DATA Prep checklist</h3>
+<ol type="1">
+<li>Change Boulder week to epiweek</li>
+<li>check that all files have been uploaded to the googledrive</li>
+<li>check the quanstudio eds files on diomni pcr software on thermofisher and look to see if any inconclusives with a Ct are positive or negative. If any are negative add them to the amp_inconclusive_negative database sheet in the google drive</li>
+<li>download the entire wXX folder from googledrive into the input folder in this repository</li>
+</ol>
+</section>
 <section id="create-configuration" class="level3">
 <h3 class="anchored" data-anchor-id="create-configuration">CREATE CONFIGURATION</h3>
 <hr>
@@ -71,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
 INPUT: user arguments<br>
 OUTPUT: config/config_weekly_settings/config_weekly_[sys.time].RData</p>
 <p>Example Run in run_config.sh</p>
-<p>Rscript config/config_weekly.R –input 1_input/w33 –year 2025 –week 33 –download T –update T –push F</p>
+<p>Rscript config/config_weekly.R –input 1_input/w35 –year 2025 –week 35 –download T –update T –push T</p>
 </section>
 <section id="load-configuration" class="level3">
 <h3 class="anchored" data-anchor-id="load-configuration">LOAD CONFIGURATION</h3>
@@ -97,12 +106,10 @@ Attaching package: 'rlang'</code></pre>
     flatten_raw, invoke, splice</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning in check_files_date("config/config_weekly_settings"): Warning: Your
-config file was from a previous week. You may need to edit and run
-config/run_config.sh with the appropriate arguments</code></pre>
+<pre><code>1 file(s) found from current week</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] FALSE</code></pre>
+<pre><code>[1] TRUE</code></pre>
 </div>
 </div>
 </section>
@@ -117,74 +124,163 @@ config/run_config.sh with the appropriate arguments</code></pre>
 </p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/wnv-s_database.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+<pre><code>! Using an auto-discovered, cached token.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  To suppress this message, modify your code or options to clearly consent to
+  the use of a cached token.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  See gargle's "Non-interactive auth" vignette for more details:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  &lt;https://gargle.r-lib.org/articles/non-interactive-auth.html&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ The googledrive package is using a cached token for 'r.tobiaskoch@gmail.com'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>! Using an auto-discovered, cached token.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  To suppress this message, modify your code or options to clearly consent to
+  the use of a cached token.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  See gargle's "Non-interactive auth" vignette for more details:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  &lt;https://gargle.r-lib.org/articles/non-interactive-auth.html&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ The googlesheets4 package is using a cached token for
+  'r.tobiaskoch@gmail.com'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Reading from "wnv-s_database".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Range ''data''.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
-File 1_input/w32/wnv-s_database.csv download skipped.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/wnv-s_database.csv exists.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/slev-s_database.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+Read googlesheet with 24083 rows and 14 columns and following headers:
+csu_id, trap_id, zone, year, week, trap_date, method, spp, total, test_code, cq, copies, seq, notes</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
-File 1_input/w32/slev-s_database.csv download skipped.</code></pre>
+...Checking that gdrive download worked...</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/slev-s_database.csv exists.</code></pre>
+<pre><code>1_input/w36/wnv-s_database.csv exists.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/culex_sheet_database.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+<pre><code>✔ Reading from "slev-s_database".</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>
-File 1_input/w32/culex_sheet_database.csv download skipped.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/culex_sheet_database.csv exists.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/key_rename.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+<pre><code>✔ Range ''data''.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
-File 1_input/w32/key_rename.csv download skipped.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/key_rename.csv exists.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/foco_trap.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+Read googlesheet with 1618 rows and 16 columns and following headers:
+csu_id, trap_id, zone, zone2, trap_date, year, week, spp, method, trap_status, total, test_code, copies, cq, seq, notes</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
-File 1_input/w32/foco_trap.csv download skipped.</code></pre>
+...Checking that gdrive download worked...</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/foco_trap.csv exists.</code></pre>
+<pre><code>1_input/w36/slev-s_database.csv exists.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/standards_input.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+<pre><code>✔ Reading from "culex_sheet_database".</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>
-File 1_input/w32/standards_input.csv download skipped.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/standards_input.csv exists.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/amp_inconclusive_negatives.csv exists. Running in non-interactive mode so not overwriting (use force_update=TRUE to override).</code></pre>
+<pre><code>✔ Range ''data''.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
-File 1_input/w32/amp_inconclusive_negatives.csv download skipped.</code></pre>
+Read googlesheet with 24329 rows and 10 columns and following headers:
+trap_id, zone, zone2, trap_date, year, week, spp, method, trap_status, total</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>1_input/w32/amp_inconclusive_negatives.csv exists.</code></pre>
+<pre><code>
+...Checking that gdrive download worked...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>1_input/w36/culex_sheet_database.csv exists.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Reading from "key_rename".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Range ''Sheet1''.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Read googlesheet with 21 rows and 2 columns and following headers:
+new, old</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+...Checking that gdrive download worked...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>1_input/w36/key_rename.csv exists.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Reading from "foco_trap".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Range ''data''.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Read googlesheet with 116 rows and 8 columns and following headers:
+trap_id, method, zone, zone2, active, start, lat, long</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+...Checking that gdrive download worked...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>1_input/w36/foco_trap.csv exists.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Reading from "standards_database".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Range ''data''.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Read googlesheet with 382 rows and 9 columns and following headers:
+year, week, well_position, plate, target, csu_id, sample_type, cq, log_copies</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+...Checking that gdrive download worked...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>1_input/w36/standards_input.csv exists.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Reading from "amp_inconclusive_negatives".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Range ''data''.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Read googlesheet with 2 rows and 1 columns and following headers:
+csu_id</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+...Checking that gdrive download worked...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>1_input/w36/amp_inconclusive_negatives.csv exists.</code></pre>
 </div>
 </div>
 </section>
@@ -244,13 +340,13 @@ OUTPUT:</p>
 <pre><code>Local file:</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>• '3_output/plots/y2025_w32_pcr_plot.png'</code></pre>
+<pre><code>• '3_output/plots/y2025_w36_pcr_plot.png'</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Uploaded into Drive file:</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>• 'y2025_w32_pcr_plot.png' &lt;id: 18bEeCJukDOv9xE-ToxnAfJdDC1WVd4OP&gt;</code></pre>
+<pre><code>• 'y2025_w36_pcr_plot.png' &lt;id: 1WFp1GeeYEPeVYvEd8XwHNb-jTSC3NXYT&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>With MIME type:</code></pre>
@@ -408,9 +504,9 @@ Width not defined
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Local file:
-• '3_output/plots/y2025_w32_hx_plot_all.png'
+• '3_output/plots/y2025_w36_hx_plot_all.png'
 Uploaded into Drive file:
-• 'y2025_w32_hx_plot_all.png' &lt;id: 1Fju2NUdSVOSkxq6I0VZiCFTc1o6eNUqK&gt;
+• 'y2025_w36_hx_plot_all.png' &lt;id: 1BQEK36lw8cHZz5PTt-nPFv7Y7BJ_zvSJ&gt;
 With MIME type:
 • 'image/png'</code></pre>
 </div>

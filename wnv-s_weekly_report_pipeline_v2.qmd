@@ -33,7 +33,7 @@ OUTPUT: config/config_weekly_settings/config_weekly\_\[sys.time\].RData
 
 Example Run in run_config.sh
 
-Rscript config/config_weekly.R --input 1_input/w35 --year 2025 --week 35 --download T --update T
+Rscript config/config_weekly.R --input 1_input/w37 --year 2025 --week 37 --download T --update T
 --push T
 
 ### LOAD CONFIGURATION
