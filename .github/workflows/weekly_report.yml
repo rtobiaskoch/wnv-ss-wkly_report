@@ -1,0 +1,127 @@
+name: Weekly WNV/SLEV Report
+
+# -----------------------------------------------------------------------
+# This workflow runs the pipeline automatically each week (Monday 8 AM MT)
+# OR can be triggered manually with custom week/year inputs.
+#
+# REQUIRED SECRETS (set in GitHub repo → Settings → Secrets → Actions):
+#   GOOGLE_SERVICE_ACCOUNT_JSON  — contents of your GCP service account key file
+#                                   (see config/gauth_service_account_TEMPLATE.R)
+#
+# OPTIONAL SECRETS (override default Google Sheet IDs from gsheet_keys.R):
+#   GSHEET_WNV_DATABASE, GSHEET_SLEV_DATABASE, GSHEET_CULEX_DATABASE,
+#   GSHEET_FOCO_TRAP, GSHEET_RENAME_KEY, GSHEET_INCONCLUSIVE,
+#   GSHEET_STANDARDS, GSHEET_BIRDS, GDRIVE_DATABASE_FOLDER, GDRIVE_PLOTS_FOLDER
+# -----------------------------------------------------------------------
+
+on:
+  schedule:
+    # Runs every Monday at 14:00 UTC (= 8:00 AM MDT / 7:00 AM MST)
+    - cron: "0 14 * * 1"
+  workflow_dispatch:
+    inputs:
+      week:
+        description: "ISO week number (e.g. 28)"
+        required: true
+        default: ""
+      year:
+        description: "4-digit year (e.g. 2025)"
+        required: true
+        default: ""
+      download:
+        description: "Download fresh data from Google Drive? (T/F)"
+        required: false
+        default: "T"
+      update:
+        description: "Push updated databases back to Google Sheets? (T/F)"
+        required: false
+        default: "F"
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    env:
+      # Pass all optional sheet-key overrides to R via env vars (read in gsheet_keys.R)
+      GSHEET_WNV_DATABASE:   ${{ secrets.GSHEET_WNV_DATABASE }}
+      GSHEET_SLEV_DATABASE:  ${{ secrets.GSHEET_SLEV_DATABASE }}
+      GSHEET_CULEX_DATABASE: ${{ secrets.GSHEET_CULEX_DATABASE }}
+      GSHEET_FOCO_TRAP:      ${{ secrets.GSHEET_FOCO_TRAP }}
+      GSHEET_RENAME_KEY:     ${{ secrets.GSHEET_RENAME_KEY }}
+      GSHEET_INCONCLUSIVE:   ${{ secrets.GSHEET_INCONCLUSIVE }}
+      GSHEET_STANDARDS:      ${{ secrets.GSHEET_STANDARDS }}
+      GSHEET_BIRDS:          ${{ secrets.GSHEET_BIRDS }}
+      GDRIVE_DATABASE_FOLDER: ${{ secrets.GDRIVE_DATABASE_FOLDER }}
+      GDRIVE_PLOTS_FOLDER:   ${{ secrets.GDRIVE_PLOTS_FOLDER }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.4"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev \
+            libfontconfig1-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev \
+            quarto
+
+      - name: Cache R packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: r-pkgs-${{ hashFiles('config/load_packages.R') }}
+          restore-keys: r-pkgs-
+
+      - name: Install R packages
+        run: Rscript config/load_packages.R
+
+      - name: Write Google service account credentials
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          echo "$GOOGLE_SERVICE_ACCOUNT_JSON" > /tmp/sa_key.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/sa_key.json" >> $GITHUB_ENV
+
+      - name: Determine week and year
+        id: date_params
+        run: |
+          if [ -n "${{ github.event.inputs.week }}" ]; then
+            echo "WEEK=${{ github.event.inputs.week }}" >> $GITHUB_ENV
+            echo "YEAR=${{ github.event.inputs.year }}" >> $GITHUB_ENV
+            echo "DOWNLOAD=${{ github.event.inputs.download }}" >> $GITHUB_ENV
+            echo "UPDATE=${{ github.event.inputs.update }}" >> $GITHUB_ENV
+          else
+            # Auto-detect previous ISO week
+            echo "WEEK=$(date -d 'last monday' +%V | sed 's/^0//')" >> $GITHUB_ENV
+            echo "YEAR=$(date -d 'last monday' +%Y)" >> $GITHUB_ENV
+            echo "DOWNLOAD=T" >> $GITHUB_ENV
+            echo "UPDATE=F" >> $GITHUB_ENV
+          fi
+
+      - name: Run configuration
+        run: |
+          Rscript config/config_weekly.R \
+            --input 1_input/w${WEEK} \
+            --year ${YEAR} \
+            --week ${WEEK} \
+            --download ${DOWNLOAD} \
+            --update ${UPDATE} \
+            --push F
+
+      - name: Render pipeline
+        run: quarto render wnv-s_weekly_report_pipeline_v2.qmd
+
+      - name: Upload report artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-report-y${{ env.YEAR }}-w${{ env.WEEK }}
+          path: |
+            3_output/y${{ env.YEAR }}_w${{ env.WEEK }}_weekly_report_output.xlsx
+            wnv-s_weekly_report_pipeline_v2.html
+            3_output/plots/
+          retention-days: 90

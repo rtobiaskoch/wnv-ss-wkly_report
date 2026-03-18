@@ -175,17 +175,9 @@ if (length(empty_dirs) > 0) {
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # ---------------- D E F I N E   G S H E E T   K E Y --------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-key_database_gsheet = "12Mf-w9I9NHTTDjzEPRoxUE08ka4WZ6RE-RM1s-FW7qA"
-key_database_gsheet_slev = "1JsOz5wVl5WSpv1KGqiBFGVjoypL8xZMti5Syg07cPbo"
-key_database_culex_sheet = "15icsYx5SkmQIPXV3Vzj6PhyX81M55mIAYfKDj5K3gac"
-key_database_folder = "1AIpZAIRSG-DZug74Av3u_7kdyXYsrjKF"
-key_trap_gsheet = "1G5UcRmcVsVpMtKW_-4WLKX8WT_fvyIYj7sGcoNxDmr4"
-key_rename_key = "1UDLN-K4TJ-Ok_6NXUQNwUTKMNgfAq1xx9HABALCYRNQ"
-key_standards_gsheet = "1bSMYQ4bZ9uBfrOQ6ylsegNmmGYdf9YFVbxB4qBhnFQo"
-key_foco_trap = "1G5UcRmcVsVpMtKW_-4WLKX8WT_fvyIYj7sGcoNxDmr4"
-key_birds = "1YYjQmgNV92y1D39Nt5Y5NG0f_j4sVqVsJSSoUuc2u8k"
-key_plots_dir = "1yVA3bOcQ3i4a_GyAagHIYDGPAkeaDY02"
-key_inconclusive = "1l90THbcNgUgdO6dUbFXYo6IxVc3VwutKVlx3Cu9cgEQ"
+# All Google Sheet / Drive IDs are now centralized in config/gsheet_keys.R.
+# Edit that file (or set the corresponding env vars) to change sheet targets.
+source("config/gsheet_keys.R")
 
 fn_gdrive_database = file.path(dir_input,"wnv-s_database.csv") # <<<<<<<--------------------------------------------------- U S E R   I N P U T
 fn_gdrive_database_slev = file.path(dir_input,"slev-s_database.csv") # <<<<<<<--------------------------------------------------- U S E R   I N P U T
@@ -254,7 +246,7 @@ fn_trap_p_wk = file.path(dir_mid, "trap_p_wk.csv")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 fn_gdrive_archive = paste0("wnv-s_database_pre_y",year_filter, "_w", week_filter,".gsheet")
-fn_data_output = paste0(dir_output,"/", file_prefix, "_data_update.csv")
+fn_data_output = paste0(dir_output,"/", file_prefix, "data_update.csv")
 fn_weekly_input_format = file.path(dir_output, "weekly_data_input_format.csv")
 fn_stds_ctrl_slev_bird = file.path(dir_output, "std_ctrl_slev_bird.csv")
 fn_non_database_sample = file.path(dir_output, "non_database_samples(std-ctrl-bird-etc).csv")

@@ -145,7 +145,7 @@ server <- function(input, output, session) {
     
     # If no type column, just show colored by species
     if (!"type" %in% names(df)) {
-      p <- p + geom_line(size = 0.8) +
+      p <- p + geom_line(linewidth = 0.8) +
         scale_color_viridis_d(name = "Species", option = "viridis")
     }
     
