@@ -17,28 +17,24 @@ project:
 
 1.  Change Boulder week to epiweek
 2.  check that all files have been uploaded to the googledrive
-3.  check the quanstudio eds files on diomni pcr software on thermofisher and look to see if any
-    inconclusives with a Ct are positive or negative. If any are negative add them to the
-    amp_inconclusive_negative database sheet in the google drive
+3.  check the quanstudio eds files on diomni pcr software on thermofisher and look to see if any inconclusives with a Ct are positive or negative. If any are negative add them to the amp_inconclusive_negative database sheet in the google drive
 4.  download the entire wXX folder from googledrive into the input folder in this repository
 
 ### CREATE CONFIGURATION
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
-DESC: defines filepaths \| \| defines settings \| \| defines filenames \| \| creates setting for
-plots\
+DESC: defines filepaths \| \| defines settings \| \| defines filenames \| \| creates setting for plots\
 INPUT: user arguments\
 OUTPUT: config/config_weekly_settings/config_weekly\_\[sys.time\].RData
 
 Example Run in run_config.sh
 
-Rscript config/config_weekly.R --input 1_input/w37 --year 2025 --week 37 --download T --update T
---push T
+Rscript config/config_weekly.R --input 1_input/w37 --year 2025 --week 37 --download T --update T --push T
 
 ### LOAD CONFIGURATION
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 DESC: loads in packages \| \| loads user functions \| \| loads config file
 
@@ -64,10 +60,9 @@ read_latest("config/config_weekly_settings")
 
 ### DATA GDRIVE LOAD
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
-DESC: reads in current wnv-s_database \| \| foco_trap \| \| key_rename \| \| standards data to
-dir_input\
+DESC: reads in current wnv-s_database \| \| foco_trap \| \| key_rename \| \| standards data to dir_input\
 **DEPENDENCIES:** googlesheets4 \| \| googledrive \| \| argparse \| \| gsheet_pull_prompt\
 **INPUT:** NA\
 **OUTPUT:** **\[dir_input\]/wnv-s_database.csv** \| \| **\[dir_input\]/foco_trap.csv\
@@ -102,7 +97,7 @@ standards = read.csv(fn_standards)
 
 ### DATABASE CHECK
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ```{r, database-check, include=FALSE}
 #read in database WNV
@@ -137,10 +132,9 @@ check_data(df = culex_database, #data you want to check
 
 ### DATASHEET CLEAN
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
-Readme DESC: - reads in datasheet (pool) data from VDCI and BC, - cleans it into the proper format
-for the database - checks each column for errors. -
+Readme DESC: - reads in datasheet (pool) data from VDCI and BC, - cleans it into the proper format for the database - checks each column for errors. -
 
 DEPENDENCIES: read_list \| \| key rename \| \| wnv_s_clean \| \| tidyverse \| \| purrr
 
@@ -167,16 +161,13 @@ check_data(df = datasheet_clean, #data you want to check
 
 ### PCR CLEAN
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
-DESC: Reads in the pcr data from quantstudio that contains the Ct values \| \| reads in platemap
-data that links the platmap position with sample id\
+DESC: Reads in the pcr data from quantstudio that contains the Ct values \| \| reads in platemap data that links the platmap position with sample id\
 \
 DEPENDENCIES: tidyverse \| \| readxl \| \| purrr
 
-INPUT -PCR: \[dir_input\]/pcr/\* \[dir_pcr\] \| \| PLATEMAP: \[dir_input\]/platemap/\*
-\[dir_platemap\] \| \| week_filter = 37 \| \| year_filter = 2024 \| \| copy_threshold = 500 \| \|
-rn_threshold = 34000
+INPUT -PCR: \[dir_input\]/pcr/\* \[dir_pcr\] \| \| PLATEMAP: \[dir_input\]/platemap/\* \[dir_platemap\] \| \| week_filter = 37 \| \| year_filter = 2024 \| \| copy_threshold = 500 \| \| rn_threshold = 34000
 
 OUTPUT - Cq combined pcr and platemap csv \[fn_cq_out = 2_mid/y##\_w##\_platemap.csv"\]
 
@@ -210,7 +201,7 @@ rm(fn_path)
 
 ### PLATEMAP CLEAN
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 DESC:\
 DEPENDENCIES:\
@@ -250,7 +241,7 @@ rm(fn_path)
 
 ### MERGE PCR & PLATEMAP DEFINE POSITIVES
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ```{r,merge-pcr-platemap, include=FALSE}
 cq_data = merge_pcr_platemap(pcr_clean, platemap_clean) %>%
@@ -275,7 +266,7 @@ write_rds(cq_data, paste0(dir_mid_wk, "cq_data.RData"))
 
 ### STANDARDS
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ```{r, standards, include=FALSE}
 std_new = clean_standards(cq_data)
@@ -296,7 +287,7 @@ if(update){
 
 ### BIRDS
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ```{r, birds, include=FALSE}
 #add birds 
@@ -354,7 +345,7 @@ safe_sheet_write(bird_report,
 
 ### PCR PLOT
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ```{r, pcr plot}
 standards = distinct_all(standards) #temporay having issues with duplicates
@@ -401,7 +392,7 @@ rm(p_std, p_pcr_wnv, p_pcr_slev)
 
 ### DATABASE UPDATE
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 DESC: MERGE WNV DATASHEET & PCR
 
@@ -433,7 +424,7 @@ if(update){
 
 ### MERGE SLEV DATASHEET & PCR
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ```{r slev-update, include=FALSE}
 
@@ -458,21 +449,21 @@ if(update){
 
 Code Below:
 
--   data_input:
-    -   datasheets
-    -   pcr_sheet
-    -   platemap
-    -   fn_func_trap: data_mid/functional_traps.csv \*to be added
--   data_output:
-    -   fn_database_output
-    -   unmatched traps
--   description:
-    -   checks to ensure traps match existing list
-    -   pulls database
-    -   merges datasheet pcr and platemap data
-    -   makes archive copy of database
-    -   merges new data with database
-    -   pushes changes from new data to database to googledrive
+- data_input:
+  - datasheets
+  - pcr_sheet
+  - platemap
+  - fn_func_trap: data_mid/functional_traps.csv \*to be added
+- data_output:
+  - fn_database_output
+  - unmatched traps
+- description:
+  - checks to ensure traps match existing list
+  - pulls database
+  - merges datasheet pcr and platemap data
+  - makes archive copy of database
+  - merges new data with database
+  - pushes changes from new data to database to googledrive
 
 Code Below: -data_input
 
@@ -488,7 +479,7 @@ write.csv(weekly_data_format, fn_weekly_input_format, row.names = F, na = "")
 
 ### CLEAN APP SPECIES (TRAP) DATA
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 DESC:\
 DEPENDENCIES:\
@@ -516,7 +507,7 @@ write_rds(all_spp, paste0(dir_mid_wk,"all_species_active_trap.RData"))
 
 ### COMPLETE TRAP DATA
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 DESC:\
 DEPENDENCIES:\
@@ -562,7 +553,7 @@ trap_sum$p
 
 ### CALC POOLS
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 Code Below: - data input: database_update (weekly data from surveillance) - data_input
 
@@ -577,7 +568,7 @@ write_rds(pools, paste0(dir_mid_wk,"pools.RData"))
 
 ### PLOT POOLS
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ```{r, plot-pools}
 
@@ -589,7 +580,7 @@ ggsave(paste0(dir_plot_wk, "pools.png"), p_pools, height = 8, width = 12, units 
 
 ### CALC ZONE STATS
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ```{r, calc-zone-stats, include=FALSE}
 culex_update = read.csv(fn_database_culex_update) %>% wnv_s_clean(silence = T)
@@ -633,7 +624,7 @@ hx = all_hx %>%
 
 ### PLOT ZONE STATS LINE
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ```{r, plot-zone-stats}
 hx2 = all_hx %>%
@@ -657,7 +648,7 @@ write.csv(ytd_hx_long, "3_output/ytd_hx_long.csv")
 
 ### PLOT ZONE STATS AREA
 
-----------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ```{r, plot-zone-stats-area}
 ytd_hx_wk = clean_long_hx_wk(ytd, hx, 

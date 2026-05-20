@@ -15,14 +15,17 @@ bird_wk_sum = birds_database %>%
   group_by(week) %>%
   mutate(tl = sum(n)) %>%
   ungroup() %>%
-  complete(week, test_code,fill = 0) %>%
+  complete(week, test_code) %>%
   mutate(pct = n/tl) %>%
   mutate(test_code = factor(test_code))
 
-ggplot(bird_wk_sum, aes(x = week, fill = test_code)) +
-  geom_col(aes(y = n)) +
+bird_wk_sum[is.na(bird_wk_sum)] <- 0
+
+ggplot(bird_wk_sum, aes(x = week, color = test_code, fill = test_code)) +
+  geom_col(aes(y = n), alpha = 0.7) +
 #  geom_line(aes(y = pct*20)) +
   scale_fill_brewer(palette = "Dark2") +
+  scale_color_brewer(palette = "Dark2") +
   theme_classic()
 
 ggplot(bird_wk_sum, aes(x = week, y = pct, fill = test_code)) +

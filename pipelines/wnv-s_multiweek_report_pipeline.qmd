@@ -54,13 +54,13 @@ pcr_plot
 
 Code Below:
 
--   data_input:
-    -   active_traps.gsheet
-    -   trap_malfunction.gsheet
--   data_output:
-    -   fn_func_trap: data_mid/functional_traps.csv
--   description:
-    -   pull and create list of functional traps (ones that are active that didn't malfunction)
+- data_input:
+  - active_traps.gsheet
+  - trap_malfunction.gsheet
+- data_output:
+  - fn_func_trap: data_mid/functional_traps.csv
+- description:
+  - pull and create list of functional traps (ones that are active that didn't malfunction)
 
 ```{r}
 source("scripts/get_func_trap.R")
@@ -68,21 +68,21 @@ source("scripts/get_func_trap.R")
 
 Code Below:
 
--   data_input:
-    -   datasheets
-    -   pcr_sheet
-    -   platemap
-    -   fn_func_trap: data_mid/functional_traps.csv \*to be added
--   data_output:
-    -   fn_database_output
-    -   unmatched traps
--   description:
-    -   checks to ensure traps match existing list
-    -   pulls database
-    -   merges datasheet pcr and platemap data
-    -   makes archive copy of database
-    -   merges new data with database
-    -   pushes changes from new data to database to googledrive
+- data_input:
+  - datasheets
+  - pcr_sheet
+  - platemap
+  - fn_func_trap: data_mid/functional_traps.csv \*to be added
+- data_output:
+  - fn_database_output
+  - unmatched traps
+- description:
+  - checks to ensure traps match existing list
+  - pulls database
+  - merges datasheet pcr and platemap data
+  - makes archive copy of database
+  - merges new data with database
+  - pushes changes from new data to database to googledrive
 
 ```{r}
 source("scripts/data_merge_and_push.R")
