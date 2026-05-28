@@ -7,16 +7,11 @@ calc_pir <- function(df,
   
   #check packages
   #-------------------------------------------------------------------------------
-  #For
-  if (!require("tidyverse")) install.packages("tidyverse")
-  
-  #FOR PIR
-  if (!require("PooledInfRate")) {
-    install.packages("devtools")
-    devtools::install_github("https://github.com/CDCgov/PooledInfRate",build_vignettes = TRUE)
+  if (!requireNamespace("PooledInfRate", quietly = TRUE)) {
+    stop("PooledInfRate is required. Install with: devtools::install_github('CDCgov/PooledInfRate')")
   }
-  
-  
+
+
   #check inputs
   #-------------------------------------------------------------------------------
   if ("csu_id" %in% grp_var) {

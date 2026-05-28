@@ -1,6 +1,6 @@
 update_gsheet = function(new, #new data to add
                          old = NULL, #old data that you want to update
-                         type = "FULL", 
+                         type = "FULL",
                          by, #joining keys
                          fn_save, #filename that you want to save locally
                          gkey,  #google sheet key of file you want to update
@@ -10,6 +10,19 @@ update_gsheet = function(new, #new data to add
                          col_database = c( "csu_id", "trap_id", "zone", "year", "week", "trap_date","method", "spp",
                                            "total", "test_code", "cq", "copies_WNV", "seq", "lat", "long")
                          ) {
+
+  # Safety guard: error immediately if the `update` flag in the calling scope is
+  # not TRUE. Prevents silent GSheet writes if an if(update) block is removed.
+  update_allowed <- tryCatch(
+    get("update", envir = parent.frame(), inherits = TRUE),
+    error = function(e) FALSE
+  )
+  if (!isTRUE(update_allowed)) {
+    stop(
+      "update_gsheet() was called but `update` is FALSE or not set in the calling scope. ",
+      "All calls to update_gsheet() must be inside an `if(update)` block."
+    )
+  }
 
 #if old isn't supplied load from google
 if(is.null(old)) {

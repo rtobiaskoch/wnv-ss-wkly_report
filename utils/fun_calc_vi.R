@@ -5,12 +5,7 @@ calc_vi <- function(abund, pir,
                     complete = T,
                     rm_zone = NULL) {
   
-  #check packages
-  #-------------------------------------------------------------------------------
-  #FOR BOTH ABUNDANCE AND PIR
-  if (!require("tidyverse")) install.packages("tidyverse")
-
-  #if spp0 in the df then remove it
+#if spp0 in the df then remove it
   if("spp0" %in% names(abund)) {
     abund = abund %>% select(-spp0)
   }

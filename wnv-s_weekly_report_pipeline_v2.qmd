@@ -318,28 +318,24 @@ bird_report = birds %>%
   mutate(wnv_result = if_else(test_code == 1, "positive", "negative")) %>%
   select(csu_id, year, week, wnv_result) 
 
-bird_sheet = paste0("y", year_filter, "_w", week_filter)
+if(update){
+  bird_sheet = paste0("y", year_filter, "_w", week_filter)
 
-if(bird_sheet %in% sheet_names(key_birds)) {
-  # Either delete the existing sheet first
-  sheet_delete(key_birds, sheet = bird_sheet)
-  # Or use a different name
+  if(bird_sheet %in% sheet_names(key_birds)) {
+    sheet_delete(key_birds, sheet = bird_sheet)
+  }
+
+  safe_sheet_add <- possibly(sheet_add, otherwise = NULL)
+  safe_sheet_add(ss = key_birds,
+                 sheet = bird_sheet,
+                 .after = 1)
+
+  safe_sheet_write <- possibly(sheet_write, otherwise = NULL)
+  safe_sheet_write(bird_report,
+                   ss = key_birds,
+                   sheet = bird_sheet)
 }
 
-
-# Create a version of sheet_add that won't stop on this error
-safe_sheet_add <- possibly(sheet_add, otherwise = NULL)
-
-safe_sheet_add(ss = key_birds,
-               sheet = bird_sheet,
-               .after = 1)
-
-safe_sheet_write <- possibly(sheet_write, otherwise = NULL)
-
-# Then write the data separately
-safe_sheet_write(bird_report, 
-            ss = key_birds,
-            sheet = bird_sheet)
 #rm(birds)
 ```
 
@@ -379,11 +375,14 @@ ggsave(fn_pcr_plot, pcr_plot,
        width = 8, height = 8, units = "in")
 
 # Upload a single file to a specific folder
-drive_upload(
+if(update){
+    drive_upload(
   media = fn_pcr_plot,
   path = as_id(key_plots_dir),  # Replace with your folder ID
   name = basename(fn_pcr_plot)       # Optional: specify a new name
 )
+}
+
 
 
 rm(p_std, p_pcr_wnv, p_pcr_slev)
@@ -683,11 +682,14 @@ ggsave(fn_p_hx, p_hx_current0, height = 8, width = 12, units = "in")
 
 
 # Upload a single file to a specific folder
-drive_upload(
+if(update){
+    drive_upload(
   media = fn_p_hx,
   path = as_id(key_plots_dir),  # Replace with your folder ID
   name = basename(fn_p_hx)       # Optional: specify a new name
 )
+}
+
 
 
 ```

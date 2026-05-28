@@ -154,7 +154,10 @@ source("config/load_packages.R")
 -   change the name of the input folder and the week \# in run_config.sh
 
 ``` bash
-bash config/run_config.sh
+bash config/run_config.sh 
+
+#OR you can edit the arguments without editing any files
+Rscript config/config_weekly.R --input 1_input/w35  --year 2025 --week 35 --download F --update F --push F
 ```
 
 -   settings are saved to a dynamically named file to the
