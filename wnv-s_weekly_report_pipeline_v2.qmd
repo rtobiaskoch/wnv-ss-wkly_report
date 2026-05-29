@@ -416,6 +416,15 @@ if(update){
               gname = "wnv-s_database_archive",
               col_database = col_database,
               sheet = "data")
+} else {
+  # local merge only — skips GSheet push (offline / smoke test mode)
+  wnv_merged <- rquery::natural_join(database_new, database,
+                   jointype = "FULL",
+                   by = c("csu_id", "trap_id", "trap_date", "spp", "zone")) %>%
+    dplyr::select(dplyr::all_of(col_database)) %>%
+    dplyr::mutate(trap_date = lubridate::as_date(lubridate::as_datetime(trap_date))) %>%
+    dplyr::arrange(dplyr::desc(trap_date))
+  write.csv(wnv_merged, fn_database_update, row.names = FALSE)
 }
 
 
@@ -442,6 +451,15 @@ if(update){
               gname = "slev-s_database_archive",
               col_database = names(database_slev_new),
               sheet = "data")
+} else {
+  # local merge only — skips GSheet push (offline / smoke test mode)
+  slev_merged <- rquery::natural_join(database_slev_new, database_slev,
+                   jointype = "FULL",
+                   by = c("csu_id", "trap_id", "trap_date", "spp", "zone")) %>%
+    dplyr::select(dplyr::all_of(names(database_slev_new))) %>%
+    dplyr::mutate(trap_date = lubridate::as_date(lubridate::as_datetime(trap_date))) %>%
+    dplyr::arrange(dplyr::desc(trap_date))
+  write.csv(slev_merged, fn_database_slev_update, row.names = FALSE)
 }
 
 ```
@@ -541,6 +559,18 @@ update_gsheet(new = culex_new,
               gname = "culex_sheet_database",
               col_database = names(culex_database),
               sheet = "data")
+} else {
+  # local merge only — skips GSheet push (offline / smoke test mode)
+  culex_merged <- rquery::natural_join(culex_new, culex_database,
+                   jointype = "FULL",
+                   by = c("trap_id", "trap_date", "spp", "zone")) %>%
+    dplyr::select(dplyr::all_of(names(culex_database)))
+  if ("trap_date" %in% names(culex_merged)) {
+    culex_merged <- culex_merged %>%
+      dplyr::mutate(trap_date = lubridate::as_date(lubridate::as_datetime(trap_date))) %>%
+      dplyr::arrange(dplyr::desc(trap_date))
+  }
+  write.csv(culex_merged, fn_database_culex_update, row.names = FALSE)
 }
 
 
@@ -631,7 +661,7 @@ hx2 = all_hx %>%
   mutate(type = "hx")
 
 ytd_hx_long = clean_long_hx(hx2, ytd, spp_keep = c("Pipiens", "Tarsalis", "All"))
-write.csv(ytd_hx_long, "3_output/ytd_hx_long.csv")
+write.csv(ytd_hx_long, file.path(dir_output, "ytd_hx_long.csv"))
 
 # p_line = plot_hx_line(df = ytd_hx_long, 
 #              text = "Larimer County WNV Surveillance", 
@@ -734,11 +764,9 @@ source("0_R/tables.R")
 
 ```{r, generate-report, include=FALSE}
 
-if(update){
-  suppressMessages(
+suppressMessages(
   source("0_R/generate_report.R")
 )
-}
 
 ```
 
