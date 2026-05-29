@@ -40,7 +40,7 @@ parser$add_argument("--push", help = "logical argument whether or not to push di
 args <- parser$parse_args()
 
 # rename values to match existing names in scripts
-dir_input <- args$input
+dir_base_input <- args$input
 
 copy_threshold <- args$cp_threshold
 rn_threshold = args$rn_threshold
@@ -60,7 +60,7 @@ week_filter_hx = 23:37
 rm(week_hardcode, year_hardcode)
 
 # Output the values
-cat("Input folder set to:", dir_input, "\n")
+cat("Input base folder set to:", dir_base_input, "\n")
 cat("Week filter set to:", week_filter, "\n")
 cat("Year filter set to:", year_filter, "\n")
 cat("Copy threshold set to:", copy_threshold, "\n")
@@ -76,14 +76,16 @@ cat("push directory set to:", push, "\n")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # D E F I N E   D I R E C T O R I E S   &   I N P U T   F I L E S 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# construct week-scoped paths from year and week args
+dir_input  <- file.path(dir_base_input, year_filter, paste0("w", week_filter))
 dir_datasheet <- file.path(dir_input, "datasheet")
-dir_pcr <- file.path(dir_input, "pcr")
-dir_platemap <- file.path(dir_input, "platemap")
-dir_all_spp = file.path(dir_input, "all_species")
+dir_pcr       <- file.path(dir_input, "pcr")
+dir_platemap  <- file.path(dir_input, "platemap")
+dir_all_spp   <- file.path(dir_input, "all_species")
 
-#OUTPUT
-dir_mid <- "2_mid"
-dir_output <- "3_output"
+# output dirs — auto-created later if absent
+dir_mid    <- file.path("2_mid",    year_filter, paste0("w", week_filter))
+dir_output <- file.path("3_output", year_filter, paste0("w", week_filter))
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
