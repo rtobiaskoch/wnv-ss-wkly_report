@@ -117,19 +117,22 @@ for (dir_name in names(input_subdirs)) {
 }
 
 if (length(empty_dirs) > 0) {
-  stop(paste(
+  stop(paste0(
     "The following input subdirectories are empty or missing:\n",
     paste(empty_dirs, collapse = "\n"),
-    "\nPlease populate them before running."
+    "\nPlease populate them before running.",
+    "\nSee 0_R/0_check_load_input_data.R for download helpers."
   ))
 } else {
-  print("All input subdirectories are populated.")
+  cat("All input subdirectories are populated.\n")
 }
 
 # --- Output dirs: auto-create if missing ---
 for (d in c(dir_mid, dir_output)) {
   if (!dir.exists(d)) {
-    dir.create(d, recursive = TRUE)
+    if (!dir.create(d, recursive = TRUE)) {
+      stop("Could not create output directory: ", d, "\nCheck filesystem permissions.")
+    }
     cat("Created directory:", d, "\n")
   }
 }
