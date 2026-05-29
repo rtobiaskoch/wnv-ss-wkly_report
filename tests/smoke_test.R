@@ -12,7 +12,7 @@
 # RETURNS exit code 0 (pass) or 1 (fail) — suitable for CI.
 #
 # PREREQUISITES
-#   - 1_input/w{SMOKE_WEEK}/ must be populated
+#   - 1_input/{SMOKE_YEAR}/w{SMOKE_WEEK}/ must be populated
 #   - quarto must be on PATH
 #   - tests/fixtures/expected/table1a_w{SMOKE_WEEK}_{SMOKE_YEAR}.csv must exist
 #     (created by --setup mode)
@@ -33,8 +33,8 @@ args       <- commandArgs(trailingOnly = TRUE)
 setup_mode <- "--setup" %in% args
 
 # ---- Derived paths ----
-smoke_input    <- here("1_input", paste0("w", SMOKE_WEEK))
-smoke_outdir   <- here("3_output", SMOKE_YEAR)
+smoke_input    <- here("1_input", SMOKE_YEAR, paste0("w", SMOKE_WEEK))
+smoke_outdir   <- here("3_output", SMOKE_YEAR, paste0("w", SMOKE_WEEK))
 golden_path    <- here("tests", "fixtures", "expected",
                        paste0("table1a_w", SMOKE_WEEK, "_", SMOKE_YEAR, ".csv"))
 config_script  <- here("config", "config_weekly.R")
@@ -89,8 +89,8 @@ cat("  Prerequisites OK.\n\n")
 cat("[2/5] Generating config...\n")
 
 config_cmd <- sprintf(
-  "Rscript %s --input %s --week %d --year %d --download F --update F --push F",
-  shQuote(config_script), shQuote(smoke_input), SMOKE_WEEK, SMOKE_YEAR
+  "Rscript %s --week %d --year %d --download F --update F --push F",
+  shQuote(config_script), SMOKE_WEEK, SMOKE_YEAR
 )
 if (system(config_cmd) != 0) stop("Config generation failed.")
 cat("  Config generated.\n\n")
