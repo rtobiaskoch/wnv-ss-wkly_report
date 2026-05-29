@@ -39,7 +39,7 @@ parser$add_argument("--push", help = "logical argument whether or not to push di
 # Parse arguments
 args <- parser$parse_args()
 
-# rename values to match existing names in scripts
+# dir_base_input defaults to "1_input"; pass --input to override for staging environments
 dir_base_input <- args$input
 
 copy_threshold <- args$cp_threshold
@@ -86,6 +86,7 @@ dir_all_spp   <- file.path(dir_input, "all_species")
 # output dirs — auto-created later if absent
 dir_mid    <- file.path("2_mid",    year_filter, paste0("w", week_filter))
 dir_output <- file.path("3_output", year_filter, paste0("w", week_filter))
+dir_plots  <- file.path(dir_output, "plots")
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -128,10 +129,10 @@ if (length(empty_dirs) > 0) {
 }
 
 # --- Output dirs: auto-create if missing ---
-for (d in c(dir_mid, dir_output)) {
+for (d in c(dir_mid, dir_output, dir_plots)) {
   if (!dir.exists(d)) {
     if (!dir.create(d, recursive = TRUE)) {
-      stop("Could not create output directory: ", d, "\nCheck filesystem permissions.")
+      stop(paste0("Could not create output directory: ", d, "\nCheck filesystem permissions."))
     }
     cat("Created directory:", d, "\n")
   }
@@ -228,7 +229,6 @@ fn_non_database_sample = file.path(dir_output, "non_database_samples(std-ctrl-bi
 fn_standards_output = file.path(dir_output, "standards_new.csv")
 weekly_report_folder = "25_weekly_report"
 fn_bird_output = paste0(dir_output, "/",  file_prefix, "rmrp.csv")
-dir_plots = file.path(dir_output, "plots")
 dir_plot_wk = paste0(dir_plots,"/", file_prefix)
 fn_pcr_plot = paste0(dir_plot_wk, "pcr_plot.png")
 fn_p_hx = paste0(dir_plot_wk, "hx_plot_all.png")
@@ -300,7 +300,9 @@ curr_hx_pal = c("current" = "#e9724c",
 #----------------------------- E X P O R T   C O N F I G ----------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-config_fn = paste0("config/config_weekly_settings/", file_prefix, "config_weekly_",Sys.time(), ".RData")
+# must be run from repo root — relative path resolves from working directory
+config_fn <- file.path("config", "config_weekly_settings",
+                        paste0(file_prefix, "config_weekly_", Sys.time(), ".RData"))
 
 all_params <- ls(envir = .GlobalEnv)
 
