@@ -309,4 +309,8 @@ all_params_list <- mget(all_params, envir = .GlobalEnv)
 
 saveRDS(all_params_list, config_fn)
 
+# co-locate config with the input data it describes (traceability)
+saveRDS(all_params_list, file.path(dir_input, paste0(file_prefix, "config_weekly.RData")))
+cat("Config snapshot saved to:", file.path(dir_input, paste0(file_prefix, "config_weekly.RData")), "\n")
+
 
