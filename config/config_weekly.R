@@ -89,87 +89,49 @@ dir_output <- file.path("3_output", year_filter, paste0("w", week_filter))
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# C H E C K   F O R   M I S S I N G   D I R E C T O R I E S 
+# C H E C K   F O R   M I S S I N G   D I R E C T O R I E S
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# Initialize a vector to store missing directories
-# Create a named list of directories for clarity
-directories <- list(
-  input = dir_input, 
-  datasheet = dir_datasheet, 
-  pcr = dir_pcr, 
-  platemap = dir_platemap, 
-  mid = dir_mid, 
-  output = dir_output
-)
 
-missing_dirs <- c()
-
-# Check for missing directories and collect them
-for (dir_name in names(directories)) {
-  dir_path <- directories[[dir_name]]
-  
-  if (!dir.exists(dir_path)) {
-    missing_dirs <- c(missing_dirs, dir_path)
-  }
+# --- Input: hard stop if missing (user must populate before running) ---
+if (!dir.exists(dir_input)) {
+  stop(paste0(
+    "Input directory missing: ", dir_input,
+    "\nCreate and populate it with datasheet/, pcr/, platemap/, all_species/ before running."
+  ))
 }
 
-# If there are missing directories, stop the script and display them
-if (length(missing_dirs) > 0) {
-  stop(
-    paste(
-      "The following directories are missing:\n",
-      paste(missing_dirs, collapse = "\n"),
-      "\nPlease create them in your working directory or update the config R file."
-    )
-  )
-} else {
-  # If all directories exist, proceed with the script
-  print("All required directories exist.")
-}
-
-
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# -------- C H E C K   F O R   E M P T Y   I N P U T   S U B D I R  &   F I L E S
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-# Create a named list of directories to check
+# --- Input subdirs: hard stop if empty or missing ---
 input_subdirs <- list(
   datasheet = dir_datasheet,
-  pcr = dir_pcr,
-  platemap = dir_platemap,
-  spp = dir_all_spp
+  pcr       = dir_pcr,
+  platemap  = dir_platemap,
+  spp       = dir_all_spp
 )
 
-# Initialize a vector to store empty directories
 empty_dirs <- c()
-
-# Check each directory for emptiness
 for (dir_name in names(input_subdirs)) {
-  dir_path <- input_subdirs[[dir_name]]
-  
-  if (dir.exists(dir_path)) {
-    # Check if the directory is empty
-    if (length(list.files(dir_path)) == 0) {
-      empty_dirs <- c(empty_dirs, dir_path)
-    }
-  } else {
-    # If the directory doesn't exist, it's considered empty
-    empty_dirs <- c(empty_dirs, dir_path)
+  d <- input_subdirs[[dir_name]]
+  if (!dir.exists(d) || length(list.files(d)) == 0) {
+    empty_dirs <- c(empty_dirs, d)
   }
 }
 
-# If there are empty directories, stop the script and display them
 if (length(empty_dirs) > 0) {
-  stop(
-    paste(
-      "The following directories are empty or don't exist:",
-      paste(empty_dirs, collapse = "\n"),
-      "\nPlease populate them with the required files manually or with 0_check_load_input_data.R script."
-    )
-  )
+  stop(paste(
+    "The following input subdirectories are empty or missing:\n",
+    paste(empty_dirs, collapse = "\n"),
+    "\nPlease populate them before running."
+  ))
 } else {
-  # If all directories contain files, proceed with the script
-  print("All required directories are populated.")
+  print("All input subdirectories are populated.")
+}
+
+# --- Output dirs: auto-create if missing ---
+for (d in c(dir_mid, dir_output)) {
+  if (!dir.exists(d)) {
+    dir.create(d, recursive = TRUE)
+    cat("Created directory:", d, "\n")
+  }
 }
 
 
