@@ -39,19 +39,13 @@ if(is.null(old)) {
                             sheet = sheet)  
 }
   
-#update data 
-update = rquery::natural_join(
-  new, old, 
-  jointype = type, 
-  by = by) %>% #add any factors that can be joined otherwise they are converted to numbers becuase natural_join sucks
-  select(all_of(col_database)) #reorder them because natural_join fucked up the order
-
-#if trap_date is present convert it back to date after mutate everything changed it to a number
-if("trap_date" %in% names(update)) {
-  update = update %>%
-  mutate(trap_date = as_date(as_datetime(trap_date))) %>%
-  arrange(desc(trap_date))
-}
+#update data — merge logic lives in merge_trap_database() (utils/fun_merge_trap_database.R)
+#so it can be unit-tested apart from the GSheet write path below.
+update = merge_trap_database(new = new,
+                             old = old,
+                             by = by,
+                             col_database = col_database,
+                             jointype = type)
 
 #save local copy
 write.csv(update, fn_save, row.names = F)

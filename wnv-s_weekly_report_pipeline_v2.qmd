@@ -172,8 +172,6 @@ INPUT -PCR: \[dir_input\]/pcr/\* \[dir_pcr\] \| \| PLATEMAP: \[dir_input\]/plate
 OUTPUT - Cq combined pcr and platemap csv \[fn_cq_out = 2_mid/y##\_w##\_platemap.csv"\]
 
 ```{r,pcr-clean, include=F}
-#TO DO make a function
-#source("0_R/2_pcr_platemap_read_clean.R")
 
 fn_path = list.files(path = dir_pcr, #
                full.names = T,
@@ -485,9 +483,6 @@ Code Below:
 Code Below: -data_input
 
 ```{r weekly-format-export, include=FALSE}
-#source("0_R/check_read_fun.R")
-#source("0_R/weekly_data_input.R")
-
 
 weekly_data_format = clean_4_weekly_input(fn_weekly_input_format_mid, database_new)
 
@@ -541,7 +536,12 @@ culex_new = all_spp %>%
   group_by(across(-total)) %>%
   summarise(total = sum(total), .groups = "drop") %>%
   trap_complete(trap = foco_trap$trap_id) %>%
-  rquery::natural_join(foco_trap %>% select(trap_id, method, zone, zone2), jointype = "FULL", by = "trap_id") 
+  rquery::natural_join(foco_trap %>% select(trap_id, method, zone, zone2), jointype = "FULL", by = "trap_id") %>%
+  # Build the same composite key the trap-history combiner uses
+  # (wnvSurv::make_key -> "trap_id|spp|year|week"). This is the join key for the
+  # database merge below: it excludes trap_date, so a new real row matches its
+  # pre-seeded "no trap" stub (which has trap_date = NA) instead of duplicating it.
+  make_key(key_cols = trap_key_cols)   # trap_key_cols defined in config/config_weekly.R
 
 #get trap status
 trap_sum = trap_stat_sum(culex_new)
@@ -552,7 +552,7 @@ write.csv(trap_sum$df, paste0(dir_mid_wk,"trap_status_summary.csv"))
 if(update){
 update_gsheet(new = culex_new,
               old = culex_database,
-              by = c("trap_id", "trap_date", "spp", "zone"),
+              by = "key",
               fn_save = fn_database_culex_update,
               gkey = key_database_culex_sheet,
               gfolder = "database_archive",
@@ -560,16 +560,12 @@ update_gsheet(new = culex_new,
               col_database = names(culex_database),
               sheet = "data")
 } else {
-  # local merge only — skips GSheet push (offline / smoke test mode)
-  culex_merged <- rquery::natural_join(culex_new, culex_database,
-                   jointype = "FULL",
-                   by = c("trap_id", "trap_date", "spp", "zone")) %>%
-    dplyr::select(dplyr::all_of(names(culex_database)))
-  if ("trap_date" %in% names(culex_merged)) {
-    culex_merged <- culex_merged %>%
-      dplyr::mutate(trap_date = lubridate::as_date(lubridate::as_datetime(trap_date))) %>%
-      dplyr::arrange(dplyr::desc(trap_date))
-  }
+  # local merge only — skips GSheet push (offline / smoke test mode).
+  # Same merge_trap_database() the update=TRUE path uses (utils/fun_merge_trap_database.R).
+  culex_merged <- merge_trap_database(new = culex_new,
+                                      old = culex_database,
+                                      by = "key",
+                                      col_database = names(culex_database))
   write.csv(culex_merged, fn_database_culex_update, row.names = FALSE)
 }
 
