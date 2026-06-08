@@ -8,7 +8,7 @@ editor_options:
 
 ## -----------------------------------------------------
 
-## Version [[Notes:\\\\](Notes:){.uri}](%5BNotes:%5D(Notes:)%7B.uri%7D){.uri} \#
+## Version v2
 
 V2 config file now run separately from qmd pipeline file. This allows all
 options to be set once. Then user can run pipeline and make any adjustments
@@ -91,6 +91,8 @@ source("config/load_packages.R")
     process:
     <https://drive.google.com/drive/folders/1VC1i8D-2_8WEapmW2hrBqMzdHz3vsbqW?usp=sharing>
 
+-   Download the w## folder into the 1_input/<current_year>
+
 -   If the files aren't present for the week message Greg to have him foward you
     the email.
 
@@ -157,7 +159,7 @@ source("config/load_packages.R")
 bash config/run_config.sh 
 
 #OR you can edit the arguments without editing any files
-Rscript config/config_weekly.R --input 1_input/w35  --year 2025 --week 35 --download F --update F --push F
+Rscript config/config_weekly.R --year 2026 --week 23 --download F --update T --push T
 ```
 
 -   settings are saved to a dynamically named file to the

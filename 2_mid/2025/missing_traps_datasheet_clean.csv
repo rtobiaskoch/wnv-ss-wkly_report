@@ -1,0 +1,6 @@
+"","trap_id","method","zone","zone2","active","start","lat","long","trap_status"
+"1","BC-22","L","BC","BC",1,2023,40.0107,-105.2091,"datasheet_clean"
+"2","FC-034","L","NE","FC",1,2012,40.62556,-105.05009,"datasheet_clean"
+"3","FC-038","L","NE","FC",1,2012,40.59911,-105.00623,"datasheet_clean"
+"4","FC-069","L","NE","FC",1,2012,40.61438,-105.0527,"datasheet_clean"
+"5","FC-011","L","NW","FC",1,2012,40.56948,-105.13603,"datasheet_clean"

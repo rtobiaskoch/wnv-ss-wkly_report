@@ -24,6 +24,15 @@ update_gsheet = function(new, #new data to add
     )
   }
 
+  # Ensure googlesheets4 has a WRITE-capable OAuth token. In a non-interactive
+  # render gs4 can silently fall back to API-key mode (read-only), which 401s on
+  # sheet_write ("CREDENTIALS_MISSING"). googledrive is already authenticated by
+  # this point (drive_cp below relies on it), and the full `…/auth/drive` scope
+  # is accepted by the Sheets API, so reuse drive's token for gs4.
+  if (!googlesheets4::gs4_has_token()) {
+    googlesheets4::gs4_auth(token = googledrive::drive_token())
+  }
+
 #if old isn't supplied load from google
 if(is.null(old)) {
   old = googlesheets4::read_sheet(ss = gkey, 

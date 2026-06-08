@@ -657,7 +657,7 @@ hx = all_hx %>%
 
 ```{r, plot-zone-stats}
 hx2 = all_hx %>%
-  filter(year %in% c(2015:(year_filter-1))) %>%
+  filter(year %in% year_filter_hx) %>%   # same rolling baseline as `hx` (was hardcoded 2015:(year_filter-1))
   mutate(type = "hx")
 
 ytd_hx_long = clean_long_hx(hx2, ytd, spp_keep = c("Pipiens", "Tarsalis", "All"))

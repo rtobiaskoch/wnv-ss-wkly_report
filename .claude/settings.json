@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/run_tests_on_utils_edit.sh",
+            "timeout": 120,
+            "statusMessage": "Running utils/ unit tests..."
+          }
+        ]
+      }
+    ]
+  }
+}

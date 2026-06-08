@@ -1,40 +1,68 @@
 #' Clean Summary
-#' @param df A data frame containing raw Culex surveillance data. Must include the columns:
-#' trap_name, date_trap_set, mosquito_species, trap_type, mosquito_count, and zone.
-#' @return statement
-#' @importFrom dplyr filter
-#' @importFrom rlang enquo
+#'
+#' Report the outcome of a per-column cleaning step in a single semantic line.
+#' Each call classifies the column's transition from `df0` -> `df` into one of:
+#'   - added              (column did not exist in input)
+#'   - no-op              (column existed, no values changed, no new NAs)
+#'   - transformed        (values changed, no new NAs introduced)
+#'   - cleaned (warning)  (values changed AND new NAs introduced)
+#'
+#' Ported from wnv-ss_trap_hx_combiner so the two pipelines log cleaning steps
+#' identically (tidy cli alerts instead of noisy cat()). Behaviour is reporting
+#' only — it never modifies data.
+#'
+#' @param df0 The input data frame, before the cleaning step.
+#' @param df  The output data frame, after the cleaning step.
+#' @param col_name Unquoted column name to summarise.
+#' @param label Optional display label; defaults to the deparsed `col_name`.
+#'
+#' @return Invisibly NULL. Called for the side effect of printing a cli alert.
+#'
+#' @importFrom dplyr filter pull
+#' @importFrom rlang enquo as_name
 #' @export
 clean_summary <- function(df0, df, col_name, label = deparse(substitute(col_name))) {
-  col <- rlang::enquo(col_name)
-  
-  # Check if column exists in both dataframes
+  col        <- rlang::enquo(col_name)
   col_string <- rlang::as_name(col)
-  
-  #does new column already exists in original?
-  if (col_string %in% names(df0) && col_string %in% names(df)) {
-    changed <- sum(dplyr::pull(df0, !!col) != dplyr::pull(df, !!col), na.rm = TRUE)
-    unchanged <- sum(dplyr::pull(df0, !!col) == dplyr::pull(df, !!col), na.rm = TRUE)
-    # Count NA and non-NA in df
-    na0 <- df0 %>% filter(is.na(!!col)) %>% nrow()
-    
-    
-    
-  } else { #if not indicate it is being added
-    cat("Column", label, "is being added.\n")
-    changed <- "NA"
-    unchanged <- "NA"
-    na0 <- "NA"
-    
+  n_rows     <- nrow(df)
+
+  # Case 1: column did not exist in input — it was added by the cleaning step.
+  if (!col_string %in% names(df0)) {
+    cli::cli_alert_info("{.field {label}} added ({n_rows} rows)")
+    return(invisible(NULL))
   }
-  na <- df %>% filter(is.na(!!col)) %>% nrow()
-  
-  # Print summary
-  cat("\nFor rows in", label, ":\n",
-      changed, "changed | ",
-      unchanged, "unchanged | ",
-      na0, " missing in input | ",
-      na, " missing in output\n")
+
+  # Coerce to character so type changes (e.g. character -> Date) compare
+  # correctly without triggering charToDate. Comparison uses na.rm = TRUE
+  # so NA-vs-NA rows contribute to neither changed nor unchanged.
+  old_vals <- as.character(dplyr::pull(df0, !!col))
+  new_vals <- as.character(dplyr::pull(df,  !!col))
+
+  changed       <- sum(old_vals != new_vals, na.rm = TRUE)
+  na_in         <- sum(is.na(old_vals))
+  na_out        <- sum(is.na(new_vals))
+  na_introduced <- max(0L, na_out - na_in)
+
+  # Case 2: nothing happened to this column — quiet bullet.
+  if (changed == 0 && na_introduced == 0) {
+    cli::cli_alert("{.field {label}} no-op")
+    return(invisible(NULL))
+  }
+
+  # Case 3: values changed AND new NAs appeared — surface as warning so the
+  # user notices that some rows were nullified (e.g. failed regex, bad parse).
+  if (na_introduced > 0) {
+    cli::cli_alert_warning(
+      "{.field {label}} cleaned ({changed} changed, {na_introduced} new NA)"
+    )
+    return(invisible(NULL))
+  }
+
+  # Case 4: clean transformation — values changed, no NA introduced.
+  cli::cli_alert_success(
+    "{.field {label}} transformed ({changed}/{n_rows} rows changed)"
+  )
+  invisible(NULL)
 }
 
 
@@ -271,10 +299,17 @@ wnv_s_clean <- function(df,
   
   
   # ADD WEEK
+  # Seasonal/reported week from trap_date is the SINGLE week authority
+  # (wnvSurv::calc_season_week): first full week of June is always week 23,
+  # leap-week-stable. This is the IDENTICAL rule the pools path applies, so a
+  # pool and the trap-count it came from always land in the same week.
+  # The !"week" %in% names(df) gate keeps stored/historical data from being
+  # recomputed on read-back, which is what holds the frozen baseline stable
+  # mid-season.
   if ("trap_date" %in% names(df) & !"week" %in% names(df) & "week" %in% col_2_clean) {
     df <- df %>%
     mutate(
-      week =lubridate::isoweek(trap_date)
+      week = wnvSurv::calc_season_week(trap_date)
     )
     if(!silence) {
     clean_summary(df0, df, week)}

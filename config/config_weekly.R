@@ -12,6 +12,7 @@ suppressMessages({
   pacman::p_load(argparse, #importing and exporting
                  lubridate
   )
+  library(wnvSurv)  # SSOT: calc_season_week() for the --week default
 })
 
 
@@ -19,8 +20,8 @@ suppressMessages({
 #------ U S E R   D E F  V A R I A B L E   D A T A   P A R A M E T E R S : -----------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #variables that will change from week to week
-week_hardcode = lubridate::isoweek(Sys.Date())  
-year_hardcode = lubridate::isoyear(Sys.Date()) 
+week_hardcode = wnvSurv::calc_season_week(Sys.Date())  # seasonal week (week 23 = first full week of June, leap-week-stable)
+year_hardcode = lubridate::isoyear(Sys.Date())
 # Create an argument parser
 parser <- ArgumentParser(description = "Script to handle config file data inputs")
 
@@ -28,7 +29,7 @@ parser <- ArgumentParser(description = "Script to handle config file data inputs
 parser$add_argument("--input", help = "name of input folder", type = "character", default = "1_input")
 parser$add_argument("--week", help = "week of report", type = "integer", default = week_hardcode)
 parser$add_argument("--year", help = "year of the report", type = "integer", default = year_hardcode)
-parser$add_argument("--year_hx", help = "start to historical calculations", type = "integer", default = 2017)
+parser$add_argument("--n_hx_years", help = "number of prior seasons in the rolling historical baseline", type = "integer", default = 5)
 parser$add_argument("--cp_threshold", help = "copy threshold for positive", type = "integer", default = 500)
 parser$add_argument("--rn_threshold", help = "flourescent threshold for determining ct", type = "integer", default = 34000)
 parser$add_argument("--vi_threshold", help = "vi threshold for plots", type = "integer", default = 0.75)
@@ -52,7 +53,10 @@ push <- args$push
 #DATES
 week_filter <- args$week
 year_filter <- args$year
-year_filter_hx = seq(args$year_hx, year_filter-1, by = 1)
+# Rolling historical baseline = the n_hx_years seasons immediately before the
+# report year (default 5). Advances by one each season; does NOT widen over time.
+# For --year 2026 with default 5 -> seq(2021, 2025).
+year_filter_hx = seq(year_filter - args$n_hx_years, year_filter - 1, by = 1)
 week_filter_yr= 23:week_filter
 week_filter_hx = 23:37
 

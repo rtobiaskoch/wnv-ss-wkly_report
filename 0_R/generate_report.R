@@ -59,20 +59,22 @@ walk2(dataframes, sheet_names, function(data, sheet) {
 saveWorkbook(wb, paste0(dir_output, "/", fn_report, ".xlsx"), overwrite = TRUE)
 
 
-gsheet <- gs4_create(fn_report)
+if(update){
+  gsheet <- gs4_create(fn_report)
 
-# Write each data frame to a new sheet in the Google Sheet
-walk2(dataframes, sheet_names, function(data, sheet) {
-  sheet_write(data, ss = gsheet, sheet = sheet)
-})
+  # Write each data frame to a new sheet in the Google Sheet
+  walk2(dataframes, sheet_names, function(data, sheet) {
+    sheet_write(data, ss = gsheet, sheet = sheet)
+  })
 
-sheet_delete(gsheet, sheet = "Sheet1")
+  sheet_delete(gsheet, sheet = "Sheet1")
 
-# Locate the target folder in Google Drive
-target_folder <- drive_get(weekly_report_folder)
+  # Locate the target folder in Google Drive
+  target_folder <- drive_get(weekly_report_folder)
 
-# Move the Google Sheet to the target folder
-drive_mv(gsheet, path = as_id(target_folder))
+  # Move the Google Sheet to the target folder
+  drive_mv(gsheet, path = as_id(target_folder))
+}
 
 
 

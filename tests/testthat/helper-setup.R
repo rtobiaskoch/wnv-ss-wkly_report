@@ -11,6 +11,7 @@ suppressMessages({
   library(tibble)
   library(here)
   library(PooledInfRate)
+  library(wnvSurv)   # SSOT for calc_season_week / add_week_cols (was utils/fun_calc_week.R)
 })
 
 # Source calc utilities in dependency order
