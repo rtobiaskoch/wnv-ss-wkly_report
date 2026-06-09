@@ -34,30 +34,9 @@ inject_graph_data <- function(wb, sheet, datasets, layout,
                               drop_first_col = TRUE) {
 
   # ---------------------------------------------------------------------------
-  # Compute the minimum column anchor across all layout entries.
-  # When start_col > 1, openxlsx::readWorkbook will silently drop empty leading
-  # columns (skipEmptyCols defaults to TRUE). To preserve the full column grid
-  # (so callers can address cells by absolute sheet column), we write a single
-  # empty-string sentinel row at row 1, cols 1 … (min_start_col - 1).
-  # In production the graphs template already has content in those cells, so
-  # this write is a no-op overwrite; in tests it anchors the grid correctly.
-  # ---------------------------------------------------------------------------
-  all_start_cols <- purrr::map_int(layout, ~ .x$start_col)
-  min_start_col  <- min(all_start_cols)
-
-  if (min_start_col > 1L) {
-    # Build a one-row placeholder of empty strings for cols 1 … (min_col - 1)
-    pad <- as.data.frame(
-      matrix("", nrow = 1L, ncol = min_start_col - 1L)
-    )
-    openxlsx::writeData(wb, sheet = sheet, x = pad,
-                        startRow = 1L, startCol = 1L,
-                        colNames = FALSE, rowNames = FALSE,
-                        keepNA   = FALSE)
-  }
-
-  # ---------------------------------------------------------------------------
-  # Walk over each named anchor in layout; nm = block name (e.g. "t1a")
+  # Walk over each named anchor in layout; nm = block name (e.g. "t1a").
+  # We write ONLY the value cells at each anchor and never touch other cells,
+  # so the template's titles / merged headers / labels are left intact.
   # ---------------------------------------------------------------------------
   purrr::iwalk(layout, function(anchor, nm) {
 
