@@ -77,16 +77,22 @@ build_tables <- function(current_wk, pools) {
   t2a_traps <- current_wk %>%
     dplyr::distinct(zone, trap_L)
 
-  # Warn if trap counts differ between species within a zone
-  if (nrow(janitor::get_dupes(t2a_traps)) > 0) {
+  # Warn if trap counts differ between species within a zone.
+  # get_dupes() is keyed on `zone`: distinct(zone, trap_L) yields >1 row for a
+  # zone only when pipiens and tarsalis disagree on trap_L, so a duplicated zone
+  # flags the mismatch. (A bare get_dupes() would compare full rows and never
+  # match, since the differing trap_L makes the rows distinct.)
+  if (nrow(janitor::get_dupes(t2a_traps, zone)) > 0) {
     message("the number of traps for pipiens and tarsalis don't match")
   }
 
   t2a <- t2a_collected %>%
     dplyr::left_join(t2a_traps,  by = "zone") %>%
-    dplyr::left_join(t1a_abund,  by = "zone") %>%  # reuse already-pivoted abund
+    # reuse the un-trimmed abund pivot — intentionally keeps abund_All for the
+    # "All Culex" column reported in this table (it is dropped only from t1a)
+    dplyr::left_join(t1a_abund,  by = "zone") %>%
     dplyr::mutate(dplyr::across(.cols = -zone, ~ round(.x, 2))) %>%
-    insert_blank_row(5)
+    insert_blank_row(5)                       # blank row after 5th data row (zone separator)
 
   # ===========================================================================
   # TABLE 3A: examined, pools examined, positive pools, PIR (per 1000) by zone
@@ -143,7 +149,7 @@ build_tables <- function(current_wk, pools) {
       pool_all     = pool_Pipiens + pool_Tarsalis,       # aggregate across species
       pos_pool_all = pos_pool_Pipiens + pos_pool_Tarsalis
     ) %>%
-    insert_blank_row(5) %>%
+    insert_blank_row(5) %>%                    # blank row after 5th data row (zone separator)
     dplyr::select(dplyr::all_of(t3a_cols))
 
   list(t1a = t1a, t2a = t2a, t3a = t3a)

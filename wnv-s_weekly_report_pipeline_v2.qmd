@@ -757,7 +757,6 @@ write.csv(hx_pir, file.path(dir_output, "table3b_hx_pir.csv"), row.names = F)
 ```{r format-A-tables, include=FALSE}
 # build_tables() from utils/fun_build_tables.R — auto-sourced with all utils/*.R at pipeline top
 # current_wk and pools are produced earlier in this pipeline (calc_all chunk)
-# current_wk and pools produced earlier in this pipeline (calc_all chunk)
 a_tables <- build_tables(current_wk, pools)
 t1a <- a_tables$t1a
 t2a <- a_tables$t2a
