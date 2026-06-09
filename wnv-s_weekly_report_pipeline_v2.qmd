@@ -667,10 +667,11 @@ write.csv(ytd_hx_long, file.path(dir_output, "ytd_hx_long.csv"))
 ------------------------------------------------------------------------
 
 ```{r, plot-zone-stats-area}
-ytd_hx_wk = clean_long_hx_wk(ytd, hx, 
+ytd_hx_wk = clean_long_hx_wk(ytd, hx,
                           #  rm_zone = c("BC", fc_zones),
                             rm_zone = c("BC"),
-                            grp_vars = c("year", "week", "zone", "spp"))
+                            grp_vars = c("year", "week", "zone", "spp"),
+                            spp_keep = c("Pipiens", "Tarsalis"))  # keep both spp for stacked plot
 
 #PLOT ABUNDANCE
 p_abund = plot_hx(ytd_hx_wk, abund, "Abundance")

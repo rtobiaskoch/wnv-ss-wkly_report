@@ -25,27 +25,30 @@ clean_long_hx_wk = function(ytd, hx,
 }
     
 
-plot_hx = function(df, value, text, pallette = c("current" = "#e9724c",
-                                                 "hx"      = "grey50")) {
-  
-  # Get min and max weeks from the dataframe
+plot_hx = function(df, value, text, pallette = pal_mozzy) {
+
+  # Min/max weeks for the x-axis range
   min_week <- min(df$week, na.rm = TRUE)
   max_week <- max(df$week, na.rm = TRUE)
-  
-  p = ggplot(df, aes(x = week, y = {{value}}, 
-                     color = type, fill = type, group = type)) +
+
+  # Combine type (hx/current) and species into one fill key that matches the
+  # pal_mozzy names: "hx_Pipiens", "current_Tarsalis", etc.
+  df <- df %>%
+    dplyr::mutate(grp = paste(type, spp, sep = "_"))
+
+  p = ggplot(df, aes(x = week, y = {{ value }},
+                     fill = grp, group = grp)) +
     geom_hline(yintercept = 0) +
-    geom_area(position = "dodge", alpha = 0.3) +
-    facet_grid(zone ~ .) +
+    geom_area(position = "stack", alpha = 0.6) +   # stack Pipiens + Tarsalis
+    facet_grid(zone ~ type) +                       # current vs hx side-by-side
     theme_classic() +
     ggtitle(text) +
     scale_x_continuous(
-      limits = c(min_week, max_week),  # Set min and max from data
-      breaks = seq(min_week, max_week, by = 2)  # Breaks every 2 weeks
+      limits = c(min_week, max_week),
+      breaks = seq(min_week, max_week, by = 2)
     ) +
-    scale_color_manual(values = pallette) +
     scale_fill_manual(values = pallette)
-  
+
   return(p)
 }
 
