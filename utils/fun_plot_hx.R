@@ -9,7 +9,9 @@ clean_long_hx_wk = function(ytd, hx,
   curr_hx_df = bind_rows(ytd, hx) %>%
     filter(!zone %in% rm_zone) %>%
     select(-any_of(c("mosq_L", "trap_L", "zone2"))) %>%
-    pivot_longer(cols = -c(grp_vars, type),
+    # all_of() wraps the external grp_vars vector (the bare-vector form is a
+    # deprecated tidyselect usage); pivots everything except the group cols + type
+    pivot_longer(cols = -c(all_of(grp_vars), type),
                  names_to = "est",
                  values_to = "value") %>%
     mutate(type = factor(type, levels = c("hx", "current")),
