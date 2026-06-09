@@ -20,13 +20,19 @@ test_that("build_bird_report filters WNV birds and derives wnv_result", {
   expect_setequal(out$bird_report$csu_id, c("B1", "B2"))
   expect_equal(out$bird_report$wnv_result[out$bird_report$csu_id == "B1"], "positive")
   expect_equal(out$bird_report$wnv_result[out$bird_report$csu_id == "B2"], "negative")
+  # year/week are cast to double for the downstream natural merge
+  expect_type(out$birds$year, "double")
+  expect_type(out$birds$week, "double")
+  # positives are surfaced first via arrange(desc(test_code))
+  expect_equal(out$bird_report$csu_id[1], "B1")
 })
 
-test_that("plot_birds returns a ggplot object", {
+test_that("plot_birds returns a ggplot object that builds without error", {
   bird_report <- tibble::tibble(
     csu_id = c("B1", "B2", "B3"), year = 2026, week = c(24, 24, 25),
     wnv_result = c("positive", "negative", "negative")
   )
   p <- plot_birds(bird_report)
   expect_s3_class(p, "ggplot")
+  expect_no_error(ggplot2::ggplot_build(p))
 })

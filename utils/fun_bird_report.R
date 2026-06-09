@@ -47,6 +47,9 @@ build_bird_report <- function(cq_data, target = "WNV") {
   # Filter to the requested target (default "WNV"), derive a readable result
   # label from test_code (1 = positive, 0 = negative). arrange(desc(test_code))
   # surfaces positives first, matching the QMD ordering.
+  # NOTE: not deduplicated — a bird run on multiple plates yields multiple rows.
+  # This is faithful to the QMD chunk (which also does not dedup); revisit only
+  # if upstream data legitimately produces duplicate csu_id rows.
   bird_report <- birds %>%
     dplyr::filter(target_name == target) %>%
     dplyr::arrange(dplyr::desc(test_code)) %>%
