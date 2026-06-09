@@ -14,6 +14,7 @@ suppressMessages({
   library(ggplot2)
   library(PooledInfRate)
   library(wnvSurv)   # SSOT for calc_season_week / add_week_cols (was utils/fun_calc_week.R)
+  library(openxlsx)  # workbook I/O for inject_graph_data / generate_report
 })
 
 # Source calc utilities in dependency order
@@ -27,6 +28,9 @@ source(here::here("utils/fun_build_tables.R"))
 
 # Source bird report utilities
 source(here::here("utils/fun_bird_report.R"))
+
+# Source report-generation utilities
+source(here::here("utils/fun_inject_graph_data.R"))
 
 # Source plot history utilities (fun_plot_hx.R uses zone_lvls and pal_mozzy
 # from the config globals, which are not sourced in the test harness — they
