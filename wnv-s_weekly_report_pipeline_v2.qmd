@@ -288,35 +288,24 @@ if(update){
 ------------------------------------------------------------------------
 
 ```{r, birds, include=FALSE}
-#add birds 
-birds = cq_data %>%
-  filter(sample_type == "bird") %>%
-  mutate(year = as.double(year),
-         week = as.double(week)) %>% #for natural merge
-  select(csu_id, year, week, target_name, test_code, cq, copies, amp_status) %>%
-  arrange(year, week, csu_id)
-
-
+# build_bird_report() from utils/fun_bird_report.R — pure extraction of bird
+# shaping (cq_data is produced earlier in this pipeline). GSheet pushes and the
+# plot output below remain here as pipeline side effects.
+bird_out    <- build_bird_report(cq_data)
+birds       <- bird_out$birds
+bird_report <- bird_out$bird_report
 
 if(update){
-  update_gsheet(new = birds, 
-              #old = standards, 
-              by = c("csu_id", "year", "week", "target_name"), 
-              fn_save = fn_bird_output, 
+  update_gsheet(new = birds,
+              #old = standards,
+              by = c("csu_id", "year", "week", "target_name"),
+              fn_save = fn_bird_output,
               gkey = key_birds,
-              gfolder = "database_archive", 
-              gname = "birds_archive", 
-              col_database = names(birds), 
+              gfolder = "database_archive",
+              gname = "birds_archive",
+              col_database = names(birds),
               sheet = "data" )
-}
 
-bird_report = birds %>% 
-  filter(target_name == "WNV") %>%
-  arrange(desc(test_code)) %>%
-  mutate(wnv_result = if_else(test_code == 1, "positive", "negative")) %>%
-  select(csu_id, year, week, wnv_result) 
-
-if(update){
   bird_sheet = paste0("y", year_filter, "_w", week_filter)
 
   if(bird_sheet %in% sheet_names(key_birds)) {
@@ -334,7 +323,9 @@ if(update){
                    sheet = bird_sheet)
 }
 
-#rm(birds)
+# Bird plot output — WNV result counts by week (plot_birds from fun_bird_report.R)
+p_birds <- plot_birds(bird_report)
+ggsave(paste0(dir_plot_wk, "birds.png"), p_birds, height = 6, width = 9, units = "in")
 ```
 
 ### PCR PLOT
