@@ -10,6 +10,7 @@ suppressMessages({
   library(rlang)
   library(tibble)
   library(here)
+  library(janitor)
   library(PooledInfRate)
   library(wnvSurv)   # SSOT for calc_season_week / add_week_cols (was utils/fun_calc_week.R)
 })
@@ -18,6 +19,10 @@ suppressMessages({
 source(here::here("utils/fun_calc_abund.R"))
 source(here::here("utils/fun_calc_pir.R"))
 source(here::here("utils/fun_calc_vi.R"))
+
+# Source table-building utilities
+source(here::here("utils/fun_insert_blank_row.R"))
+source(here::here("utils/fun_build_tables.R"))
 
 # Fixture directory — populated in Phase 2 for CSV-based tests
 fixture_dir <- here::here("tests/fixtures")
