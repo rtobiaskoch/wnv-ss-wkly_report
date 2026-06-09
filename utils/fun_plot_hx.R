@@ -1,10 +1,11 @@
 
 
 clean_long_hx_wk = function(ytd, hx,
-                         rm_zone = NULL, 
-                         comb_zone = T, 
-                         grp_vars = c("year", "week", "zone", "spp")) {
-  
+                            rm_zone = NULL,
+                            comb_zone = T,
+                            grp_vars = c("year", "week", "zone", "spp"),
+                            spp_keep = c("Pipiens", "Tarsalis")) {
+
   curr_hx_df = bind_rows(ytd, hx) %>%
     filter(!zone %in% rm_zone) %>%
     select(-any_of(c("mosq_L", "trap_L", "zone2"))) %>%
@@ -15,12 +16,12 @@ clean_long_hx_wk = function(ytd, hx,
            zone = factor(zone, levels = zone_lvls)) %>%
     pivot_wider(names_from = est, values_from = value) %>%
     group_by(zone, week, spp, type) %>%
-    summarise(abund = mean(abund, na.rm = T), 
-              pir = mean(pir, na.rm = T), 
-              vi = mean(vi, na.rm = T)) %>%
-    filter(spp == "All")
-    
-    return(curr_hx_df)
+    summarise(abund = mean(abund, na.rm = T),
+              pir = mean(pir, na.rm = T),
+              vi = mean(vi, na.rm = T), .groups = "drop") %>%
+    filter(spp %in% spp_keep)  # was hardcoded filter(spp == "All"); now parameterised
+
+  return(curr_hx_df)
 }
     
 
