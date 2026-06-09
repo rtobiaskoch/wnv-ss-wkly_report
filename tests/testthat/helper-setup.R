@@ -31,6 +31,7 @@ source(here::here("utils/fun_bird_report.R"))
 
 # Source report-generation utilities
 source(here::here("utils/fun_inject_graph_data.R"))
+source(here::here("utils/fun_generate_report.R"))
 
 # Source plot history utilities (fun_plot_hx.R uses zone_lvls and pal_mozzy
 # from the config globals, which are not sourced in the test harness — they
