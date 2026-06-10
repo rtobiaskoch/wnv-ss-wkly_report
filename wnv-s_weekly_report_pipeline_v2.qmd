@@ -122,7 +122,12 @@ check_data(df = database_slev, #data you want to check
 ```{r, culex-database-check, include=FALSE}
 culex_database = read.csv(fn_gdrive_culex_sheet) %>%
  # filter(trap_status != "missing") %>% #TO DO add to wnv_s_clean and remove
-  wnv_s_clean()
+  wnv_s_clean() %>%
+  # Build the same composite key as culex_new (trap_id|spp|year|week) so
+  # merge_trap_database()'s join on "key" (clean-update-all-spp-culex chunk
+  # below) has matching keys on both sides. trap_key_cols defined in
+  # config/config_weekly.R.
+  make_key(key_cols = trap_key_cols)
 
 check_data(df = culex_database, #data you want to check
            trap = foco_trap, #data with trap_ids you want to ensure traps are available
@@ -600,9 +605,9 @@ ggsave(paste0(dir_plot_wk, "pools.png"), p_pools, height = 8, width = 12, units 
 
 ```{r, trap-status-plot}
 # Trap status (malfunction / culex / no culex / no mosquitoes) per zone-week.
-# Uses wnvSurv::plot_n_trap; culex_update is wnv_s_clean()'d below (calc-zone-stats
-# chunk), which carries the zone2 + trap_status columns the function requires.
-culex_update = read.csv(fn_database_culex_update) %>% wnv_s_clean(verbose = F)
+# Uses plot_n_trap; culex_update is wnv_s_clean()'d here, which (with default
+# all_cols) carries the zone2 + trap_status columns the function requires.
+culex_update = read.csv(fn_database_culex_update) %>% wnv_s_clean(silence = T)
 
 p_trap_status = plot_n_trap(culex_update, rm_zone = c("BC"))
 p_trap_status
@@ -626,7 +631,7 @@ if(update){
 ```{r, calc-zone-stats, include=FALSE}
 # culex_update is already created (and wnv_s_clean()'d) in the trap-status-plot
 # chunk above; reused here for calc_all().
-database_update = read.csv(fn_database_update) %>% wnv_s_clean(verbose = F)
+database_update = read.csv(fn_database_update) %>% wnv_s_clean(silence = T)
 
 
 # t = calc_abund(culex_update,, 

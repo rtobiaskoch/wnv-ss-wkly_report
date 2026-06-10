@@ -463,16 +463,18 @@ fn_graph_template <- "tests/fixtures/graph_plot_template.xlsx"
 # inject_graph_data(); anchors are 1-based cell coordinates verified against the
 # template. Only value columns are written (zone/week labels already present).
 graph_sheet_layout <- list(
-  t1a      = list(start_row = 6,  start_col = 3),
-  hx_vi    = list(start_row = 19, start_col = 3),
-  t2a      = list(start_row = 40, start_col = 3),
-  hx_abund = list(start_row = 53, start_col = 3),
-  t3a      = list(start_row = 73, start_col = 3),
-  hx_pir   = list(start_row = 86, start_col = 3)
+  t1a      = list(start_row = 7,  start_col = 3),
+  hx_vi    = list(start_row = 20, start_col = 3),
+  t2a      = list(start_row = 41, start_col = 3),
+  hx_abund = list(start_row = 54, start_col = 3),
+  t3a      = list(start_row = 74, start_col = 3),
+  hx_pir   = list(start_row = 87, start_col = 3)
 )
 
 # Cells holding the current week label ("Week: N") on the graphs sheet.
-graph_week_cells <- list(row = c(4, 38, 72), col = 2)
+# These are the `="Week: " & WEEKNUM(today())` formula cells in the template;
+# writeData() overwrites the formula with a static "Week: N" value.
+graph_week_cells <- list(row = c(5, 39, 73), col = 2)
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

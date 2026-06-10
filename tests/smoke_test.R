@@ -21,6 +21,7 @@ suppressPackageStartupMessages({
   library(here)
   library(dplyr)
   library(readr)
+  library(openxlsx)
 })
 
 # ---- Constants (update when canonical test week changes) ----
@@ -28,27 +29,35 @@ SMOKE_WEEK <- 33
 SMOKE_YEAR <- 2025
 VI_TOL     <- 0.01  # 1% relative tolerance for floating-point VI comparisons
 
+# ---- Isolated smoke output (keeps live 3_output / 2_mid untouched) ----
+SMOKE_OUT_ROOT <- here("tests", "smoke_out")
+SMOKE_MID_ROOT <- here("tests", "smoke_mid")
+
 # ---- Parse args ----
 args       <- commandArgs(trailingOnly = TRUE)
 setup_mode <- "--setup" %in% args
 
 # ---- Derived paths ----
 smoke_input    <- here("1_input", SMOKE_YEAR, paste0("w", SMOKE_WEEK))
-smoke_outdir   <- here("3_output", SMOKE_YEAR, paste0("w", SMOKE_WEEK))
+smoke_outdir   <- file.path(SMOKE_OUT_ROOT, SMOKE_YEAR, paste0("w", SMOKE_WEEK))
 golden_path    <- here("tests", "fixtures", "expected",
                        paste0("table1a_w", SMOKE_WEEK, "_", SMOKE_YEAR, ".csv"))
 config_script  <- here("config", "config_weekly.R")
 qmd_path       <- here("wnv-s_weekly_report_pipeline_v2.qmd")
 
 # ---- Expected output files ----
+file_prefix <- sprintf("y%d_w%d_", SMOKE_YEAR, SMOKE_WEEK)
 expected_files <- c(
-  file.path(smoke_outdir, paste0("y", SMOKE_YEAR, "_w", SMOKE_WEEK, "_weekly_report_output.xlsx")),
+  # generated report (xlsx, with pixel-faithful "graphs" sheet)
+  file.path(smoke_outdir, paste0(file_prefix, "weekly_report_output.xlsx")),
   file.path(smoke_outdir, "table1a.csv"),
   file.path(smoke_outdir, "table1b_hx_vi.csv"),
   file.path(smoke_outdir, "table2a.csv"),
   file.path(smoke_outdir, "table2b_hx_abund.csv"),
   file.path(smoke_outdir, "table3a.csv"),
-  file.path(smoke_outdir, "table3b_hx_pir.csv")
+  file.path(smoke_outdir, "table3b_hx_pir.csv"),
+  # historical plot
+  file.path(smoke_outdir, "plots", paste0(file_prefix, "hx_plot_all.png"))
 )
 
 # ---- Helpers ----
@@ -89,8 +98,9 @@ cat("  Prerequisites OK.\n\n")
 cat("[2/5] Generating config...\n")
 
 config_cmd <- sprintf(
-  "Rscript %s --week %d --year %d --download F --update F --push F",
-  shQuote(config_script), SMOKE_WEEK, SMOKE_YEAR
+  "Rscript %s --week %d --year %d --output %s --mid %s --download F --update F --push F",
+  shQuote(config_script), SMOKE_WEEK, SMOKE_YEAR,
+  shQuote(SMOKE_OUT_ROOT), shQuote(SMOKE_MID_ROOT)
 )
 if (system(config_cmd) != 0) stop("Config generation failed.")
 cat("  Config generated.\n\n")
@@ -179,6 +189,19 @@ for (col in vi_cols) {
                    paste(mismatches$zone, collapse = ", "))
     log_fail(msg)
     failures <- c(failures, msg)
+  }
+}
+cat("\n")
+
+# ---- Step 5c: report must contain the graphs sheet ----
+report_path <- file.path(smoke_outdir, paste0(file_prefix, "weekly_report_output.xlsx"))
+if (file.exists(report_path)) {
+  sheets <- openxlsx::getSheetNames(report_path)
+  if ("graphs" %in% sheets) {
+    log_pass("report contains graphs sheet")
+  } else {
+    log_fail("report missing graphs sheet")
+    failures <- c(failures, "report missing graphs sheet")
   }
 }
 cat("\n")
