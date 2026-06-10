@@ -19,12 +19,14 @@
 #   week_filter     current epiweek integer; written into the "Week: N" cells.
 #   week_cells      list(row = <integer vector>, col = <integer>) pointing to
 #                   the "Week: N" placeholder cells in the template.
-#                   Default: row = c(4, 38, 72), col = 2  (cells B4, B38, B72).
+#                   Default: row = c(5, 39, 73), col = 2  (cells B5, B39, B73 —
+#                   the "Week: " & WEEKNUM(today()) formula cells in the template).
 #   update          logical; when TRUE, pushes each data sheet to a new GSheet
-#                   (mirrors legacy generate_report.R behaviour). Default FALSE.
+#                   and uploads the formatted .xlsx (with the graphs sheet) to
+#                   gfolder. Default FALSE.
 #   gname           character; base name for the GSheet (used when update = TRUE).
-#   gfolder         character; Google Drive folder name to move the sheet into
-#                   (used when update = TRUE and non-NULL).
+#   gfolder         character; Google Drive folder name to move the GSheet and
+#                   upload the .xlsx into (used when update = TRUE and non-NULL).
 #
 # OUTPUT
 #   Returns the out_path invisibly. Side effect: writes the .xlsx file.
@@ -102,7 +104,7 @@ generate_report <- function(data_sheets, graph_datasets, graph_layout,
   openxlsx::saveWorkbook(wb, out_path, overwrite = TRUE)
 
   # ---------------------------------------------------------------------------
-  # 6. Optional GSheet push (data sheets only; matches legacy behaviour).
+  # 6. Optional Drive push (matches legacy behaviour, plus the .xlsx itself).
   #    Namespaced calls (googlesheets4::, googledrive::) resolve at call time so
   #    the file can be sourced in offline / test contexts without those packages
   #    being attached — they only need to be installed when update = TRUE.
@@ -116,7 +118,9 @@ generate_report <- function(data_sheets, graph_datasets, graph_layout,
       tools::file_path_sans_ext(basename(out_path))
     }
 
-    # Create a new Google Sheet (one tab per data_sheets entry).
+    # Create a new Google Sheet (one tab per data_sheets entry) — flat data
+    # only; native Google Sheets cannot reproduce the "graphs" sheet's merges/
+    # formatting, which is why the .xlsx itself is also uploaded below.
     gsheet <- googlesheets4::gs4_create(sheet_name)
 
     purrr::iwalk(data_sheets, function(dat, nm) {
@@ -126,11 +130,18 @@ generate_report <- function(data_sheets, graph_datasets, graph_layout,
     # Remove the default empty "Sheet1" tab created by gs4_create().
     googlesheets4::sheet_delete(gsheet, sheet = "Sheet1")
 
-    # Move the GSheet into the target Drive folder when one is specified.
+    # Move the GSheet, and upload the formatted .xlsx (with the graphs sheet),
+    # into the target Drive folder when one is specified.
     if (!is.null(gfolder)) {
       target_folder <- googledrive::drive_get(gfolder)
       googledrive::drive_mv(gsheet,
                             path = googledrive::as_id(target_folder))
+      googledrive::drive_upload(
+        media = out_path,
+        path  = googledrive::as_id(target_folder),
+        name  = basename(out_path),
+        overwrite = TRUE
+      )
     }
   }
 

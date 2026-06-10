@@ -211,7 +211,7 @@ No formal `testthat` suite exists. The single informal test is [`0_R/pir_test.R`
 
 | Function | Signature | Purpose | Tested? |
 |----------|-----------|---------|---------|
-| [`generate_report()`](../../utils/fun_generate_report.R) | `generate_report(data_sheets, graph_datasets, graph_layout, template_path, out_path, week_filter, week_cells, update, gname, gfolder)` | Builds the weekly report workbook from the pixel-faithful `tests/fixtures/graph_plot_template.xlsx` scaffold: injects the 6 graph datasets via `inject_graph_data()`, stamps "Week: N" into the formula cells at `graph_week_cells`, adds the flat data sheets, saves the xlsx, and optionally pushes data sheets to Google Sheets. Replaces `0_R/generate_report.R` | ✓ |
+| [`generate_report()`](../../utils/fun_generate_report.R) | `generate_report(data_sheets, graph_datasets, graph_layout, template_path, out_path, week_filter, week_cells, update, gname, gfolder)` | Builds the weekly report workbook from the pixel-faithful `tests/fixtures/graph_plot_template.xlsx` scaffold: injects the 6 graph datasets via `inject_graph_data()`, stamps "Week: N" into the formula cells at `graph_week_cells`, adds the flat data sheets, saves the xlsx. When `update = TRUE` and `gfolder` is set, also pushes flat data sheets to a new GSheet and uploads the formatted `.xlsx` (with the `graphs` sheet) to `gfolder` via `drive_upload()`. Replaces `0_R/generate_report.R` | ✓ |
 
 ## utils/fun_bird_report.R
 
