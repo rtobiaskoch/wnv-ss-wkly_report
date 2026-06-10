@@ -1,0 +1,7 @@
+df <- read.csv("2_mid/2026/w23/culex_database_update.csv")
+cat("colnames:\n")
+print(names(df))
+cat("\nspp values by year (sample):\n")
+print(table(df$spp[df$year==2025], useNA="always"))
+print(table(df$spp[df$year==2026], useNA="always"))
+print(table(df$spp, useNA="always"))

@@ -42,3 +42,25 @@ test_that("plot_hx stacks species with a type_spp fill key covered by the palett
   # which would emit "No shared levels found ...")
   expect_no_warning(ggplot2::ggplot_build(p))
 })
+
+test_that("plot_hx overlays hx and current on the same zone panel (facet by zone only)", {
+  df <- tidyr::expand_grid(
+    week = 23:27,
+    zone = factor(c("NW", "NE"), levels = zone_lvls),
+    spp  = c("Pipiens", "Tarsalis"),
+    type = factor(c("hx", "current"), levels = c("hx", "current"))
+  ) |>
+    dplyr::mutate(abund = seq_len(dplyr::n()) / 10, pir = 0, vi = 0)
+
+  p <- plot_hx(df, abund, "Abundance", pallette = pal_mozzy)
+
+  # facets only on zone, not on type -> hx and current share one panel per zone
+  facet_vars <- ggplot2::ggplot_build(p)$layout$facet$vars()
+  expect_setequal(as.character(facet_vars), "zone")
+
+  # two geom_area layers: hx drawn first (background), current drawn second (overlay)
+  area_layers <- Filter(function(l) inherits(l$geom, "GeomArea"), p$layers)
+  expect_equal(length(area_layers), 2)
+  expect_setequal(unique(area_layers[[1]]$data$type), "hx")
+  expect_setequal(unique(area_layers[[2]]$data$type), "current")
+})

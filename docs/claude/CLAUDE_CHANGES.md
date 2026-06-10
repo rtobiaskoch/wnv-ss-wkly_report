@@ -202,3 +202,13 @@ _AI summary unavailable — API call failed or timed out._
 **Suggestion:** Add a small testthat check that loads `tests/fixtures/graph_plot_template.xlsx` and asserts the cells at `graph_sheet_layout`/`graph_week_cells` anchors are within the expected blank-data regions (not headers/formula cells), so a future template or config change can't silently reintroduce this off-by-one.
 
 ---
+
+## Commit 66ef33e: 2026-06-10 04:55 UTC — feat: upload generated report .xlsx (with graphs sheet) to Drive
+
+| File | Changes |
+|------|---------|
+| utils/fun_generate_report.R | +18 -7 | modified |
+
+_AI summary unavailable — API call failed or timed out._
+
+---

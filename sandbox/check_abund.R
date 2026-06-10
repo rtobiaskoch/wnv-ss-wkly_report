@@ -1,0 +1,13 @@
+suppressMessages(library(dplyr))
+purrr::walk(list.files("utils", pattern="^fun_.*\\.R$", full.names=TRUE), source)
+params <- readRDS("config/config_weekly_settings/y2026_w23_config_weekly_2026-06-07 23:04:36.99914.RData")
+list2env(params, envir = .GlobalEnv)
+df <- read.csv("2_mid/2026/w23/culex_database_update.csv")
+cu <- wnv_s_clean(df, silence = TRUE)
+cat("nrow:", nrow(cu), "\n")
+print(table(cu$year, cu$method=="L"))
+print(table(cu$spp, useNA="always"))
+print(table(cu$year[cu$spp %in% c("Pipiens","Tarsalis")]))
+
+abund0 <- calc_abund(cu, grp_var = c("zone", "year", "week", "spp"))
+print(table(abund0$year))

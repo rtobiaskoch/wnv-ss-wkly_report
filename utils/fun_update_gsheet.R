@@ -1,6 +1,5 @@
 update_gsheet = function(new, #new data to add
                          old = NULL, #old data that you want to update
-                         type = "FULL",
                          by, #joining keys
                          fn_save, #filename that you want to save locally
                          gkey,  #google sheet key of file you want to update
@@ -39,13 +38,13 @@ if(is.null(old)) {
                             sheet = sheet)  
 }
   
-#update data — merge logic lives in merge_trap_database() (utils/fun_merge_trap_database.R)
-#so it can be unit-tested apart from the GSheet write path below.
-update = merge_trap_database(new = new,
-                             old = old,
-                             by = by,
-                             col_database = col_database,
-                             jointype = type)
+#update data — merge logic lives in wnvSurv::update_join(), a generic
+#full_join()+coalesce() merge (new wins on conflict, old fills gaps/history)
+update = wnvSurv::update_join(new = new,
+                              old = old,
+                              by = by,
+                              col_keep = col_database,
+                              arrange_desc = "trap_date")
 
 #save local copy
 write.csv(update, fn_save, row.names = F)

@@ -193,7 +193,7 @@ drive_auth()
 -   run the following command in your terminal after running your config.
 
 ``` bash
-quarto render wnv-ss_weekly_pipline.qmd
+quarto render wnv-ss_weekly_report_pipeline.qmd
 ```
 
 

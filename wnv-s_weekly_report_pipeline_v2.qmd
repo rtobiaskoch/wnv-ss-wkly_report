@@ -124,7 +124,7 @@ culex_database = read.csv(fn_gdrive_culex_sheet) %>%
  # filter(trap_status != "missing") %>% #TO DO add to wnv_s_clean and remove
   wnv_s_clean() %>%
   # Build the same composite key as culex_new (trap_id|spp|year|week) so
-  # merge_trap_database()'s join on "key" (clean-update-all-spp-culex chunk
+  # wnvSurv::update_join()'s join on "key" (clean-update-all-spp-culex chunk
   # below) has matching keys on both sides. trap_key_cols defined in
   # config/config_weekly.R.
   make_key(key_cols = trap_key_cols)
@@ -557,11 +557,12 @@ update_gsheet(new = culex_new,
               sheet = "data")
 } else {
   # local merge only — skips GSheet push (offline / smoke test mode).
-  # Same merge_trap_database() the update=TRUE path uses (utils/fun_merge_trap_database.R).
-  culex_merged <- merge_trap_database(new = culex_new,
-                                      old = culex_database,
-                                      by = "key",
-                                      col_database = names(culex_database))
+  # Same wnvSurv::update_join() the update=TRUE path uses via update_gsheet().
+  culex_merged <- wnvSurv::update_join(new = culex_new,
+                                       old = culex_database,
+                                       by = "key",
+                                       col_keep = names(culex_database),
+                                       arrange_desc = "trap_date")
   write.csv(culex_merged, fn_database_culex_update, row.names = FALSE)
 }
 
