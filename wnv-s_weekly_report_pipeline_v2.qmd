@@ -786,11 +786,36 @@ write.csv(t3a, file.path(dir_output, "table3a.csv"), row.names = FALSE)
 ```
 
 ```{r, generate-report, include=FALSE}
+# generate_report() from utils/fun_generate_report.R — auto-sourced with all
+# utils/*.R at pipeline top. graph_sheet_layout / fn_graph_template /
+# graph_week_cells come from config/config_weekly.R.
+weekly_input <- readr::read_csv(fn_weekly_input_format, show_col_types = FALSE)
 
-suppressMessages(
-  source("0_R/generate_report.R")
+data_sheets <- list(
+  "Weekly Data Input" = weekly_input,
+  "t1a" = t1a, "t1b" = hx_vi,
+  "t2a" = t2a, "t2b" = hx_abund,
+  "t3a" = t3a, "t3b" = hx_pir
 )
 
+graph_datasets <- list(
+  t1a = t1a, hx_vi = hx_vi,
+  t2a = t2a, hx_abund = hx_abund,
+  t3a = t3a, hx_pir = hx_pir
+)
+
+generate_report(
+  data_sheets    = data_sheets,
+  graph_datasets = graph_datasets,
+  graph_layout   = graph_sheet_layout,
+  template_path  = fn_graph_template,
+  out_path       = file.path(dir_output, paste0(fn_report, ".xlsx")),
+  week_filter    = week_filter,
+  week_cells     = graph_week_cells,
+  update         = update,
+  gname          = fn_report,
+  gfolder        = weekly_report_folder
+)
 ```
 
 ```{r}
