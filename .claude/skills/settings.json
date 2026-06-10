@@ -1,7 +1,0 @@
-{
-    "sandbox":{
-        "filesystem":{
-            "allowWrite": ["config"]
-        }
-    }
-}

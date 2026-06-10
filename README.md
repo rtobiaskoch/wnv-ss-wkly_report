@@ -159,7 +159,7 @@ source("config/load_packages.R")
 bash config/run_config.sh 
 
 #OR you can edit the arguments without editing any files
-Rscript config/config_weekly.R --year 2026 --week 23 --download F --update T --push T
+Rscript config/config_weekly.R --year 2026 --week 23 --download T --update T --push T
 ```
 
 -   settings are saved to a dynamically named file to the
@@ -196,11 +196,6 @@ drive_auth()
 quarto render wnv-ss_weekly_pipline.qmd
 ```
 
-or
-
-``` bash
-Rscript -e "rmarkdown::render('pipeline/wnv-s_multiweek_report_pipeline.qmd')"
-```
 
 ## -----------------------------------------------------
 
