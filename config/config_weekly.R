@@ -436,6 +436,31 @@ curr_hx_pal = c("current" = "#e9724c", "hx" = "grey50")
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#------------------------------- G R A P H  S H E E T -------------------------------
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+# Path to the pixel-faithful "graphs" worksheet scaffold. generate_report()
+# loads this as the workbook base so all merged headers / styling are preserved,
+# then injects weekly data at the (startRow, startCol) anchors below.
+fn_graph_template <- "tests/fixtures/graph_plot_template.xlsx"
+
+# One entry per data block. `dataset` is the name passed in the named list to
+# inject_graph_data(); anchors are 1-based cell coordinates verified against the
+# template. Only value columns are written (zone/week labels already present).
+graph_sheet_layout <- list(
+  t1a      = list(start_row = 6,  start_col = 3),
+  hx_vi    = list(start_row = 19, start_col = 3),
+  t2a      = list(start_row = 40, start_col = 3),
+  hx_abund = list(start_row = 53, start_col = 3),
+  t3a      = list(start_row = 73, start_col = 3),
+  hx_pir   = list(start_row = 86, start_col = 3)
+)
+
+# Cells holding the current week label ("Week: N") on the graphs sheet.
+graph_week_cells <- list(row = c(4, 38, 72), col = 2)
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #----------------------------- E X P O R T   C O N F I G ----------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
