@@ -233,7 +233,7 @@ git commit -m "refactor: extract build_tables() from 0_R/tables.R into tested ut
 
 ### Task B1: Add graph layout config
 
-- [ ] **Step 1: Add the layout spec to config** (parameter-driven, RSE principle 3)
+- [x] **Step 1: Add the layout spec to config** (parameter-driven, RSE principle 3)
 
 Append to `config/config_weekly.R` (after the color settings block, ~line 434):
 
@@ -260,7 +260,7 @@ graph_sheet_layout <- list(
 graph_week_cells <- list(row = c(4, 38, 72), col = 2)
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add config/config_weekly.R
@@ -470,7 +470,7 @@ generate_report <- function(data_sheets, graph_datasets, graph_layout,
 Run: `Rscript -e 'devtools::load_all("."); testthat::test_file("tests/testthat/test-generate_report.R")'`
 Expected: PASS (both cases).
 
-- [ ] **Step 5: Wire into the QMD**
+- [x] **Step 5: Wire into the QMD**
 
 Replace the `generate-report` chunk (lines 761-767). It needs the in-memory A-tables and the B-tables (`hx_vi`, `hx_abund`, `hx_pir` already built in the `format-hx-B-tables` chunk) plus the weekly input frame `fn_weekly_input_format` reads:
 
@@ -508,7 +508,7 @@ generate_report(
 
 > **Note for implementer:** confirm the B-table objects are named `hx_vi`, `hx_abund`, `hx_pir` and in scope at this point (they are created in the `format-hx-B-tables` chunk, lines 733-748). Confirm `fn_weekly_input_format`, `fn_report`, `dir_output`, `weekly_report_folder` resolve from config. Verify the graph value-column counts match the template header widths (1A=7, 2A=variable, etc.) by opening the generated file once.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add utils/fun_generate_report.R tests/testthat/test-generate_report.R wnv-s_weekly_report_pipeline_v2.qmd
@@ -901,7 +901,7 @@ The smoke test currently renders into the **live** `3_output/{year}/w{week}` tre
 
 **Why an override, not editing `dir_output` directly:** `config_weekly.R` already derives `dir_input` from a `--input` arg (line 99) for staging environments. Mirroring that for output keeps the live default (`3_output`/`2_mid`) untouched while letting the smoke test redirect — parameter-driven, no special-casing in the QMD (the QMD just reads the baked config snapshot).
 
-- [ ] **Step 1: Add the `--output` and `--mid` arguments**
+- [x] **Step 1: Add the `--output` and `--mid` arguments**
 
 In `config/config_weekly.R`, next to the existing `--input` argument definition (above line 60), add:
 
@@ -920,7 +920,7 @@ parser$add_argument(
 )
 ```
 
-- [ ] **Step 2: Use the args when constructing output dirs**
+- [x] **Step 2: Use the args when constructing output dirs**
 
 Replace the hardcoded roots at `config/config_weekly.R:144-145`:
 
@@ -933,7 +933,7 @@ dir_output <- file.path(dir_base_output, year_filter, paste0("w", week_filter))
 dir_plots  <- file.path(dir_output, "plots")
 ```
 
-- [ ] **Step 3: Verify the override creates dirs under the smokedir**
+- [x] **Step 3: Verify the override creates dirs under the smokedir**
 
 Run:
 ```bash
@@ -941,7 +941,7 @@ Rscript config/config_weekly.R --week 33 --year 2025 --output /tmp/smoke_chk_out
 ```
 Expected: both `/tmp/smoke_chk_out/2025/w33` and its `plots/` subdir exist; nothing was written under the live `3_output`. Clean up: `rm -rf /tmp/smoke_chk_out /tmp/smoke_chk_mid`.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add config/config_weekly.R
@@ -950,7 +950,7 @@ git commit -m "config: add --output/--mid base-dir overrides for isolated smoke 
 
 ### Task G2: Point smoke_test at the smokedir + assert report and historical plot
 
-- [ ] **Step 1: Add isolated-dir constants + thread overrides into the config call**
+- [x] **Step 1: Add isolated-dir constants + thread overrides into the config call**
 
 In `tests/smoke_test.R`, after the existing constants block (lines 26-29), add:
 
@@ -976,7 +976,7 @@ config_cmd <- sprintf(
 )
 ```
 
-- [ ] **Step 2: Add the generated report + historical plot to the pass criteria**
+- [x] **Step 2: Add the generated report + historical plot to the pass criteria**
 
 Replace the `expected_files` block (lines 44-52). The historical plot file is `<dir_plots>/<file_prefix>hx_plot_all.png`, i.e. `plots/y{YEAR}_w{WEEK}_hx_plot_all.png`:
 
@@ -998,7 +998,7 @@ expected_files <- c(
 
 > The xlsx name in the original (line 45) used `paste0("y", SMOKE_YEAR, "_w", SMOKE_WEEK, "_weekly_report_output.xlsx")` — confirm `fn_report` in config still resolves to `y{YEAR}_w{WEEK}_weekly_report_output` so the filename matches.
 
-- [ ] **Step 3: Assert the generated report contains the `graphs` sheet**
+- [x] **Step 3: Assert the generated report contains the `graphs` sheet**
 
 Add a check in COMPARE mode, after the VI comparison block (after line 184), so "generated report" means the pixel-faithful workbook, not just any xlsx:
 
@@ -1018,7 +1018,7 @@ if (file.exists(report_path)) {
 
 Add `library(openxlsx)` to the `suppressPackageStartupMessages` block (lines 20-24).
 
-- [ ] **Step 4: Re-capture the golden reference into the smokedir, then run**
+- [x] **Step 4: Re-capture the golden reference into the smokedir, then run**
 
 Because the output path changed, run setup once to (re)render into the smokedir and refresh the golden file, then run the comparison:
 
@@ -1028,7 +1028,7 @@ Rscript tests/smoke_test.R
 ```
 Expected: setup completes; the second run prints `SMOKE TEST PASSED` with `[PASS]` lines for the xlsx, all CSVs, `*_hx_plot_all.png`, the VI columns, and "report contains graphs sheet".
 
-- [ ] **Step 5: Ignore the smokedir in git**
+- [x] **Step 5: Ignore the smokedir in git**
 
 Add to `.gitignore` (the smoke outputs are regenerated, not committed):
 
@@ -1038,7 +1038,7 @@ tests/smoke_out/
 tests/smoke_mid/
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add tests/smoke_test.R .gitignore
@@ -1049,19 +1049,19 @@ git commit -m "test: smoke_test renders to isolated smokedir; assert report + hi
 
 ## Phase F — Full verification
 
-- [ ] **Step 1: Run the full unit-test suite**
+- [x] **Step 1: Run the full unit-test suite**
 
 Run: `Rscript tests/run_tests.R`
 Expected: all tests pass, including the new `test-build_tables`, `test-generate_report`, `test-bird_report`, `test-plot_hx`.
 
-- [ ] **Step 2: Render the pipeline end-to-end via the isolated smoke test** (per CLAUDE.md: always run the pipeline after refactor)
+- [x] **Step 2: Render the pipeline end-to-end via the isolated smoke test** (per CLAUDE.md: always run the pipeline after refactor)
 
 > Use 2025 w33 — it has populated input data. **Do NOT use 2026 w24 (no data yet).** This runs the full pipeline into the isolated smokedir built in Phase G.
 
 Run: `Rscript tests/smoke_test.R`
 Expected: `SMOKE TEST PASSED` — the report xlsx (with `graphs` sheet), all table CSVs, and `hx_plot_all.png` exist under the smokedir, and VI values match the golden reference.
 
-- [ ] **Step 3: Visually verify the graphs sheet is pixel-faithful**
+- [x] **Step 3: Visually verify the graphs sheet is pixel-faithful**
 
 Run:
 ```bash
@@ -1069,16 +1069,16 @@ Rscript -e 'd <- file.path("tests","smoke_out","2025","w33"); f <- list.files(d,
 ```
 Expected: `graphs` present, dims ~100×15, `B4` reads "Week: 33", and data appears at the configured anchors (C6 etc.). Open the file in Excel once to confirm merged headers/styling survived and data lands under the correct headers.
 
-- [ ] **Step 4: Confirm the new plots were written to the smokedir**
+- [x] **Step 4: Confirm the new plots were written to the smokedir**
 
 Run: `find tests/smoke_out/2025/w33 -name "*.png"`
 Expected: `*_birds.png`, `*_trap_status.png`, `*_hx_plot_all.png` present.
 
-- [ ] **Step 5: Update docs**
+- [x] **Step 5: Update docs**
 
 Update `docs/TODO.md` to check off the completed pipeline items, and add the new functions to `docs/claude/functions.md`. Note in `CLAUDE.md` that `0_R/tables.R` and `0_R/generate_report.R` are now superseded by `utils/fun_build_tables.R` / `utils/fun_generate_report.R`.
 
-- [ ] **Step 6: Final commit**
+- [x] **Step 6: Final commit**
 
 ```bash
 git add docs/TODO.md docs/claude/functions.md CLAUDE.md
