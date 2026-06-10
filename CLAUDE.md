@@ -73,11 +73,16 @@ Without it, `calc_pir()` fails at runtime with no clear error message.
 
 | Directory | Status |
 |---|---|
-| `utils/` | Active — 42 functions (read/clean/calc/plot/merge) |
+| `utils/` | Active — 43 functions (read/clean/calc/plot/merge/build/report) |
 | `0_R/` | Legacy exploratory scripts — do not modify or treat as authoritative |
 | `utils/archive/`, `utils/dev/`, `utils/graveyard/` | Inactive — ignore |
 
 Always look in `utils/` for functions before searching `0_R/`.
+
+`0_R/tables.R` and `0_R/generate_report.R` are superseded by
+`utils/fun_build_tables.R` (`build_tables()`) and `utils/fun_generate_report.R`
+(`generate_report()` + `inject_graph_data()`), which are wired into the QMD's
+`format-A-tables` and `generate-report` chunks.
 
 ## Testing
 

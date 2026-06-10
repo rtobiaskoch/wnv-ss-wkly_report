@@ -76,7 +76,7 @@ No formal `testthat` suite exists. The single informal test is [`0_R/pir_test.R`
 | Function | Signature | Purpose | Tested? |
 |----------|-----------|---------|---------|
 | [`clean_long_hx()`](../../utils/fun_clean_long_hx.R) | `clean_long_hx(ytd, hx, grp_var)` | Reshapes year-to-date and historical data into long format for historical comparison plots | ✗ |
-| [`clean_long_hx_wk()`](../../utils/fun_clean_long_hx.R) | `clean_long_hx_wk(...)` | Weekly variant of `clean_long_hx()` | ✗ |
+| [`clean_long_hx_wk()`](../../utils/fun_plot_hx.R) | `clean_long_hx_wk(ytd, hx, rm_zone, comb_zone, grp_vars, spp_keep)` | Weekly variant of `clean_long_hx()`; `spp_keep` controls which species are retained (default `c("Pipiens", "Tarsalis")`) | ✓ |
 
 ## utils/fun_clean_dir.R
 
@@ -159,7 +159,7 @@ No formal `testthat` suite exists. The single informal test is [`0_R/pir_test.R`
 
 | Function | Signature | Purpose | Tested? |
 |----------|-----------|---------|---------|
-| [`plot_hx()`](../../utils/fun_plot_hx.R) | `plot_hx(df, value, text, palette)` | Line plot comparing historical (grey) vs. current (coloured) trends by zone/species | ✗ |
+| [`plot_hx()`](../../utils/fun_plot_hx.R) | `plot_hx(df, value, text, pallette = pal_mozzy)` | Stacked-area plot of Pipiens/Tarsalis (fill key `type_spp`), faceted `zone ~ type` (current vs. historical) | ✓ |
 
 ---
 
@@ -194,3 +194,28 @@ No formal `testthat` suite exists. The single informal test is [`0_R/pir_test.R`
 | Function | Signature | Purpose | Tested? |
 |----------|-----------|---------|---------|
 | [`insert_blank_row()`](../../utils/fun_insert_blank_row.R) | `insert_blank_row(df, after_row)` | Inserts a blank row after the specified row index (used for Excel report formatting) | ✗ |
+
+## utils/fun_build_tables.R
+
+| Function | Signature | Purpose | Tested? |
+|----------|-----------|---------|---------|
+| [`build_tables()`](../../utils/fun_build_tables.R) | `build_tables(current_wk, pools)` | Builds the current-week "A" report tables (`t1a`/`t2a`/`t3a`: abundance/PIR/VI, collected/traps, examined/pools) from `calc_all()` output and pool counts. Pure — no file I/O. Replaces `0_R/tables.R` | ✓ |
+
+## utils/fun_inject_graph_data.R
+
+| Function | Signature | Purpose | Tested? |
+|----------|-----------|---------|---------|
+| [`inject_graph_data()`](../../utils/fun_inject_graph_data.R) | `inject_graph_data(wb, sheet, datasets, layout, drop_first_col = TRUE)` | Writes value columns from each dataset into an `openxlsx` workbook at the `(start_row, start_col)` anchors defined in `graph_sheet_layout` (`config/config_weekly.R`); mutates and returns the workbook | ✓ |
+
+## utils/fun_generate_report.R
+
+| Function | Signature | Purpose | Tested? |
+|----------|-----------|---------|---------|
+| [`generate_report()`](../../utils/fun_generate_report.R) | `generate_report(data_sheets, graph_datasets, graph_layout, template_path, out_path, week_filter, week_cells, update, gname, gfolder)` | Builds the weekly report workbook from the pixel-faithful `tests/fixtures/graph_plot_template.xlsx` scaffold: injects the 6 graph datasets via `inject_graph_data()`, stamps "Week: N" into the formula cells at `graph_week_cells`, adds the flat data sheets, saves the xlsx, and optionally pushes data sheets to Google Sheets. Replaces `0_R/generate_report.R` | ✓ |
+
+## utils/fun_bird_report.R
+
+| Function | Signature | Purpose | Tested? |
+|----------|-----------|---------|---------|
+| [`build_bird_report()`](../../utils/fun_bird_report.R) | `build_bird_report(cq_data, target = "WNV")` | Filters merged Cq data to `sample_type == "bird"` and returns `list(birds, bird_report)`, where `bird_report` derives `wnv_result` (positive/negative) from `test_code` for the given target virus | ✓ |
+| [`plot_birds()`](../../utils/fun_bird_report.R) | `plot_birds(bird_report, pal = c(positive = "#c5283d", negative = "grey70"))` | Bar plot of WNV-positive vs. negative dead-bird counts by week | ✓ |
