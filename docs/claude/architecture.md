@@ -50,11 +50,11 @@ Eight functions:
 - `merge_4_database()` — three-way merge: datasheet + PCR + platemap; validates coverage
 - `diffs_by_col()` — QC utility to detect row-level changes between old and new data
 
-### 6. Visualisation (`utils/fun_plot_*.R` and `0_R/plot_birds.R`)
+### 6. Visualisation (`utils/fun_plot_*.R` and `utils/archive/0_R/plot_birds.R`)
 - `plot_pcr()` — Cq vs. copy-number scatter with threshold line
 - `plot_std()` — standard curve visualisation
 - `plot_hx()` — historical (grey) vs. current (colour) trend lines by zone/species
-- Bird-related plots in `0_R/plot_birds.R`
+- Bird-related plots in `utils/archive/0_R/plot_birds.R`
 
 ### 7. Database Update (`utils/`)
 - `update_gsheet()` — pushes new rows back to the master Google Sheet database

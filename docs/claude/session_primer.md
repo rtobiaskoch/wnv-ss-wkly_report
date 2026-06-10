@@ -36,8 +36,8 @@ quarto render wnv-s_weekly_report_pipeline_v2.qmd
 - **Google auth.** `googlesheets4` and `googledrive` require an interactive OAuth token on first use. Run once interactively; the token caches in `~/.config/gargle/`.
 - **`--download F` for offline work.** If Google Drive is unavailable or you want to re-run on existing inputs, pass `--download F` to skip the download step.
 - **Zone factor levels matter.** All zone columns must be coerced to the factor defined in `zone_lvls` (config). Skipping `wnv_s_clean()` will cause silent grouping errors in `calc_pir()` and `calc_vi()`.
-- **`0_R/` is legacy.** Scripts there are exploratory or superseded. Active code is in `utils/` only.
-- **No formal test suite.** The only informal test is `0_R/pir_test.R`. Manual validation is the current QA process.
+- **`utils/archive/0_R/` is legacy.** Scripts there are exploratory or superseded. Active code is in `utils/` only.
+- **No formal test suite.** The only informal test is `utils/archive/0_R/pir_test.R`. Manual validation is the current QA process.
 
 ## Where to Go Next
 - Full function inventory: [`docs/claude/functions.md`](functions.md)

@@ -51,11 +51,11 @@ list2env(readRDS("config/config_hx_settings.RData"), #fix config
 #
 
 if(download){
-gsheet_pull_prompt(fn_trap, "data", key_foco_trap)
+gsheet_pull_prompt(fn_trap, sheet = "data", key = key_foco_trap)
 #WNV DATABASE
-gsheet_pull_prompt(fn_gdrive_database, "data", key_database_gsheet)
+gsheet_pull_prompt(fn_gdrive_database, sheet = "data", key = key_database_gsheet)
 #CULEX SHEET
-gsheet_pull_prompt(fn_gdrive_culex_sheet, "data", key_database_culex_sheet)
+gsheet_pull_prompt(fn_gdrive_culex_sheet, sheet = "data", key = key_database_culex_sheet)
 }
 ```
 

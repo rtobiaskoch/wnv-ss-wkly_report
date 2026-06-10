@@ -195,7 +195,7 @@ if (length(empty_dirs) > 0) {
     "The following input subdirectories are empty or missing:\n",
     paste(empty_dirs, collapse = "\n"),
     "\nPlease populate them before running.",
-    "\nSee 0_R/0_check_load_input_data.R for download helpers."
+    "\nSee utils/archive/0_R/0_check_load_input_data.R for download helpers."
   ))
 } else {
   cat("All input subdirectories are populated.\n")
