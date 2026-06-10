@@ -594,13 +594,39 @@ p_pools
 ggsave(paste0(dir_plot_wk, "pools.png"), p_pools, height = 8, width = 12, units = "in")
 ```
 
+### TRAP STATUS PLOT
+
+------------------------------------------------------------------------
+
+```{r, trap-status-plot}
+# Trap status (malfunction / culex / no culex / no mosquitoes) per zone-week.
+# Uses wnvSurv::plot_n_trap; culex_update is wnv_s_clean()'d below (calc-zone-stats
+# chunk), which carries the zone2 + trap_status columns the function requires.
+culex_update = read.csv(fn_database_culex_update) %>% wnv_s_clean(verbose = F)
+
+p_trap_status = plot_n_trap(culex_update, rm_zone = c("BC"))
+p_trap_status
+
+fn_trap_status = paste0(dir_plot_wk, "trap_status.png")
+ggsave(fn_trap_status, p_trap_status, height = 8, width = 12, units = "in")
+
+if(update){
+  drive_upload(
+    media = fn_trap_status,
+    path = as_id(key_plots_dir),
+    name = basename(fn_trap_status)
+  )
+}
+```
+
 ### CALC ZONE STATS
 
 ------------------------------------------------------------------------
 
 ```{r, calc-zone-stats, include=FALSE}
-culex_update = read.csv(fn_database_culex_update) %>% wnv_s_clean(silence = T)
-database_update = read.csv(fn_database_update) %>% wnv_s_clean(silence = T)
+# culex_update is already created (and wnv_s_clean()'d) in the trap-status-plot
+# chunk above; reused here for calc_all().
+database_update = read.csv(fn_database_update) %>% wnv_s_clean(verbose = F)
 
 
 # t = calc_abund(culex_update,, 
