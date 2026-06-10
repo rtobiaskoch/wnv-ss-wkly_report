@@ -540,7 +540,7 @@ culex_new = all_spp %>%
   make_key(key_cols = trap_key_cols)   # trap_key_cols defined in config/config_weekly.R
 
 #get trap status
-trap_sum = trap_stat_sum(culex_new)
+trap_sum = trap_stat_sum(culex_new, year_start = year_filter_hx, year_end = year_filter)
 
 ggsave(plot = trap_sum$p, filename = paste0(dir_mid_wk, "trap_status.png"))
 write.csv(trap_sum$df, paste0(dir_mid_wk,"trap_status_summary.csv"))
