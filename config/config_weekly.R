@@ -91,6 +91,18 @@ parser$add_argument(
   type = "logical",
   default = F
 )
+parser$add_argument(
+  "--output",
+  help = "base output folder; defaults to 3_output. Override for smoke/staging runs.",
+  type = "character",
+  default = "3_output"
+)
+parser$add_argument(
+  "--mid",
+  help = "base intermediate folder; defaults to 2_mid. Override for smoke/staging runs.",
+  type = "character",
+  default = "2_mid"
+)
 
 # Parse arguments
 args <- parser$parse_args()
@@ -140,10 +152,13 @@ dir_pcr <- file.path(dir_input, "pcr")
 dir_platemap <- file.path(dir_input, "platemap")
 dir_all_spp <- file.path(dir_input, "all_species")
 
-# output dirs — auto-created later if absent
-dir_mid <- file.path("2_mid", year_filter, paste0("w", week_filter))
-dir_output <- file.path("3_output", year_filter, paste0("w", week_filter))
-dir_plots <- file.path(dir_output, "plots")
+# output dirs — base roots overridable via --output / --mid (default 3_output / 2_mid)
+# auto-created later if absent
+dir_base_output <- args$output
+dir_base_mid    <- args$mid
+dir_mid    <- file.path(dir_base_mid,    year_filter, paste0("w", week_filter))
+dir_output <- file.path(dir_base_output, year_filter, paste0("w", week_filter))
+dir_plots  <- file.path(dir_output, "plots")
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
