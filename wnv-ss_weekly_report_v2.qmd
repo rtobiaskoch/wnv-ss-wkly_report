@@ -153,9 +153,9 @@ datasheet_input = read_list(dir_datasheet, "*")  %>%
 saveRDS(datasheet_input, fn_weekly_input_format_mid)
 
 datasheet_clean = datasheet_input %>%
-    key_rename(rename_df = df_key_rename, 
+    key_rename(rename_df = df_key_rename,
              drop_extra = T) %>%
-    wnv_s_clean()
+    wnv_s_clean(force_recompute = TRUE) # raw provider input: derive week/year from trap_date, ignore typed values
 
 check_data(df = datasheet_clean, #data you want to check
            trap = foco_trap, #data with trap_ids you want to ensure traps are available
@@ -179,8 +179,9 @@ OUTPUT - Cq combined pcr and platemap csv \[fn_cq_out = 2_mid/y##\_w##\_platemap
 ```{r,pcr-clean, include=F}
 
 fn_path = list.files(path = dir_pcr, #
+               pattern = "\\.xlsx?$", # only .xls/.xlsx; ignore the .eds and any other files in the pcr folder
                full.names = T,
-               ignore.case = T) 
+               ignore.case = T)
 
 cat("Reading in the PCR file: ", fn_path)
 
@@ -509,7 +510,7 @@ all_spp = all_spp0 %>%
                                                  quiet = TRUE),
         trap_date = as.Date(trap_date)) %>%
   mutate(spp0 = spp) %>% #keep original
-  wnv_s_clean(rm_col = c("trap_date"))
+  wnv_s_clean(rm_col = c("trap_date"), force_recompute = TRUE) # raw provider input: derive week/year from trap_date, ignore typed values
 
 write_rds(all_spp, paste0(dir_mid_wk,"all_species_active_trap.RData"))
 

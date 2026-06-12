@@ -1,8 +1,8 @@
 
 
 ## Create Testing Environment
-- [ ] create simple synthetic test dataset and pipeline that won't impact the live data (in process)
-- [ ] create unit tests to verify pipeline that is isolated from live environment
+- [x] create simple synthetic test dataset and pipeline that won't impact the live data (in process)
+- [x] create unit tests to verify pipeline that is isolated from live environment
 - [x] fix generate_report.R not making the xlsx file in the smoke_test.R
 - [x] have smoke_test use pipeline but have a special I/O folders to isolate from the pipeline
 
@@ -13,12 +13,11 @@
 - [x] change the argument for historical to be the previous 5 year rolling window as the default not setting a specific year.
 - [ ] update functions from R wnv-ss-functions (wnvSurv)
 - [ ] keep weekly report specific functions in R/ and call using more standard methods like devtools
-- [ ] rename utils to proper naming /R
 - [ ] delete any unused function in utils/ or 0_R 
 - [ ] move any useful one off code to scripts 
 - [ ] look for any dead code and unnused data
-- [ ] only pull xlsx or xls and ignore other in the pcr folder **
-- [ ] have week be calculated each week from trap_date drop the provided week. **
+- [x] only pull xlsx or xls and ignore other in the pcr folder **
+- [x] have week be calculated each week from trap_date drop the provided week in wnv-s_clean so that the pipeline isn't dependent on user input. ** (week + year now re-derived from trap_date via force_recompute on raw input; pools path Year filter also derives from Trap Date)
 
 ## pipeline
 - [x] making functions
@@ -31,6 +30,7 @@
 - [x] set email as an argument for the googleAuth
 - [x] in wnvSurv make trap_status plot that is in in ../wnv-s_trap_hx_combiner
 - [x] Change the historical vs current plot to be broken up by culex and pipiens as stacked geom_area using pal_mozzy from config for colors
+- [ ] save pools plot to googledrive plots
 
 
 ## future directions

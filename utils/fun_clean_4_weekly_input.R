@@ -6,16 +6,20 @@ clean_4_weekly_input = function(rds, update, dir) {
   # week (not the submitter-typed Week) guarantees the week used to SELECT the
   # current pool batch is the same week the pool is later LABELLED with (line ~55),
   # so a pool always lands in the same week as the trap-count it came from.
+  # Both week AND year are derived from Trap Date (not the submitter-typed Week/Year)
+  # so a stale provider year (e.g. VDCI forgets to update it) does not silently
+  # route correct samples into non_week_samples.csv. isoyear() is the same year
+  # rule wnv_s_clean() applies on the counts path.
   data_input = data_input0 %>%
     filter(
       wnvSurv::calc_season_week(`Trap Date`) == week_filter &
-        Year == year_filter
+        lubridate::isoyear(`Trap Date`) == year_filter
     ) #incase samples were added from a previous week/year they still get added  to database
 
   filtered_samples = data_input0 %>%
     filter(
       wnvSurv::calc_season_week(`Trap Date`) != week_filter |
-        Year != year_filter
+        lubridate::isoyear(`Trap Date`) != year_filter
     )
 
   # QC: flag pools in the current batch whose submitter-typed Week disagrees with
@@ -99,7 +103,8 @@ clean_4_weekly_input = function(rds, update, dir) {
       )
     ) %>%
     mutate(Sex = as.character(Sex)) %>%
-    mutate(Week = wnvSurv::calc_season_week(`Trap Date`)) %>% #seasonal week from date; SAME rule as counts path
+    mutate(Week = wnvSurv::calc_season_week(`Trap Date`), #seasonal week from date; SAME rule as counts path
+           Year = lubridate::isoyear(`Trap Date`)) %>% #year from date too; ignore stale submitter-typed Year
     rename(Spp = "Species", Method = "L/G", Account = "Acct")
 
   if (any(is.na(weekly_data_format$`Test Code (CSU Enters)`))) {

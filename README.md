@@ -11,7 +11,8 @@ editor_options:
 ## TL;DR Run the Pipeline
 
 ```bash
-Rscript config/config_weekly.R --year 2026 --week 24 --download T --update T --push T
+# Keep --update F / --push F until the run is validated (see STEP 4A & 5).
+Rscript config/config_weekly.R --year 2026 --week 24 --download T --update F --push F
 quarto render wnv-ss_weekly_report_v2.qmd
 ```
 
@@ -28,9 +29,6 @@ flexibility and reusability of code. For example wnv-s_clean() is designed as a
 universal cleaning function to ensure all data follows the same formatting
 rules.
 
-Indepth notes can be found here:
-<https://docs.google.com/document/d/1gUdxBmV-fIB8R1mVgvBGPy5UIVws_OQNCkH_ia1f8vQ/edit?tab=t.0>
-
 Workflow Diagrams can be found here:
 <https://docs.google.com/drawings/d/1UVtAzJrcSCYUQgDfj5BYL3X9ZKuU0JnDyr0SHTLvAag/edit?usp=sharing>\
 
@@ -40,12 +38,22 @@ Workflow Diagrams can be found here:
 
 ## -----------------------------------------------------
 
--   **wnv-s_weekly_reportpipeline_v2.qmd:** where the magic happens. calls all
-    function in utils
+-   **wnv-ss_weekly_report_v2.qmd:** where the magic happens. calls all
+    functions in utils
 
 -   **utils/:** contains all functions called in qmd file \\
 
 -   **config/:** contains config_weekly.R file and load_packages\_.R
+
+-   **pipelines/:** secondary qmd pipelines (wnv-s_calc_hx.qmd, calc_indiv_stats.qmd)
+
+-   **scripts/:** standalone helper scripts (fun_gdrive_download.R, patch_pcr_quantity.R)
+
+-   **tests/:** testthat unit tests; run with `Rscript tests/run_tests.R`
+
+-   **docs/:** project documentation, including docs/claude/ context files
+
+-   **1_input/:** raw weekly input files downloaded from Google Drive
 
 -   **2_mid/:** contains intermediary files that are useful for debugging
 
@@ -80,19 +88,19 @@ cd path/to/repo
 
 ## -----------------------------------------------------
 
-## STEP 2: Install R packages
+## STEP 3: Install R packages
 
 ## -----------------------------------------------------
 
 -   in repo directory wnv-ss-weekly_report install packages
 
-``` bash
+``` r
 source("config/load_packages.R")
 ```
 
 ## -----------------------------------------------------
 
-## STEP 3: Upload Weekly Files to Google Drive
+## STEP 4: Upload Weekly Files to Google Drive
 
 ## -----------------------------------------------------
 
@@ -131,7 +139,7 @@ source("config/load_packages.R")
 
 ## -----------------------------------------------------
 
-## STEP 3b: Check the Input Data
+## STEP 4b: Check the Input Data
 
 ## -----------------------------------------------------
 
@@ -158,9 +166,11 @@ source("config/load_packages.R")
 
 ## -----------------------------------------------------
 
-## STEP 4A: Run Configuration
+## STEP 5A: Run Configuration
 
-## -----------------------------------------------------run script below to generate a configuration file
+## -----------------------------------------------------
+
+run script below to generate a configuration file
 
 -   change the name of the input folder and the week \# in run_config.sh
 
@@ -177,7 +187,7 @@ Rscript config/config_weekly.R --year 2026 --week 24 --download T --update F --p
 
 ## -----------------------------------------------------
 
-## STEP 4B: Authorize Googledrive API
+## STEP 5B: Authorize Googledrive API
 
 ## -----------------------------------------------------
 
@@ -195,7 +205,7 @@ drive_auth()
 
 ## -----------------------------------------------------
 
-## STEP 5: Run the Pipeline
+## STEP 6: Run the Pipeline
 
 ## --------------------------------------------------------------------------
 
@@ -208,7 +218,7 @@ quarto render wnv-ss_weekly_report_v2.qmd
 
 ## -----------------------------------------------------
 
-## STEP 5: Check the Report
+## STEP 7: Check the Report
 
 ## -----------------------------------------------------
 
@@ -218,7 +228,7 @@ quarto render wnv-ss_weekly_report_v2.qmd
 
 ## -----------------------------------------------------
 
-## STEP 6: COMMIT TO GITHUB
+## STEP 8: COMMIT TO GITHUB
 
 ## -----------------------------------------------------
 

@@ -22,6 +22,10 @@ source(here::here("utils/fun_calc_abund.R"))
 source(here::here("utils/fun_calc_pir.R"))
 source(here::here("utils/fun_calc_vi.R"))
 
+# Source the standardizing cleaner (provides wnv_s_clean + clean_summary).
+# Needed for test-clean_wnv_s.R, which exercises the force_recompute branch.
+source(here::here("utils/fun_clean_wnv_s.R"))
+
 # Source table-building utilities
 source(here::here("utils/fun_insert_blank_row.R"))
 source(here::here("utils/fun_build_tables.R"))

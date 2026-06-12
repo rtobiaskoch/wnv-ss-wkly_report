@@ -124,8 +124,9 @@ wnv_s_clean <- function(df,
                         zone_lvls = c("NW", "NE", "SE","SW", "FC", "LV", "BE", "BC"),
                         distinct_col = names(df),
                         silence = F,
-                        rm_dupes = T, 
-                        rm_col = c()
+                        rm_dupes = T,
+                        rm_col = c(),
+                        force_recompute = FALSE # if TRUE, re-derive year/week from trap_date even when those columns already exist (use on RAW provider input; leave FALSE for stored/historical data)
                         ) {
   
   #save original input for comparison
@@ -277,7 +278,11 @@ wnv_s_clean <- function(df,
   }#end if trap_date
   
   # ADD YEAR
-  if ("trap_date" %in% names(df) & !"year" %in% names(df) & "year" %in% col_2_clean) {
+  # Derive year from trap_date when it is absent OR when force_recompute = TRUE.
+  # force_recompute is used on RAW provider input (counts/datasheet) where a
+  # collaborator may have typed a stale year (e.g. VDCI). isoyear() matches the
+  # value stored historically; for summer surveillance dates isoyear == calendar year.
+  if ("trap_date" %in% names(df) & (force_recompute | !"year" %in% names(df)) & "year" %in% col_2_clean) {
     df <- df %>%
       mutate(
         year = lubridate::isoyear(trap_date)
@@ -305,8 +310,9 @@ wnv_s_clean <- function(df,
   # pool and the trap-count it came from always land in the same week.
   # The !"week" %in% names(df) gate keeps stored/historical data from being
   # recomputed on read-back, which is what holds the frozen baseline stable
-  # mid-season.
-  if ("trap_date" %in% names(df) & !"week" %in% names(df) & "week" %in% col_2_clean) {
+  # mid-season. force_recompute = TRUE overrides that gate for RAW provider
+  # input (e.g. BC types a running submission count, not a calendar week).
+  if ("trap_date" %in% names(df) & (force_recompute | !"week" %in% names(df)) & "week" %in% col_2_clean) {
     df <- df %>%
     mutate(
       week = wnvSurv::calc_season_week(trap_date)
