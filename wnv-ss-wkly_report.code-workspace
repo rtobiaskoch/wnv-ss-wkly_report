@@ -1,0 +1,10 @@
+// Workspace configuration for Positron/RStudio.
+// Edit the "workbench.colorTheme" value to change the theme for this workspace only.
+{
+  "folders": [
+    { "path": "." }
+  ],
+  "settings": {
+  "workbench.colorTheme": "Mayukai Mirage Gruvbox Darktooth"
+  }
+}

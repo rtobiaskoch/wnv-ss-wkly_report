@@ -8,6 +8,15 @@ editor_options:
 
 ## -----------------------------------------------------
 
+## TL;DR Run the Pipeline
+
+```bash
+Rscript config/config_weekly.R --year 2026 --week 24 --download T --update T --push T
+quarto render wnv-ss_weekly_report_v2.qmd
+```
+
+## -----------------------------------------------------
+
 ## Version v2
 
 V2 config file now run separately from qmd pipeline file. This allows all
@@ -159,7 +168,7 @@ source("config/load_packages.R")
 bash config/run_config.sh 
 
 #OR you can edit the arguments without editing any files
-Rscript config/config_weekly.R --year 2026 --week 23 --download T --update T --push T
+Rscript config/config_weekly.R --year 2026 --week 24 --download T --update F --push F
 ```
 
 -   settings are saved to a dynamically named file to the
@@ -193,27 +202,19 @@ drive_auth()
 -   run the following command in your terminal after running your config.
 
 ``` bash
-quarto render wnv-ss_weekly_report_pipeline.qmd
+quarto render wnv-ss_weekly_report_v2.qmd
 ```
 
 
 ## -----------------------------------------------------
 
-## STEP 5: Edit the Report
+## STEP 5: Check the Report
 
 ## -----------------------------------------------------
 
--   Navigate to the YY_weekly_report where the output file is generated:
-    <https://drive.google.com/drive/folders/1VC1i8D-2_8WEapmW2hrBqMzdHz3vsbqW?usp=drive_link>
+- Navigate to the googlesheet
 
--   YYYY -\> YY_weekly_report -\> weekly_report_R_output
-
--   add this silly graphs sheet to the report that the city used and copy and
-    paste the appropriate table to the corresponding table in the graph tab.
-
--   <https://docs.google.com/spreadsheets/d/1E-imgI_WWU5Pnw9gDPtitONWqbG0yLKeQqIlHNCLtLI/edit?usp=drive_link>
-
--   TELL GREG I DID A GOOD JOB HERE IS THE REPORT.
+-   TELL GREG "I DID A GOOD JOB" AND GIVE HIM THE LINK TO THE REPORT 
 
 ## -----------------------------------------------------
 
@@ -223,7 +224,6 @@ quarto render wnv-ss_weekly_report_pipeline.qmd
 
 -   In order to help track the state of the pipeline that produced the results
     for each week. save the changed to github\
-    \
 
 ```{bash}
 git add --all

@@ -212,3 +212,49 @@ _AI summary unavailable — API call failed or timed out._
 _AI summary unavailable — API call failed or timed out._
 
 ---
+
+## Commit f292cee: 2026-06-10 22:40 UTC — chore: archive 0_R/ to utils/archive, finish wnvSurv migrations
+
+| File | Changes |
+|------|---------|
+| config/config_weekly.R | +1 -1 | modified |
+| pipelines/wnv-s_multiweek_report_pipeline.qmd | +0 -151 | modified |
+| utils/archive/0_R/0_check_load_input_data.R | +63 -0 | modified |
+| utils/archive/0_R/1_datasheet_read_clean.R | +227 -0 | modified |
+| utils/archive/0_R/2_pcr_platemap_read_clean.R | +200 -0 | modified |
+| utils/archive/0_R/QC_report.R | +26 -0 | modified |
+| utils/archive/0_R/abundance_v2.R | +134 -0 | modified |
+| utils/archive/0_R/check_data.R | +41 -0 | modified |
+| utils/archive/0_R/check_read_fun.R | +38 -0 | modified |
+| utils/archive/0_R/config_24-01-13.R | +300 -0 | modified |
+| utils/archive/0_R/copy_positive_recalc.R | +32 -0 | modified |
+| utils/archive/0_R/ct_copy_plot_check.R | +16 -0 | modified |
+| utils/archive/0_R/data_merge_and_push.R | +66 -0 | modified |
+| utils/archive/0_R/data_viz.R | +107 -0 | modified |
+| utils/archive/0_R/generate_report.R | +85 -0 | modified |
+| utils/archive/0_R/get_func_trap.R | +75 -0 | modified |
+| utils/archive/0_R/gsheet_read_fun.R | +29 -0 | modified |
+| utils/archive/0_R/historical_viz.R | +23 -0 | modified |
+| utils/archive/0_R/historical_weekly.R | +393 -0 | modified |
+| utils/archive/0_R/hx_troubleshooting.R | +22 -0 | modified |
+| utils/archive/0_R/inactive_trap.R | +21 -0 | modified |
+| utils/archive/0_R/map_data.R | +20 -0 | modified |
+| utils/archive/0_R/pIR_VI.R | +154 -0 | modified |
+| utils/archive/0_R/pcr_plot.R | +198 -0 | modified |
+| utils/archive/0_R/pir_test.R | +239 -0 | modified |
+| utils/archive/0_R/plot_birds.R | +34 -0 | modified |
+| utils/archive/0_R/pools.R | +62 -0 | modified |
+| utils/archive/0_R/tables.R | +111 -0 | modified |
+| utils/archive/0_R/test.py | +32 -0 | modified |
+| utils/archive/0_R/trap_update.R | +46 -0 | modified |
+| utils/archive/0_R/trap_zone_over_time.R | +30 -0 | modified |
+| utils/archive/0_R/weekly_data_input.R | +50 -0 | modified |
+| utils/archive/0_R/weekly_input_gdrive_pull.R | +52 -0 | modified |
+| utils/fun_clean_platemap.R | +0 -35 | modified |
+| utils/fun_gsheet_pull_prompt.R | +0 -60 | modified |
+| utils/fun_plot_pcr.R | +0 -69 | modified |
+| wnv-s_calc_hx.qmd | +3 -3 | modified |
+
+_AI summary unavailable — API call failed or timed out._
+
+---

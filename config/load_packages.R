@@ -1,24 +1,48 @@
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#L O A D   P A C K A G E S   F O R   P I P E L I N E 
+#L O A D   P A C K A G E S   F O R   P I P E L I N E
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 suppressMessages({
-  if (!require("pacman")) install.packages("pacman")
+  if (!require("pacman")) {
+    install.packages("pacman")
+  }
   pacman::p_unload()
   pacman::p_load(
     argparse, # config
-    googlesheets4, googledrive, rio, readxl, openxlsx, googledrive, # importing and exporting
-    tidyverse, janitor, lubridate, rquery, stringr, # manipulation
-    devtools, cli, # analysis
-    ggpubr, wesanderson, paletteer, leaflet, patchwork, plotly # plotting
+    googlesheets4,
+    googledrive,
+    rio,
+    readxl,
+    openxlsx,
+    googledrive, # importing and exporting
+    tidyverse,
+    janitor,
+    lubridate,
+    rquery,
+    stringr, # manipulation
+    devtools,
+    cli, # analysis
+    ggpubr,
+    wesanderson,
+    paletteer,
+    leaflet,
+    patchwork,
+    plotly, # plotting
+    devtools
   )
-  Sys.setenv(R_QPDF="true") # to build the vignette during the package build
+  Sys.setenv(R_QPDF = "true") # to build the vignette during the package build
   library(devtools) # need to install this if you do not have it
-  devtools::install_github("https://github.com/CDCgov/PooledInfRate",build_vignettes = TRUE)
+  devtools::install_github(
+    "https://github.com/CDCgov/PooledInfRate",
+    build_vignettes = TRUE
+  )
+  devtools::install_github(
+    "https://github.com/rtobiaskoch/wnv-ss_functions",
+    build_vignettes = TRUE
+  )
   # wnvSurv: single source of truth for shared surveillance functions
   # (calc_season_week, etc). Installed locally from ../wnv-ss_functions —
   # not on CRAN, so loaded explicitly rather than via pacman::p_load.
   library(wnvSurv)
-
 })
 
 # --- Google auth account (per-user; NOT hardcoded) ---------------------------
@@ -34,13 +58,16 @@ suppressMessages({
 gargle_email <- Sys.getenv("GARGLE_OAUTH_EMAIL", unset = "")
 if (!nzchar(gargle_email) && interactive()) {
   gargle_email <- trimws(readline(
-    "Google account email for Drive/Sheets push (blank to skip): "))
+    "Google account email for Drive/Sheets push (blank to skip): "
+  ))
 }
 if (nzchar(gargle_email)) {
   options(gargle_oauth_email = gargle_email)
   message("gargle OAuth email set to: ", gargle_email)
 } else {
-  message("No Google email set (GARGLE_OAUTH_EMAIL unset and non-interactive). ",
-          "A GSheet push (update = T) will fail until you set GARGLE_OAUTH_EMAIL ",
-          "in ~/.Renviron and authenticate once with drive_auth()/gs4_auth().")
+  message(
+    "No Google email set (GARGLE_OAUTH_EMAIL unset and non-interactive). ",
+    "A GSheet push (update = T) will fail until you set GARGLE_OAUTH_EMAIL ",
+    "in ~/.Renviron and authenticate once with drive_auth()/gs4_auth()."
+  )
 }

@@ -28,7 +28,6 @@
 # build_bird_report()
 # ---------------------------------------------------------------------------
 build_bird_report <- function(cq_data, target = "WNV") {
-
   # -- birds: all bird rows, year/week cast to double for merge ---------------
   # sample_type == "bird" excludes mosquito and other sample types present in
   # cq_data; year/week stored as character from the GSheet export so we cast
@@ -39,8 +38,16 @@ build_bird_report <- function(cq_data, target = "WNV") {
       year = as.double(year),
       week = as.double(week)
     ) %>%
-    dplyr::select(csu_id, year, week, target_name, test_code,
-                  cq, copies, amp_status) %>%
+    dplyr::select(
+      csu_id,
+      year,
+      week,
+      target_name,
+      test_code,
+      cq,
+      copies,
+      amp_status
+    ) %>%
     dplyr::arrange(year, week, csu_id)
 
   # -- bird_report: WNV result per bird csu_id --------------------------------
@@ -71,18 +78,21 @@ build_bird_report <- function(cq_data, target = "WNV") {
 # INPUTS
 #   bird_report  data frame with columns: week, wnv_result (and any others)
 #   pal          named character vector mapping wnv_result values to colours
-plot_birds <- function(bird_report,
-                       pal = c("positive" = "#c5283d", "negative" = "grey70")) {
+plot_birds <- function(
+  bird_report,
+  pal = c("positive" = "#c5283d", "negative" = "grey70")
+) {
   bird_report %>%
+    dplyr::mutate(week = as.factor(week)) %>%
     dplyr::count(week, wnv_result) %>%
     ggplot2::ggplot(ggplot2::aes(x = week, y = n, fill = wnv_result)) +
     ggplot2::geom_col() +
     ggplot2::scale_fill_manual(values = pal) +
     ggplot2::labs(
-      x     = "Week",
-      y     = "Birds tested",
-      fill  = "WNV result",
-      title = "Dead bird WNV surveillance"
+      x = "Week",
+      y = "Birds tested",
+      fill = "WNV result",
+      title = "RMRP Bird WNV Surveillance"
     ) +
     ggplot2::theme_classic()
 }

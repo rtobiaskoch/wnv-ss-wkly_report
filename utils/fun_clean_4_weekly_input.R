@@ -1,4 +1,4 @@
-clean_4_weekly_input = function(rds, update) {
+clean_4_weekly_input = function(rds, update, dir) {
   data_input0 = read_rds(rds)
 
   # Derive the seasonal week from Trap Date — the SINGLE week authority shared
@@ -38,7 +38,7 @@ clean_4_weekly_input = function(rds, update) {
   }
 
   if (nrow(filtered_samples) > 0) {
-    write.csv(filtered_samples, "data_mid/non_week_samples.csv")
+    write.csv(filtered_samples, file.path(dir, "non_week_samples.csv"))
     print(paste0(
       filtered_samples$`CSU Pool Number (CMC Enters)`,
       " sample was removed and not part of week ",

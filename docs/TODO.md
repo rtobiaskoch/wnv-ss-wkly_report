@@ -16,6 +16,9 @@
 - [ ] rename utils to proper naming /R
 - [ ] delete any unused function in utils/ or 0_R 
 - [ ] move any useful one off code to scripts 
+- [ ] look for any dead code and unnused data
+- [ ] only pull xlsx or xls and ignore other in the pcr folder **
+- [ ] have week be calculated each week from trap_date drop the provided week. **
 
 ## pipeline
 - [x] making functions

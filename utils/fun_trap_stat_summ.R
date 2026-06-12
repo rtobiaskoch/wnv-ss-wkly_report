@@ -1,9 +1,4 @@
-trap_stat_sum = function(df, year_start = NULL, year_end = NULL) {
-  if (!is.null(year_start) & !is.null(year_end)) {
-    df = df %>%
-      dplyr::filter(year >= year_start & year <= year_end)
-  }
-
+trap_stat_sum = function(df) {
   df = df %>%
     dplyr::filter(method == "L") %>% # only run on Light Traps
     distinct(trap_id, zone, trap_status) %>%
