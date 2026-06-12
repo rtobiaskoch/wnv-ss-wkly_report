@@ -258,3 +258,18 @@ _AI summary unavailable — API call failed or timed out._
 _AI summary unavailable — API call failed or timed out._
 
 ---
+
+## Commit 06f4371: 2026-06-12 20:22 UTC — feat: de-fragilize PCR reads and provider week/year; weekly run artifacts
+
+| File | Changes |
+|------|---------|
+| tests/testthat/helper-setup.R | +4 -0 | modified |
+| tests/testthat/test-clean_wnv_s.R | +58 -0 | modified |
+| utils/fun_clean_4_weekly_input.R | +8 -3 | modified |
+| utils/fun_clean_wnv_s.R | +11 -5 | modified |
+| wnv-ss_weekly_report_v2.html | +789 -0 | modified |
+| wnv-ss_weekly_report_v2.qmd | +5 -4 | modified |
+
+_AI summary unavailable — API call failed or timed out._
+
+---
