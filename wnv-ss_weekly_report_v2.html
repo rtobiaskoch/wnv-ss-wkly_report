@@ -84,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
 INPUT: user arguments<br>
 OUTPUT: config/config_weekly_settings/config_weekly_[sys.time].RData</p>
 <p>Example Run in run_config.sh</p>
-<p>Rscript config/config_weekly.R –input 1_input/w37 –year 2025 –week 37 –download T –update T –push T</p>
+<p>Rscript config/config_weekly.R –year 2025 –week 37 –download T –update T –push T</p>
 </section>
 <section id="load-configuration" class="level3">
 <h3 class="anchored" data-anchor-id="load-configuration">LOAD CONFIGURATION</h3>
@@ -102,7 +102,7 @@ OUTPUT: config/config_weekly_settings/config_weekly_[sys.time].RData</p>
 <pre><code>No Google email set (GARGLE_OAUTH_EMAIL unset and non-interactive). A GSheet push (update = T) will fail until you set GARGLE_OAUTH_EMAIL in ~/.Renviron and authenticate once with drive_auth()/gs4_auth().</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>10 file(s) found from current week</code></pre>
+<pre><code>1 file(s) found from current week</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
@@ -120,46 +120,46 @@ OUTPUT: config/config_weekly_settings/config_weekly_[sys.time].RData</p>
 </p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/wnv-s_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>ℹ '1_input/2026/w25/wnv-s_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/wnv-s_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>ℹ '1_input/2026/w25/wnv-s_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/slev-s_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>ℹ '1_input/2026/w25/slev-s_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/slev-s_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>ℹ '1_input/2026/w25/slev-s_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/culex_sheet_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>ℹ '1_input/2026/w25/culex_sheet_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/culex_sheet_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>ℹ '1_input/2026/w25/culex_sheet_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/key_rename.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>ℹ '1_input/2026/w25/key_rename.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/key_rename.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>ℹ '1_input/2026/w25/key_rename.csv' exists and `force = FALSE`; skipping download.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/foco_trap.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>ℹ '1_input/2026/w25/foco_trap.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/foco_trap.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>ℹ '1_input/2026/w25/foco_trap.csv' exists and `force = FALSE`; skipping download.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/standards_input.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>ℹ '1_input/2026/w25/standards_input.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/standards_input.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>ℹ '1_input/2026/w25/standards_input.csv' exists and `force = FALSE`; skipping download.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/amp_inconclusive_negatives.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>ℹ '1_input/2026/w25/amp_inconclusive_negatives.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w24/amp_inconclusive_negatives.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>ℹ '1_input/2026/w25/amp_inconclusive_negatives.csv' exists and `force = FALSE`; skipping download.</code></pre>
 </div>
 </div>
 </section>
