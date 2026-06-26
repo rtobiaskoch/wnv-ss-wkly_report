@@ -76,12 +76,18 @@ build_bird_report <- function(cq_data, target = "WNV") {
 # theme_classic(); no library() calls; explicit ggplot2:: namespace).
 #
 # INPUTS
-#   bird_report  data frame with columns: week, wnv_result (and any others)
+#   bird_report  data frame with columns: year, week, wnv_result (and any others)
+#   year         integer — filter to this surveillance year before plotting;
+#                NULL (default) plots all years (weeks from different years collapse)
 #   pal          named character vector mapping wnv_result values to colours
 plot_birds <- function(
   bird_report,
+  year = NULL,
   pal = c("positive" = "#c5283d", "negative" = "grey70")
 ) {
+  if (!is.null(year)) {
+    bird_report <- dplyr::filter(bird_report, .data$year == .env$year)
+  }
   bird_report %>%
     dplyr::mutate(week = as.factor(week)) %>%
     dplyr::count(week, wnv_result) %>%

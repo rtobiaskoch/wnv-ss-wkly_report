@@ -12,8 +12,10 @@ editor_options:
 
 ```bash
 # Keep --update F / --push F until the run is validated (see STEP 4A & 5).
-Rscript config/config_weekly.R --year 2026 --week 24 --download T --update F --push F
+Rscript config/config_weekly.R --year 2026 --week 26 --download T --update F --push F
 quarto render wnv-ss_weekly_report_v2.qmd
+#VALIDATE RESULTS VISUALLY
+Rscript config/config_weekly.R --year 2026 --week 26 --download F --update T --push T
 ```
 
 ## -----------------------------------------------------

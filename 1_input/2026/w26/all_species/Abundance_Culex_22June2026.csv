@@ -1,0 +1,75 @@
+date_trap_set,contract,location,zone,mosquito_species,mosquito_count,trap_type,trap_name
+6/22/2026,Boulder,"Foothills
+Community Park",BC,Culex pipiens,3,CDC Light Trap,BC-01
+6/22/2026,Boulder,"23rd/
+Meadow",BC,Culex pipiens,,CDC Light Trap,BC-02
+6/22/2026,Boulder,"Christensen
+Park",BC,Culex pipiens,7,CDC Light Trap,BC-03
+6/22/2026,Boulder,"South Boulder
+Rec. Center",BC,Culex pipiens,,CDC Light Trap,BC-04
+6/22/2026,Boulder,"Broadway/
+Baseline",BC,Culex pipiens,1,CDC Light Trap,BC-05
+6/22/2026,Boulder,"Broadway/
+Alpine",BC,Culex pipiens,2,CDC Light Trap,BC-06
+6/22/2026,Boulder,"Table Mesa/
+Stevens",BC,Culex pipiens,8,CDC Light Trap,BC-07
+6/22/2026,Boulder,"7th/
+Pennsylvania",BC,Culex pipiens,1,CDC Light Trap,BC-08
+6/22/2026,Boulder,Burke Park,BC,Culex pipiens,,CDC Light Trap,BC-10
+6/22/2026,Boulder,"Stazio
+Ballfields (S)",BC,Culex pipiens,24,CDC Light Trap,BC-11
+6/22/2026,Boulder,"E. Boulder
+Rec. Center",BC,Culex pipiens,2,CDC Light Trap,BC-13
+6/22/2026,Boulder,"Greenbelt
+Meadows ",BC,Culex pipiens,,CDC Light Trap,BC-14
+6/22/2026,Boulder,"Rolling Rock
+Ranch",BC,Culex pipiens,7,CDC Light Trap,BC-20
+6/22/2026,Boulder,"Sombrero
+Marsh (S)",BC,Culex pipiens,3,CDC Light Trap,BC-22
+6/22/2026,Boulder,"Papini Natural 
+Area Park (S)",BC,Culex pipiens,,CDC Light Trap,BC-24
+6/22/2026,Boulder,"Tom Watson 
+Park (S)",BC,Culex pipiens,4,CDC Light Trap,BC-25
+6/22/2026,Boulder,"Sawhill
+Ponds (S)",BC,Culex pipiens,,CDC Light Trap,BC-26
+6/22/2026,Boulder,"Goose
+Creek",BC,Culex pipiens,6,CDC Light Trap,BC-27
+6/22/2026,Boulder,"Old Tale Rd./
+Gapter ",BC,Culex pipiens,3,CDC Light Trap,BC-28
+6/22/2026,Boulder,"Foothills
+Community Park",BC,Culex tarsalis,6,CDC Light Trap,BC-01
+6/22/2026,Boulder,"23rd/
+Meadow",BC,Culex tarsalis,4,CDC Light Trap,BC-02
+6/22/2026,Boulder,"Christensen
+Park",BC,Culex tarsalis,16,CDC Light Trap,BC-03
+6/22/2026,Boulder,"South Boulder
+Rec. Center",BC,Culex tarsalis,75,CDC Light Trap,BC-04
+6/22/2026,Boulder,"Broadway/
+Baseline",BC,Culex tarsalis,3,CDC Light Trap,BC-05
+6/22/2026,Boulder,"Broadway/
+Alpine",BC,Culex tarsalis,2,CDC Light Trap,BC-06
+6/22/2026,Boulder,"Table Mesa/
+Stevens",BC,Culex tarsalis,19,CDC Light Trap,BC-07
+6/22/2026,Boulder,"7th/
+Pennsylvania",BC,Culex tarsalis,1,CDC Light Trap,BC-08
+6/22/2026,Boulder,Burke Park,BC,Culex tarsalis,8,CDC Light Trap,BC-10
+6/22/2026,Boulder,"Stazio
+Ballfields (S)",BC,Culex tarsalis,132,CDC Light Trap,BC-11
+6/22/2026,Boulder,"E. Boulder
+Rec. Center",BC,Culex tarsalis,91,CDC Light Trap,BC-13
+6/22/2026,Boulder,"Greenbelt
+Meadows ",BC,Culex tarsalis,130,CDC Light Trap,BC-14
+6/22/2026,Boulder,"Rolling Rock
+Ranch",BC,Culex tarsalis,28,CDC Light Trap,BC-20
+6/22/2026,Boulder,"Sombrero
+Marsh (S)",BC,Culex tarsalis,60,CDC Light Trap,BC-22
+6/22/2026,Boulder,"Papini Natural 
+Area Park (S)",BC,Culex tarsalis,26,CDC Light Trap,BC-24
+6/22/2026,Boulder,"Tom Watson
+Park (S)",BC,Culex tarsalis,37,CDC Light Trap,BC-25
+6/22/2026,Boulder,"Sawhill
+Ponds (S)",BC,Culex tarsalis,258,CDC Light Trap,BC-26
+6/22/2026,Boulder,"Goose
+Creek",BC,Culex tarsalis,17,CDC Light Trap,BC-27
+6/22/2026,Boulder,"Old Tale Rd./
+Gapter ",BC,Culex tarsalis,23,CDC Light Trap,BC-28

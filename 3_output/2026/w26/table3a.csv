@@ -1,0 +1,10 @@
+"zone","examined_Pipiens","examined_Tarsalis","examined_All","pool_Pipiens","pool_Tarsalis","pool_all","pos_pool_Pipiens","pos_pool_Tarsalis","pos_pool_all","pir_Pipiens","pir_Tarsalis","pir_All"
+"NW",2,18,20,4,5,9,0,0,0,0,0,0
+"NE",35,89,124,11,8,19,0,0,0,0,0,0
+"SE",45,174,219,16,13,29,0,0,0,0,0,0
+"SW",7,23,30,6,6,12,0,0,0,0,0,0
+"FC",89,304,393,37,32,69,0,0,0,0,0,0
+NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"LV",0,34,34,0,4,4,0,0,0,0,0,0
+"BE",11,226,237,4,12,16,0,0,0,0,0,0
+"BC",31,513,544,0,7,7,0,0,0,0,0,0

@@ -102,7 +102,7 @@ OUTPUT: config/config_weekly_settings/config_weekly_[sys.time].RData</p>
 <pre><code>No Google email set (GARGLE_OAUTH_EMAIL unset and non-interactive). A GSheet push (update = T) will fail until you set GARGLE_OAUTH_EMAIL in ~/.Renviron and authenticate once with drive_auth()/gs4_auth().</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>1 file(s) found from current week</code></pre>
+<pre><code>2 file(s) found from current week</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
@@ -120,46 +120,88 @@ OUTPUT: config/config_weekly_settings/config_weekly_[sys.time].RData</p>
 </p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/wnv-s_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>ℹ '1_input/2026/w26/wnv-s_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/wnv-s_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>ℹ '1_input/2026/w26/wnv-s_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/slev-s_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>ℹ '1_input/2026/w26/slev-s_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/slev-s_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>ℹ '1_input/2026/w26/slev-s_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/culex_sheet_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>! Using an auto-discovered, cached token.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/culex_sheet_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>  To suppress this message, modify your code or options to clearly consent to
+  the use of a cached token.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/key_rename.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>  See gargle's "Non-interactive auth" vignette for more details:</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/key_rename.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>  &lt;https://gargle.r-lib.org/articles/non-interactive-auth.html&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/foco_trap.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>ℹ The googledrive package is using a cached token for 'r.tobiaskoch@gmail.com'.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/foco_trap.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>! Using an auto-discovered, cached token.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/standards_input.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>  To suppress this message, modify your code or options to clearly consent to
+  the use of a cached token.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/standards_input.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>  See gargle's "Non-interactive auth" vignette for more details:</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/amp_inconclusive_negatives.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+<pre><code>  &lt;https://gargle.r-lib.org/articles/non-interactive-auth.html&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>ℹ '1_input/2026/w25/amp_inconclusive_negatives.csv' exists and `force = FALSE`; skipping download.</code></pre>
+<pre><code>ℹ The googlesheets4 package is using a cached token for
+  'r.tobiaskoch@gmail.com'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Reading from "culex_sheet_database".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Range ''data''.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Read Google Sheet: 43260 rows x 14 columns.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Headers: key, trap_id, zone, zone2, trap_date, year, week, spp, method, trap_status, total, source, epiweek, and week_submitted</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Wrote '1_input/2026/w26/culex_sheet_database.csv'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w26/key_rename.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w26/key_rename.csv' exists and `force = FALSE`; skipping download.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w26/foco_trap.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w26/foco_trap.csv' exists and `force = FALSE`; skipping download.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w26/standards_input.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w26/standards_input.csv' exists and `force = FALSE`; skipping download.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w26/amp_inconclusive_negatives.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w26/amp_inconclusive_negatives.csv' exists and `force = FALSE`; skipping download.</code></pre>
 </div>
 </div>
 </section>

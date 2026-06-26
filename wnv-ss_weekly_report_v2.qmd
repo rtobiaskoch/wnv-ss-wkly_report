@@ -332,7 +332,7 @@ if(update){
 }
 
 # Bird plot output — WNV result counts by week (plot_birds from fun_bird_report.R)
-p_birds <- plot_birds(bird_report)
+p_birds <- plot_birds(bird_report, year = year_filter)
 p_birds
 
 ggsave(paste0(dir_plot_wk, "birds.png"), p_birds, height = 6, width = 9, units = "in")
