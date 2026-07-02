@@ -3,10 +3,11 @@
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 suppressMessages({
   if (!require("pacman")) {
-    install.packages("pacman")
+    install.packages("pacman", repos = "https://cloud.r-project.org")
   }
   pacman::p_unload()
   pacman::p_load(
+    here,
     argparse, # config
     googlesheets4,
     googledrive,

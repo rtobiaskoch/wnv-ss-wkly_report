@@ -43,21 +43,30 @@ smoke_outdir   <- file.path(SMOKE_OUT_ROOT, SMOKE_YEAR, paste0("w", SMOKE_WEEK))
 golden_path    <- here("tests", "fixtures", "expected",
                        paste0("table1a_w", SMOKE_WEEK, "_", SMOKE_YEAR, ".csv"))
 config_script  <- here("config", "config_weekly.R")
-qmd_path       <- here("wnv-s_weekly_report_pipeline_v2.qmd")
+qmd_path       <- here("wnv-ss_weekly_report_v2.qmd")
 
 # ---- Expected output files ----
 file_prefix <- sprintf("y%d_w%d_", SMOKE_YEAR, SMOKE_WEEK)
 expected_files <- c(
   # generated report (xlsx, with pixel-faithful "graphs" sheet)
   file.path(smoke_outdir, paste0(file_prefix, "weekly_report_output.xlsx")),
+  # report tables
   file.path(smoke_outdir, "table1a.csv"),
   file.path(smoke_outdir, "table1b_hx_vi.csv"),
   file.path(smoke_outdir, "table2a.csv"),
   file.path(smoke_outdir, "table2b_hx_abund.csv"),
   file.path(smoke_outdir, "table3a.csv"),
   file.path(smoke_outdir, "table3b_hx_pir.csv"),
-  # historical plot
-  file.path(smoke_outdir, "plots", paste0(file_prefix, "hx_plot_all.png"))
+  # supporting CSVs produced every week (rmrp.csv is conditional — not listed)
+  file.path(smoke_outdir, "zone_stats.csv"),
+  file.path(smoke_outdir, "ytd_hx_long.csv"),
+  file.path(smoke_outdir, "weekly_data_input_format.csv"),
+  # plots
+  file.path(smoke_outdir, "plots", paste0(file_prefix, "hx_plot_all.png")),
+  file.path(smoke_outdir, "plots", paste0(file_prefix, "birds.png")),
+  file.path(smoke_outdir, "plots", paste0(file_prefix, "pcr_plot.png")),
+  file.path(smoke_outdir, "plots", paste0(file_prefix, "pools.png")),
+  file.path(smoke_outdir, "plots", paste0(file_prefix, "trap_status.png"))
 )
 
 # ---- Helpers ----

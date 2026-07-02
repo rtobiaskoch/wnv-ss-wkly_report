@@ -217,6 +217,33 @@ drive_auth()
 quarto render wnv-ss_weekly_report_v2.qmd
 ```
 
+## -----------------------------------------------------
+
+## STEP 6b: Run Tests
+
+## -----------------------------------------------------
+
+Before trusting a run (and after changing any function in `utils/`), verify the
+pipeline still works:
+
+``` bash
+# Unit tests — calc functions, cleaning, report building (fast, no data needed)
+Rscript tests/run_tests.R
+
+# Smoke test — renders the full pipeline for a known prior week (SMOKE_WEEK/YEAR,
+# currently w33 2025) and asserts all output files are produced and VI values
+# match the committed golden reference. Exit code 0 = pass, 1 = fail.
+Rscript tests/smoke_test.R
+```
+
+-   The smoke test requires `1_input/2025/w33/` to be populated and `quarto` on
+    your PATH. It writes to `tests/smoke_out/` and `tests/smoke_mid/`, leaving
+    the live `3_output/` and `2_mid/` untouched.
+
+-   Only re-run `Rscript tests/smoke_test.R --setup` to regenerate the golden
+    reference after you *intentionally* change expected outputs, then commit the
+    updated golden file.
+
 
 ## -----------------------------------------------------
 

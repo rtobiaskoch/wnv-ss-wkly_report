@@ -27,8 +27,8 @@
 # ---------------------------------------------------------------------------
 # build_bird_report()
 # ---------------------------------------------------------------------------
-build_bird_report <- function(cq_data, target = "WNV") {
-  # -- birds: all bird rows, year/week cast to double for merge ---------------
+build_bird_report <- function(cq_data, target = "WNV", birds_hx = NULL) {
+  # -- birds: current-week bird rows, year/week cast to double for merge -------
   # sample_type == "bird" excludes mosquito and other sample types present in
   # cq_data; year/week stored as character from the GSheet export so we cast
   # them here (mirrors the QMD: mutate(year = as.double(year), ...)).
@@ -50,14 +50,28 @@ build_bird_report <- function(cq_data, target = "WNV") {
     ) %>%
     dplyr::arrange(year, week, csu_id)
 
+  # -- birds_all: combine archive + current week for the plot ------------------
+  # birds_hx (GSheet archive) is bound first so that the current week's values
+  # win on dedup. Dedup key mirrors update_gsheet: csu_id + year + week + target.
+  birds_all <- if (!is.null(birds_hx)) {
+    dplyr::bind_rows(
+      dplyr::mutate(birds_hx,
+                    year = as.double(year),
+                    week = as.double(week)),
+      birds
+    ) %>%
+      dplyr::distinct(csu_id, year, week, target_name, .keep_all = TRUE)
+  } else {
+    birds
+  }
+
   # -- bird_report: WNV result per bird csu_id --------------------------------
-  # Filter to the requested target (default "WNV"), derive a readable result
-  # label from test_code (1 = positive, 0 = negative). arrange(desc(test_code))
-  # surfaces positives first, matching the QMD ordering.
-  # NOTE: not deduplicated — a bird run on multiple plates yields multiple rows.
-  # This is faithful to the QMD chunk (which also does not dedup); revisit only
-  # if upstream data legitimately produces duplicate csu_id rows.
-  bird_report <- birds %>%
+  # Derived from birds_all so the plot spans all archived weeks, not just this
+  # week's PCR run. arrange(desc(test_code)) surfaces positives first.
+  # NOTE: not deduplicated beyond the csu_id+year+week+target key above — a
+  # bird run on multiple plates within the same week is still collapsed by the
+  # distinct() above; revisit only if that assumption breaks.
+  bird_report <- birds_all %>%
     dplyr::filter(target_name == target) %>%
     dplyr::arrange(dplyr::desc(test_code)) %>%
     dplyr::mutate(

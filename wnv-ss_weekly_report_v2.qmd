@@ -297,7 +297,12 @@ if(update){
 # build_bird_report() from utils/fun_bird_report.R — pure extraction of bird
 # shaping (cq_data is produced earlier in this pipeline). GSheet pushes and the
 # plot output below remain here as pipeline side effects.
-bird_out    <- build_bird_report(cq_data)
+
+# Pull the full birds archive from GSheet so the plot spans all prior weeks of
+# the current season (not just this week's PCR run). key_birds from config.
+birds_hx <- googlesheets4::read_sheet(key_birds, sheet = "data")
+
+bird_out    <- build_bird_report(cq_data, birds_hx = birds_hx)
 birds       <- bird_out$birds
 bird_report <- bird_out$bird_report
 
