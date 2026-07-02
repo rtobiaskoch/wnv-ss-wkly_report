@@ -102,7 +102,7 @@ OUTPUT: config/config_weekly_settings/config_weekly_[sys.time].RData</p>
 <pre><code>No Google email set (GARGLE_OAUTH_EMAIL unset and non-interactive). A GSheet push (update = T) will fail until you set GARGLE_OAUTH_EMAIL in ~/.Renviron and authenticate once with drive_auth()/gs4_auth().</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>3 file(s) found from current week</code></pre>
+<pre><code>1 file(s) found from current week</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
@@ -170,24 +170,6 @@ OUTPUT:</p>
 <p><img src="wnv-ss_weekly_report_v2_files/figure-html/pcr%20plot-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Local file:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• '3_output/2026/w26/plots/y2026_w26_pcr_plot.png'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Uploaded into Drive file:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• 'y2026_w26_pcr_plot.png' &lt;id: 1cRCXbwLAO3yBYw1e2RRVQ3Mzmo22xzhT&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>With MIME type:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• 'image/png'</code></pre>
 </div>
 </div>
 </section>
@@ -289,7 +271,7 @@ Run key_rename to convert columns to standard naming convention.
  The Following columns are being cleaned:  trap_id, zone, zone2, trap_date, year, week, spp, method, trap_status, total </code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>No duplicate combinations found of: key, trap_id, zone, zone2, trap_date, year, week, spp, method, ... and 5 other variables</code></pre>
+<pre><code>No duplicate combinations found of: key, trap_id, zone, zone2, trap_date, year, week, spp, method, ... and 2 other variables</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -299,13 +281,19 @@ Run key_rename to convert columns to standard naming convention.
  
 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
 
- No Duplicates found using key,trap_id,zone,zone2,trap_date,year,week,spp,method,trap_status,total,source,epiweek,week_submitted 
+ No Duplicates found using key,trap_id,zone,zone2,trap_date,year,week,spp,method,trap_status,total 
 
 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
  
         C L E A N I N G  C O L U M N S                 
  
 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in min(x): no non-missing arguments to min; returning Inf</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in max(x): no non-missing arguments to max; returning -Inf</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -315,22 +303,8 @@ Run key_rename to convert columns to standard naming convention.
 </div>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Local file:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• '3_output/2026/w26/plots/y2026_w26_trap_status.png'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Uploaded into Drive file:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• 'y2026_w26_trap_status.png' &lt;id: 1kAjUHZ2cA63LHlAH6CEks0PGHy0y2TR4&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>With MIME type:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• 'image/png'</code></pre>
+<pre><code>Warning in min(x): no non-missing arguments to min; returning Inf
+Warning in min(x): no non-missing arguments to max; returning -Inf</code></pre>
 </div>
 </div>
 </section>
@@ -347,7 +321,11 @@ Run key_rename to convert columns to standard naming convention.
 <hr>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 1 row containing non-finite outside the scale range
+<pre><code>Warning: Removed 6 rows containing non-finite outside the scale range
+(`stat_align()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 7 rows containing non-finite outside the scale range
 (`stat_align()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -358,26 +336,8 @@ Run key_rename to convert columns to standard naming convention.
 </div>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 1 row containing non-finite outside the scale range
-(`stat_align()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Local file:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• '3_output/2026/w26/plots/y2026_w26_hx_plot_all.png'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Uploaded into Drive file:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• 'y2026_w26_hx_plot_all.png' &lt;id: 1PhLtjqMkg-JRw9QW2Gs4SY7hp3S5PzxI&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>With MIME type:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• 'image/png'</code></pre>
+<pre><code>Warning: Removed 6 rows containing non-finite outside the scale range (`stat_align()`).
+Removed 7 rows containing non-finite outside the scale range (`stat_align()`).</code></pre>
 </div>
 </div>
 </section>

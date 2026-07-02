@@ -19,6 +19,7 @@ suppressMessages({
     janitor,
     lubridate,
     rquery,
+    rqdatatable,
     stringr, # manipulation
     devtools,
     cli, # analysis
