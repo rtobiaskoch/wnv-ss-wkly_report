@@ -23,8 +23,8 @@ suppressMessages({
 #------ U S E R   D E F  V A R I A B L E   D A T A   P A R A M E T E R S : -----------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #variables that will change from week to week
-week_hardcode = wnvSurv::calc_season_week(Sys.Date()) # seasonal week (week 23 = first full week of June, leap-week-stable)
-year_hardcode = lubridate::isoyear(Sys.Date())
+week_hardcode <- wnvSurv::calc_season_week(Sys.Date()) # seasonal week (week 23 = first full week of June, leap-week-stable)
+year_hardcode <- lubridate::isoyear(Sys.Date())
 # Create an argument parser
 parser <- ArgumentParser(
   description = "Script to handle config file data inputs"
@@ -111,8 +111,8 @@ args <- parser$parse_args()
 dir_base_input <- args$input
 
 copy_threshold <- args$cp_threshold
-rn_threshold = args$rn_threshold
-vi_threshold = args$vi_threshold
+rn_threshold <- args$rn_threshold
+vi_threshold <- args$vi_threshold
 download <- args$download
 update <- args$update
 push <- args$push
@@ -123,9 +123,9 @@ year_filter <- args$year
 # Rolling historical baseline = the n_hx_years seasons immediately before the
 # report year (default 5). Advances by one each season; does NOT widen over time.
 # For --year 2026 with default 5 -> seq(2021, 2025).
-year_filter_hx = seq(year_filter - args$n_hx_years, year_filter - 1, by = 1)
-week_filter_yr = 23:week_filter
-week_filter_hx = 23:37
+year_filter_hx <- seq(year_filter - args$n_hx_years, year_filter - 1, by = 1)
+week_filter_yr <- 23:week_filter
+week_filter_hx <- 23:37
 
 
 rm(week_hardcode, year_hardcode)
@@ -155,10 +155,10 @@ dir_all_spp <- file.path(dir_input, "all_species")
 # output dirs — base roots overridable via --output / --mid (default 3_output / 2_mid)
 # auto-created later if absent
 dir_base_output <- args$output
-dir_base_mid    <- args$mid
-dir_mid    <- file.path(dir_base_mid,    year_filter, paste0("w", week_filter))
+dir_base_mid <- args$mid
+dir_mid <- file.path(dir_base_mid, year_filter, paste0("w", week_filter))
 dir_output <- file.path(dir_base_output, year_filter, paste0("w", week_filter))
-dir_plots  <- file.path(dir_output, "plots")
+dir_plots <- file.path(dir_output, "plots")
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -219,48 +219,49 @@ for (d in c(dir_mid, dir_output, dir_plots)) {
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # ---------------- D E F I N E   G S H E E T   K E Y --------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-key_database_gsheet = "12Mf-w9I9NHTTDjzEPRoxUE08ka4WZ6RE-RM1s-FW7qA"
-key_database_gsheet_slev = "1JsOz5wVl5WSpv1KGqiBFGVjoypL8xZMti5Syg07cPbo"
-key_database_culex_sheet = "15icsYx5SkmQIPXV3Vzj6PhyX81M55mIAYfKDj5K3gac"
-key_database_folder = "1AIpZAIRSG-DZug74Av3u_7kdyXYsrjKF"
-key_trap_gsheet = "1G5UcRmcVsVpMtKW_-4WLKX8WT_fvyIYj7sGcoNxDmr4"
-key_rename_key = "1UDLN-K4TJ-Ok_6NXUQNwUTKMNgfAq1xx9HABALCYRNQ"
-key_standards_gsheet = "1bSMYQ4bZ9uBfrOQ6ylsegNmmGYdf9YFVbxB4qBhnFQo"
-key_foco_trap = "1G5UcRmcVsVpMtKW_-4WLKX8WT_fvyIYj7sGcoNxDmr4"
-key_birds = "1YYjQmgNV92y1D39Nt5Y5NG0f_j4sVqVsJSSoUuc2u8k"
-key_plots_dir = "1bQqqu5DtNDDs-MGGCbtnKBFFsQkkzdcI"
-key_inconclusive = "1l90THbcNgUgdO6dUbFXYo6IxVc3VwutKVlx3Cu9cgEQ"
+key_database_gsheet <- "12Mf-w9I9NHTTDjzEPRoxUE08ka4WZ6RE-RM1s-FW7qA"
+key_database_gsheet_slev <- "1JsOz5wVl5WSpv1KGqiBFGVjoypL8xZMti5Syg07cPbo"
+key_database_culex_sheet <- "15icsYx5SkmQIPXV3Vzj6PhyX81M55mIAYfKDj5K3gac"
+key_database_folder <- "1AIpZAIRSG-DZug74Av3u_7kdyXYsrjKF"
+key_trap_gsheet <- "1G5UcRmcVsVpMtKW_-4WLKX8WT_fvyIYj7sGcoNxDmr4"
+key_rename_key <- "1UDLN-K4TJ-Ok_6NXUQNwUTKMNgfAq1xx9HABALCYRNQ"
+key_standards_gsheet <- "1bSMYQ4bZ9uBfrOQ6ylsegNmmGYdf9YFVbxB4qBhnFQo"
+key_foco_trap <- "1G5UcRmcVsVpMtKW_-4WLKX8WT_fvyIYj7sGcoNxDmr4"
+key_birds <- "1YYjQmgNV92y1D39Nt5Y5NG0f_j4sVqVsJSSoUuc2u8k"
+key_plots_dir <- "1bQqqu5DtNDDs-MGGCbtnKBFFsQkkzdcI"
+key_inconclusive <- "1l90THbcNgUgdO6dUbFXYo6IxVc3VwutKVlx3Cu9cgEQ"
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # ------------------------- G D R I V E   I N P U T S --------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-fn_gdrive_database = file.path(dir_input, "wnv-s_database.csv") # <<<<<<<--------------------------------------------------- U S E R   I N P U T
-fn_gdrive_database_slev = file.path(dir_input, "slev-s_database.csv") # <<<<<<<--------------------------------------------------- U S E R   I N P U T
-fn_gdrive_culex_sheet = file.path(dir_input, "culex_sheet_database.csv") # <<<<<<<--------------------------------------------------- U S E R   I N P U T
+fn_gdrive_database <- file.path(dir_input, "wnv-s_database.csv") # <<<<<<<--------------------------------------------------- U S E R   I N P U T
+fn_gdrive_database_slev <- file.path(dir_input, "slev-s_database.csv") # <<<<<<<--------------------------------------------------- U S E R   I N P U T
+fn_gdrive_culex_sheet <- file.path(dir_input, "culex_sheet_database.csv") # <<<<<<<--------------------------------------------------- U S E R   I N P U T
 fn_key_rename <- file.path(dir_input, "key_rename.csv")
 fn_trap <- file.path(dir_input, "foco_trap.csv")
 fn_standards <- file.path(dir_input, "standards_input.csv")
-fn_inconclusive = file.path(dir_input, "amp_inconclusive_negatives.csv")
+fn_inconclusive <- file.path(dir_input, "amp_inconclusive_negatives.csv")
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #--------- U S E R   D E F I N E D   G R O U P I N G   V A R I A B L E S -------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-zone_lvls = c("NW", "NE", "SE", "SW", "FC", "LV", "BE", "BC")
-grp_zones = c("NE", "SE", "NW", "SW", "LV", "BC", "BE")
-fc_zones = c("NE", "SE", "NW", "SW")
-non_fc_zones = c("LV", "BC", "BE")
-grp_vars = c("year", "week", "zone", "spp")
-grp_var_sym = rlang::syms(grp_vars)
-hx_grp_vars = c("week", "zone")
+zone_lvls <- c("NW", "NE", "SE", "SW", "FC", "LV", "BE", "BC")
+grp_zones <- c("NE", "SE", "NW", "SW", "LV", "BC", "BE", "BC")
+fc_zones <- c("NE", "SE", "NW", "SW")
+non_fc_zones <- c("LV", "BC", "BE")
+rm_zone <- NULL
+grp_vars <- c("year", "week", "zone", "spp")
+grp_var_sym <- rlang::syms(grp_vars)
+hx_grp_vars <- c("week", "zone")
 # Columns combined by wnvSurv::make_key() into the composite trap key
 # ("trap_id|spp|year|week"). Used as the join key for the database merge in the
 # clean-update-all-spp-culex chunk. MUST match the recipe the trap-history
 # combiner uses, or new rows won't match their pre-seeded stubs.
-trap_key_cols = c("trap_id", "spp", "year", "week")
-non_routine_zones = c("BC") # <<<<<<<--------------------------------------------------------------------- U S E R   I N P U T
+trap_key_cols <- c("trap_id", "spp", "year", "week")
+non_routine_zones <- c("BC") # <<<<<<<--------------------------------------------------------------------- U S E R   I N P U T
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #-------------------- O U T F I L E  N A M E  G E N E R A T I O N --------------
@@ -268,83 +269,89 @@ non_routine_zones = c("BC") # <<<<<<<-------------------------------------------
 
 if (length(year_filter) > 1) {
   #if looking at multiple years then create YYYY-YYYY range
-  fn_year = paste0(min(year_filter), "-", max(year_filter))
+  fn_year <- paste0(min(year_filter), "-", max(year_filter))
 } else {
   #otherwise fn_year stays the same
-  fn_year = year_filter
+  fn_year <- year_filter
 }
 
 if (length(week_filter) > 1) {
   #if looking at multiple years then create YYYY-YYYY range
-  fn_week = paste0(min(week_filter), "-", max(week_filter))
+  fn_week <- paste0(min(week_filter), "-", max(week_filter))
 } else {
   #otherwise fn_year stays the same
-  fn_week = week_filter
+  fn_week <- week_filter
 }
 
 
-file_prefix = paste0("y", fn_year, "_", "w", fn_week, "_")
+file_prefix <- paste0("y", fn_year, "_", "w", fn_week, "_")
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #--------------------- F I L E  N A M E S  M I D ------------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-dir_mid_wk = paste0(dir_mid, "/", file_prefix)
+dir_mid_wk <- paste0(dir_mid, "/", file_prefix)
 
-fn_database_update = file.path(dir_mid, "wnv-s_database_update.csv")
-fn_database_slev_update = file.path(dir_mid, "slev-s_database_update.csv")
-fn_database_culex_update = file.path(dir_mid, "culex_database_update.csv")
-fn_datasheet_clean = paste0(dir_mid, "/", file_prefix, "datasheet.csv")
-fn_datasheet_clean_test = paste0(
+fn_database_update <- file.path(dir_mid, "wnv-s_database_update.csv")
+fn_database_slev_update <- file.path(dir_mid, "slev-s_database_update.csv")
+fn_database_culex_update <- file.path(dir_mid, "culex_database_update.csv")
+fn_datasheet_clean <- paste0(dir_mid, "/", file_prefix, "datasheet.csv")
+fn_datasheet_clean_test <- paste0(
   dir_mid,
   "/",
   file_prefix,
   "_datasheet_test.csv"
 )
-fn_weekly_input_format_mid = file.path(
+fn_weekly_input_format_mid <- file.path(
   dir_mid,
   "weekly_data_input_format_mid.RData"
 )
-fn_cq_out = paste0(dir_mid, "/", file_prefix, "pcr_clean.RData")
-fn_cq_data = paste0(dir_mid_wk, "cq_data.RData")
-fn_abund_out = paste0(dir_mid, "/", file_prefix, "abundance.csv")
-fn_pools_mid = paste0(dir_mid, "/", file_prefix, "pools.csv")
-fn_inactive_trap = file.path(dir_mid, "inactive_traps.csv")
-fn_func_trap = file.path(dir_mid, "functional_traps.csv")
-fn_max_trap_yr = file.path(dir_mid, "max_trap_zone_yr.csv")
-fn_trap_p_wk = file.path(dir_mid, "trap_p_wk.csv")
+fn_cq_out <- paste0(dir_mid, "/", file_prefix, "pcr_clean.RData")
+fn_cq_data <- paste0(dir_mid_wk, "cq_data.RData")
+fn_abund_out <- paste0(dir_mid, "/", file_prefix, "abundance.csv")
+fn_pools_mid <- paste0(dir_mid, "/", file_prefix, "pools.csv")
+fn_inactive_trap <- file.path(dir_mid, "inactive_traps.csv")
+fn_func_trap <- file.path(dir_mid, "functional_traps.csv")
+fn_max_trap_yr <- file.path(dir_mid, "max_trap_zone_yr.csv")
+fn_trap_p_wk <- file.path(dir_mid, "trap_p_wk.csv")
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #-------------------- F I L E  N A M E S   O U T P U T ------------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-fn_gdrive_archive = paste0(
+fn_gdrive_archive <- paste0(
   "wnv-s_database_pre_y",
   year_filter,
   "_w",
   week_filter,
   ".gsheet"
 )
-fn_data_output = paste0(dir_output, "/", file_prefix, "_data_update.csv")
-fn_weekly_input_format = file.path(dir_output, "weekly_data_input_format.csv")
-fn_stds_ctrl_slev_bird = file.path(dir_output, "std_ctrl_slev_bird.csv")
-fn_non_database_sample = file.path(
+fn_data_output <- paste0(dir_output, "/", file_prefix, "_data_update.csv")
+fn_weekly_input_format <- file.path(dir_output, "weekly_data_input_format.csv")
+fn_stds_ctrl_slev_bird <- file.path(dir_output, "std_ctrl_slev_bird.csv")
+fn_non_database_sample <- file.path(
   dir_output,
   "non_database_samples(std-ctrl-bird-etc).csv"
 )
-fn_standards_output = file.path(dir_output, "standards_new.csv")
-weekly_report_folder = "26_weekly_report_output"
-fn_bird_output = paste0(dir_output, "/", file_prefix, "rmrp.csv")
-dir_plot_wk = paste0(dir_plots, "/", file_prefix)
-fn_pcr_plot = paste0(dir_plot_wk, "pcr_plot.png")
-fn_p_hx = paste0(dir_plot_wk, "hx_plot_all.png")
-fn_report = paste0("y", year_filter, "_w", week_filter, "_weekly_report_output")
+fn_standards_output <- file.path(dir_output, "standards_new.csv")
+weekly_report_folder <- "26_weekly_report_output"
+fn_bird_output <- paste0(dir_output, "/", file_prefix, "rmrp.csv")
+dir_plot_wk <- paste0(dir_plots, "/", file_prefix)
+fn_pcr_plot <- paste0(dir_plot_wk, "pcr_plot.png")
+fn_p_hx <- paste0(dir_plot_wk, "hx_plot_all.png")
+fn_report <- paste0(
+  "y",
+  year_filter,
+  "_w",
+  week_filter,
+  "_weekly_report_output"
+)
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #---------------------------- C O L U M N  S E L E C T I O N -------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-col_trap = c("zone", "lat", "long")
+col_trap <- c("zone", "lat", "long")
 
-col_input_database = c(
+col_input_database <- c(
   "csu_id",
   "trap_id",
   "year",
@@ -358,7 +365,7 @@ col_input_database = c(
   "zone"
 )
 
-col_datasheet = c(
+col_datasheet <- c(
   "csu_id",
   "trap_id",
   "year",
@@ -380,7 +387,7 @@ col_datasheet = c(
   "long"
 )
 
-col_database = c(
+col_database <- c(
   "csu_id",
   "trap_id",
   "zone",
@@ -435,19 +442,23 @@ col_class_database <- c(
 #------------------------------- C O L O R  S E T T I N G S -------------------------
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-pal_mozzy = c(
+pal_mozzy <- c(
   "hx_Tarsalis" = "grey50",
   "hx_Pipiens" = "grey30",
   "current_Tarsalis" = "#e9724c",
   "current_Pipiens" = "#820263"
 )
 
-pal_mozzy2 = c("Pipiens" = "#820263", "Tarsalis" = "#e9724c", "All" = "#faa916")
+pal_mozzy2 <- c(
+  "Pipiens" = "#820263",
+  "Tarsalis" = "#e9724c",
+  "All" = "#faa916"
+)
 
 
-pal_mozzy3 = c("#ffc857", "#e9724c", "#c5283d")
+pal_mozzy3 <- c("#ffc857", "#e9724c", "#c5283d")
 
-curr_hx_pal = c("current" = "#e9724c", "hx" = "grey50")
+curr_hx_pal <- c("current" = "#e9724c", "hx" = "grey50")
 
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -463,12 +474,12 @@ fn_graph_template <- "tests/fixtures/graph_plot_template.xlsx"
 # inject_graph_data(); anchors are 1-based cell coordinates verified against the
 # template. Only value columns are written (zone/week labels already present).
 graph_sheet_layout <- list(
-  t1a      = list(start_row = 7,  start_col = 3),
-  hx_vi    = list(start_row = 20, start_col = 3),
-  t2a      = list(start_row = 41, start_col = 3),
+  t1a = list(start_row = 7, start_col = 3),
+  hx_vi = list(start_row = 20, start_col = 3),
+  t2a = list(start_row = 41, start_col = 3),
   hx_abund = list(start_row = 54, start_col = 3),
-  t3a      = list(start_row = 74, start_col = 3),
-  hx_pir   = list(start_row = 87, start_col = 3)
+  t3a = list(start_row = 74, start_col = 3),
+  hx_pir = list(start_row = 87, start_col = 3)
 )
 
 # Cells holding the current week label ("Week: N") on the graphs sheet.

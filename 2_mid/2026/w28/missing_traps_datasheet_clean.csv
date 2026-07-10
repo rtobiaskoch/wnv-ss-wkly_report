@@ -1,0 +1,7 @@
+"","trap_id","method","zone","zone2","start","end","active","location_desc","lat","long","trap_status"
+"1","FC-019","L","NE","FC",2006,NA,1,"",40.565586,-105.05203,"datasheet_clean"
+"2","FC-023","L","SE","FC",2006,NA,1,"",40.54466,-105.0641,"datasheet_clean"
+"3","FC-040","L","NE","FC",2006,NA,1,"",40.60326,-105.06554,"datasheet_clean"
+"4","FC-059","L","SE","FC",2006,NA,1,"",40.5426,-105.04604,"datasheet_clean"
+"5","FC-074","L","SE","FC",2006,NA,1,"",40.51432,-105.00249,"datasheet_clean"
+"6","FC-091GR","G","NE","FC",2006,NA,1,"",40.57052,-105.05457,"datasheet_clean"

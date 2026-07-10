@@ -355,19 +355,17 @@ std = bind_rows(std_new, standards) %>%
 
 p_std = plot_std(std)
 
-p_pcr_wnv = plot_pcr(cq_data, 
-                 virus = "WNV", 
-                 pattern_2_keep = "WNV|CSU|RMRP|CDC|pos|neg",
-                 copy_threshold = copy_threshold, 
-                 week_filter = week_filter)
+p_pcr_wnv = plot_pcr(cq_data,
+                 virus = "WNV",
+                 copy_threshold = copy_threshold,
+                 week_filter = week_filter)  # pattern_2_keep default now includes BOU + auto-prepends virus
 
 
 
-p_pcr_slev = plot_pcr(cq_data, 
-                 virus = "SLEV", 
-                 pattern_2_keep = "SLEV|CSU|RMRP|CDC|pos|neg",
-                 copy_threshold = copy_threshold, 
-                 week_filter = week_filter)
+p_pcr_slev = plot_pcr(cq_data,
+                 virus = "SLEV",
+                 copy_threshold = copy_threshold,
+                 week_filter = week_filter)  # pattern_2_keep default now includes BOU + auto-prepends virus
 
 pcr_plot = p_std / p_pcr_wnv /  p_pcr_slev
 pcr_plot
@@ -711,7 +709,7 @@ write.csv(ytd_hx_long, file.path(dir_output, "ytd_hx_long.csv"))
 ```{r, plot-zone-stats-area}
 ytd_hx_wk = clean_long_hx_wk(ytd, hx,
                           #  rm_zone = c("BC", fc_zones),
-                            rm_zone = c("BC"),
+                            rm_zone = rm_zone,
                             grp_vars = c("year", "week", "zone", "spp"),
                             spp_keep = c("Pipiens", "Tarsalis"))  # keep both spp for stacked plot
 

@@ -1,4 +1,4 @@
-clean_long_hx_wk = function(
+clean_long_hx_wk <- function(
   ytd,
   hx,
   rm_zone = NULL,
@@ -6,7 +6,7 @@ clean_long_hx_wk = function(
   grp_vars = c("year", "week", "zone", "spp"),
   spp_keep = c("Pipiens", "Tarsalis")
 ) {
-  curr_hx_df = bind_rows(ytd, hx) %>%
+  curr_hx_df <- bind_rows(ytd, hx) %>%
     filter(!zone %in% rm_zone) %>%
     select(-any_of(c("mosq_L", "trap_L", "zone2"))) %>%
     # all_of() wraps the external grp_vars vector (the bare-vector form is a
@@ -34,7 +34,7 @@ clean_long_hx_wk = function(
 }
 
 
-plot_hx = function(df, value, text, pallette = pal_mozzy) {
+plot_hx <- function(df, value, text, pallette = pal_mozzy) {
   # Min/max weeks for the x-axis range
   min_week <- min(df$week, na.rm = TRUE)
   max_week <- max(df$week, na.rm = TRUE)
@@ -51,7 +51,7 @@ plot_hx = function(df, value, text, pallette = pal_mozzy) {
   hx_df <- dplyr::filter(df, type == "hx")
   current_df <- dplyr::filter(df, type == "current")
 
-  p = ggplot(df, aes(x = week, y = {{ value }}, fill = grp, group = grp)) +
+  p <- ggplot(df, aes(x = week, y = {{ value }}, fill = grp, group = grp)) +
     geom_hline(yintercept = 0) +
     geom_area(data = hx_df, position = "stack", alpha = 0.5) +
     geom_area(data = current_df, position = "stack", alpha = 0.5) +
@@ -68,15 +68,15 @@ plot_hx = function(df, value, text, pallette = pal_mozzy) {
 }
 
 
-clean_long_hx = function(
+clean_long_hx <- function(
   ytd,
   hx,
-  rm_zone = "BC",
+  rm_zone = NULL,
   grp_var = c("year", "week", "zone", "spp", "type"),
   est_keep = c("abund", "vi", "pir"),
   spp_keep = c("All")
 ) {
-  curr_hx_df = bind_rows(ytd, hx) %>%
+  curr_hx_df <- bind_rows(ytd, hx) %>%
     filter(!zone %in% rm_zone) %>%
     filter(spp %in% spp_keep) %>%
     select(any_of(c(grp_var, est_keep))) %>%
@@ -160,7 +160,7 @@ plot_hx_line <- function(
     p <- p + geom_line(aes(color = !!color_var))
   }
 
-  p = p +
+  p <- p +
     theme(legend.position = "bottom")
   return(p)
 }
