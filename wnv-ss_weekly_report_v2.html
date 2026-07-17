@@ -102,7 +102,7 @@ OUTPUT: config/config_weekly_settings/config_weekly_[sys.time].RData</p>
 <pre><code>No Google email set (GARGLE_OAUTH_EMAIL unset and non-interactive). A GSheet push (update = T) will fail until you set GARGLE_OAUTH_EMAIL in ~/.Renviron and authenticate once with drive_auth()/gs4_auth().</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>7 file(s) found from current week</code></pre>
+<pre><code>1 file(s) found from current week</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
@@ -118,6 +118,149 @@ OUTPUT: config/config_weekly_settings/config_weekly_[sys.time].RData</p>
 <strong>OUTPUT:</strong> <strong>[dir_input]/wnv-s_database.csv</strong> | | <strong>[dir_input]/foco_trap.csv<br>
 [dir_input]/standards_input.csv</strong> | | <strong>[dir_input]/key_rename.csv</strong><br>
 </p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>! Using an auto-discovered, cached token.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  To suppress this message, modify your code or options to clearly consent to
+  the use of a cached token.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  See gargle's "Non-interactive auth" vignette for more details:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  &lt;https://gargle.r-lib.org/articles/non-interactive-auth.html&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ The googledrive package is using a cached token for 'r.tobiaskoch@gmail.com'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>! Using an auto-discovered, cached token.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  To suppress this message, modify your code or options to clearly consent to
+  the use of a cached token.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  See gargle's "Non-interactive auth" vignette for more details:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  &lt;https://gargle.r-lib.org/articles/non-interactive-auth.html&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ The googlesheets4 package is using a cached token for
+  'r.tobiaskoch@gmail.com'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Auto-refreshing stale OAuth token.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Reading from "wnv-s_database".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Range ''data''.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Read Google Sheet: 24745 rows x 14 columns.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Headers: csu_id, trap_id, zone, year, week, trap_date, method, spp, total, test_code, cq, copies, seq, and notes</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Wrote '1_input/2026/w29/wnv-s_database.csv'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Reading from "slev-s_database".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Range ''data''.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Read Google Sheet: 2280 rows x 16 columns.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Headers: csu_id, trap_id, zone, zone2, trap_date, year, week, spp, method, trap_status, total, test_code, copies, cq, seq, and notes</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Wrote '1_input/2026/w29/slev-s_database.csv'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Reading from "culex_sheet_database".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Range ''data''.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Read Google Sheet: 43260 rows x 14 columns.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Headers: key, trap_id, zone, zone2, trap_date, year, week, spp, method, trap_status, total, source, epiweek, and week_submitted</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Wrote '1_input/2026/w29/culex_sheet_database.csv'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Reading from "key_rename".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Range ''Sheet1''.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Read Google Sheet: 29 rows x 2 columns.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Headers: new and old</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Wrote '1_input/2026/w29/key_rename.csv'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Reading from "foco_trap".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Range ''data''.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Read Google Sheet: 116 rows x 10 columns.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Headers: trap_id, method, zone, zone2, start, end, active, location_desc, lat, and long</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Wrote '1_input/2026/w29/foco_trap.csv'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Reading from "standards_database".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Range ''data''.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Read Google Sheet: 564 rows x 9 columns.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Headers: year, week, well_position, plate, target, csu_id, sample_type, cq, and log_copies</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Wrote '1_input/2026/w29/standards_input.csv'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Reading from "amp_inconclusive_negatives".</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Range ''data''.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Read Google Sheet: 3 rows x 1 column.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Headers: csu_id</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ Wrote '1_input/2026/w29/amp_inconclusive_negatives.csv'.</code></pre>
+</div>
+</div>
 </section>
 <section id="database-check" class="level3">
 <h3 class="anchored" data-anchor-id="database-check">DATABASE CHECK</h3>
@@ -311,7 +454,15 @@ Run key_rename to convert columns to standard naming convention.
 <hr>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 8 rows containing non-finite outside the scale range
+(`stat_align()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 1 row containing non-finite outside the scale range
+(`stat_align()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 8 rows containing non-finite outside the scale range
 (`stat_align()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -322,7 +473,15 @@ Run key_rename to convert columns to standard naming convention.
 </div>
 </div>
 <div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 8 rows containing non-finite outside the scale range
+(`stat_align()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 1 row containing non-finite outside the scale range
+(`stat_align()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 8 rows containing non-finite outside the scale range
 (`stat_align()`).</code></pre>
 </div>
 </div>

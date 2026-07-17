@@ -15,10 +15,10 @@ Workflow Diagrams can be found here:
 ```bash
 #download data from googledrive and drop it into 1_input/YYYY/
 # Keep --update F / --push F until the run is validated
-Rscript config/config_weekly.R --year 2026 --week 28 --download T --update F --push F
+Rscript config/config_weekly.R --year 2026 --week 29 --download T --update F --push F
 quarto render wnv-ss_weekly_report_v2.qmd
 #VALIDATE RESULTS VISUALLY
-Rscript config/config_weekly.R --year 2026 --week 28 --download F --update T --push T
+Rscript config/config_weekly.R --year 2026 --week 29 --download F --update T --push T
 ```
 
 
