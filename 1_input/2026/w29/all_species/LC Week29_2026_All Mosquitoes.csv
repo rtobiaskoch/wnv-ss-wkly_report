@@ -1,7 +1,7 @@
 id,date_trap_set,contract,location,zone,mosquito_species,mosquito_count,trap_type,trap_name,trap_team
 112ce19d-dee2-4168-bc48-03eaee5da024,2026-07-13,Fort Collins,Lochside Lane,FC NE,Aedes dorsalis,1,CDC Light Trap,FC-038,
 c10e3a13-0646-499f-943e-407f06ba3d1a,2026-07-13,Fort Collins,PVH Gravid,FC NE,Culex pipiens,33,Gravid Trap,FC-091gr,
-759ce274-8eb7-4ea4-bb6d-931d38e5df97,2026-07-13,Fort Collins,Hemlock,FC NW,Coquillettidia perturbans,4,CDC Light Trap,FC-036 ,
+759ce274-8eb7-4ea4-bb6d-931d38e5df97,2026-07-13,Fort Collins,Hemlock,FC NW,Coquillettidia perturbans,4,CDC Light Trap,FC-036,
 5930c3b2-22a3-400d-b751-f9f774c89321,2026-07-13,Fort Collins,Linden Lake Rd,FC NE,Culex pipiens,4,CDC Light Trap,FC-069,
 5930c3b2-22a3-400d-b751-f9f774c89321,2026-07-13,Fort Collins,Linden Lake Rd,FC NE,Culiseta inornata,1,CDC Light Trap,FC-069,
 31561cf8-578f-467e-ac52-bb3bae98f6a8,2026-07-13,Fort Collins,Country Club,FC NE,Culex tarsalis,15,CDC Light Trap,FC-034,

@@ -15,7 +15,8 @@ test_that("build_bird_report filters WNV birds and derives wnv_result", {
 
   out <- build_bird_report(cq_data)
 
-  expect_named(out, c("birds", "bird_report"))
+  expect_named(out, c("birds", "bird_report", "bird_report_current"))
+  expect_null(out$bird_report_current)
   expect_false("M1" %in% out$birds$csu_id)
   expect_setequal(out$bird_report$csu_id, c("B1", "B2"))
   expect_equal(out$bird_report$wnv_result[out$bird_report$csu_id == "B1"], "positive")
@@ -57,6 +58,30 @@ test_that("build_bird_report with birds_hx includes archive weeks in bird_report
   # birds (GSheet update payload) is still current-week only
   expect_equal(nrow(out$birds), 1)
   expect_equal(out$birds$csu_id, "B3")
+})
+
+test_that("bird_report_current is filtered to year_filter/week_filter only", {
+  cq_data <- tibble::tibble(
+    sample_type = "bird", csu_id = "B3",
+    year = "2026", week = "25",
+    target_name = "WNV", test_code = 0,
+    cq = NA_real_, copies = 0, amp_status = "NOAMP"
+  )
+  # archive has a bird from an earlier week — this must NOT leak into the
+  # current week's GSheet tab (the bug this test guards against)
+  birds_hx <- tibble::tibble(
+    csu_id = "B1", year = 2026, week = 23,
+    target_name = "WNV", test_code = 1,
+    cq = 30, copies = 100, amp_status = "AMP"
+  )
+  out <- build_bird_report(cq_data, birds_hx = birds_hx,
+                            year_filter = 2026, week_filter = 25)
+
+  expect_equal(nrow(out$bird_report_current), 1)
+  expect_equal(out$bird_report_current$csu_id, "B3")
+  expect_false("B1" %in% out$bird_report_current$csu_id)
+  # bird_report (used for the plot) still spans the full archive
+  expect_setequal(out$bird_report$csu_id, c("B1", "B3"))
 })
 
 test_that("plot_birds year filter excludes other years", {

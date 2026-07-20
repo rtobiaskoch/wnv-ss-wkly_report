@@ -302,9 +302,11 @@ if(update){
 # the current season (not just this week's PCR run). key_birds from config.
 birds_hx <- googlesheets4::read_sheet(key_birds, sheet = "data")
 
-bird_out    <- build_bird_report(cq_data, birds_hx = birds_hx)
-birds       <- bird_out$birds
-bird_report <- bird_out$bird_report
+bird_out    <- build_bird_report(cq_data, birds_hx = birds_hx,
+                                  year_filter = year_filter, week_filter = week_filter)
+birds               <- bird_out$birds
+bird_report         <- bird_out$bird_report          # full archive, for plot_birds
+bird_report_current <- bird_out$bird_report_current  # this week only, for the per-week sheet
 
 if(update){
   update_gsheet(new = birds,
@@ -329,9 +331,7 @@ if(update){
                  .after = 1)
 
   safe_sheet_write <- possibly(sheet_write, otherwise = NULL)
-  safe_sheet_write(bird_report,
-                   
-                   
+  safe_sheet_write(bird_report_current,
                    ss = key_birds,
                    sheet = bird_sheet)
 }

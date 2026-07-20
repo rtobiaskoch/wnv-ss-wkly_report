@@ -1,8 +1,8 @@
 "zone","collected_Pipiens","collected_Tarsalis","collected_All","trap_L","abund_Pipiens","abund_Tarsalis","abund_All"
-"NW",NA,NA,NA,NA,NA,NA,NA
-"NE",NA,NA,NA,NA,NA,NA,NA
-"SE",NA,NA,NA,NA,NA,NA,NA
-"SW",NA,NA,NA,NA,NA,NA,NA
+"NW",27,141,168,9,3,15.67,18.67
+"NE",64,287,351,10,6.4,28.7,35.1
+"SE",41,231,272,15,2.73,15.4,18.13
+"SW",19,203,222,9,2.11,22.56,24.67
 "FC",151,862,1013,43,3.51,20.05,23.56
 NA,NA,NA,NA,NA,NA,NA,NA
 "LV",5,121,126,6,0.83,20.17,21

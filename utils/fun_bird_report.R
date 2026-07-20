@@ -7,18 +7,28 @@
 # Extracted from the `birds` chunk of wnv-s_weekly_report_pipeline_v2.qmd.
 #
 # INPUTS (build_bird_report)
-#   cq_data  merged qPCR results data frame / tibble. Must contain columns:
-#              sample_type, csu_id, year, week, target_name,
-#              test_code, cq, copies, amp_status
-#   target   character — the target_name to summarise in bird_report
-#            (default "WNV")
+#   cq_data      merged qPCR results data frame / tibble. Must contain columns:
+#                  sample_type, csu_id, year, week, target_name,
+#                  test_code, cq, copies, amp_status
+#   target       character — the target_name to summarise in bird_report
+#                (default "WNV")
+#   year_filter  integer/double, optional — current surveillance year. When
+#                supplied with week_filter, bird_report_current is filtered to
+#                just this year/week (see OUTPUT).
+#   week_filter  integer/double, optional — current epiweek. See year_filter.
 #
 # OUTPUT (build_bird_report)
-#   Named list with two elements:
-#     birds        all bird records (sample_type == "bird"), tidy; year/week
-#                  cast to double for natural merge with the culex database
-#     bird_report  WNV positive/negative status per bird csu_id for the
-#                  current run (filtered to `target`, one row per csu_id)
+#   Named list with three elements:
+#     birds                all bird records (sample_type == "bird"), tidy;
+#                          year/week cast to double for natural merge with
+#                          the culex database
+#     bird_report          WNV positive/negative status per bird csu_id
+#                          spanning the full archive (birds_hx + current week)
+#                          — used for the season-long plot
+#     bird_report_current  bird_report filtered to year_filter/week_filter —
+#                          used for the per-week GSheet tab so it doesn't
+#                          leak prior weeks' results into this week's sheet.
+#                          NULL if year_filter/week_filter not supplied.
 #
 # DEPENDENCIES
 #   dplyr  (explicit namespace — no library() call here)
@@ -27,7 +37,8 @@
 # ---------------------------------------------------------------------------
 # build_bird_report()
 # ---------------------------------------------------------------------------
-build_bird_report <- function(cq_data, target = "WNV", birds_hx = NULL) {
+build_bird_report <- function(cq_data, target = "WNV", birds_hx = NULL,
+                               year_filter = NULL, week_filter = NULL) {
   # -- birds: current-week bird rows, year/week cast to double for merge -------
   # sample_type == "bird" excludes mosquito and other sample types present in
   # cq_data; year/week stored as character from the GSheet export so we cast
@@ -79,7 +90,16 @@ build_bird_report <- function(cq_data, target = "WNV", birds_hx = NULL) {
     ) %>%
     dplyr::select(csu_id, year, week, wnv_result)
 
-  list(birds = birds, bird_report = bird_report)
+  # -- bird_report_current: this week's results only, for the per-week sheet --
+  # bird_report spans the full archive (needed for plot_birds' season trend);
+  # the per-week GSheet tab must not inherit those prior years/weeks.
+  bird_report_current <- if (!is.null(year_filter) && !is.null(week_filter)) {
+    dplyr::filter(bird_report, year == year_filter, week == week_filter)
+  } else {
+    NULL
+  }
+
+  list(birds = birds, bird_report = bird_report, bird_report_current = bird_report_current)
 }
 
 # ---------------------------------------------------------------------------

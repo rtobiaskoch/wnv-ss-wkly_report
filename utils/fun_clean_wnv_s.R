@@ -116,12 +116,19 @@ library(purrr)
 library(lubridate)
 library(janitor)
 
-wnv_s_clean <- function(df, 
-                        all_cols = c("csu_id", "trap_id", "zone", "zone2", 
-                                     "trap_date", "year", "week", 
-                                     "spp","spp0", "method", 
+wnv_s_clean <- function(df,
+                        all_cols = c("csu_id", "trap_id", "zone", "zone2",
+                                     "trap_date", "year", "week",
+                                     "spp","spp0", "method",
                                      "trap_status", "total"),
                         zone_lvls = c("NW", "NE", "SE","SW", "FC", "LV", "BE", "BC"),
+                        # zone_raw_lvls: codes actually present on a raw trap record.
+                        # "FC" is excluded because it is never a real per-trap zone -
+                        # it's the FC-subzone rollup built later in the zone2 step.
+                        # Kept separate from zone_lvls (factor level order for
+                        # downstream plots/tables) so extraction and ordering can
+                        # diverge without one silently breaking the other.
+                        zone_raw_lvls = setdiff(zone_lvls, "FC"),
                         distinct_col = names(df),
                         silence = F,
                         rm_dupes = T,
@@ -210,9 +217,11 @@ wnv_s_clean <- function(df,
     df <- df %>%
       mutate(zone = if_else(str_detect(zone, "Berthoud"), "BE", zone))
     
-    # Create regex pattern like "NE|NW|SE|SW|LV|BE|BC"
-    zone_pattern <- str_c(zone_lvls, collapse = "|")
-    
+    # Create regex pattern like "NE|NW|SE|SW|LV|BE|BC" (excludes "FC" - see
+    # zone_raw_lvls comment above; a raw record's zone string is never just
+    # "FC", but providers do sometimes prefix subzones with it, e.g. "FC NE").
+    zone_pattern <- str_c(zone_raw_lvls, collapse = "|")
+
     df <- df %>%
       mutate(zone = str_extract(zone, zone_pattern)) %>%
       mutate(zone = factor(zone, levels = zone_lvls))
