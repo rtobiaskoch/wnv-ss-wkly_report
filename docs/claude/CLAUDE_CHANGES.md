@@ -297,3 +297,38 @@ Separately, `utils/fun_bird_report.R`'s `build_bird_report()` previously returne
 **Suggestion:** Split `wnv_s_clean()`'s zone-cleaning into two explicit, named steps (e.g. `clean_raw_zone()` for provider text vs. a pass-through validator for already-derived `zone`/`zone2` values) instead of one function with a `zone_raw_lvls` escape hatch — the current design makes it easy for a future call site to forget which mode it needs. Also worth porting the `zone_raw_lvls` fix to `wnvSurv::wnv_s_clean()` (already fixes the same bug differently, via an inline `setdiff(wnvSurv::zone_lvls, "FC")`) so this repo's local fork doesn't drift further from the shared package.
 
 ---
+
+## Commit c2a85f8: 2026-07-21 23:26 UTC — with bug fixes for calc_pir and wired in wnvSurv
+
+| File | Changes |
+|------|---------|
+| config/load_packages.R | +73 -12 | modified |
+| sandbox/audit_calc_vi.R | +47 -0 | modified |
+| sandbox/audit_trap_status.R | +9 -0 | modified |
+| sandbox/audit_wnv_s_clean.R | +47 -0 | modified |
+| sandbox/check_csu23480.R | +12 -0 | modified |
+| sandbox/diff_pir_fix.R | +152 -0 | modified |
+| sandbox/test_pIR_by_trap.R | +31 -0 | modified |
+| sandbox/test_pIR_single_pool.R | +97 -0 | modified |
+| sandbox/verify_wnvsurv_pir.R | +34 -0 | modified |
+| scripts/relabel_trap_status.R | +87 -0 | modified |
+| tests/testthat/helper-setup.R | +6 -6 | modified |
+| tests/testthat/test-calc_pir.R | +77 -11 | modified |
+| tests/testthat/test-week-pool-count-match.R | +7 -3 | modified |
+| utils/archive/fun_calc_pir.R | +122 -0 | modified |
+| utils/archive/fun_calc_vi.R | +40 -0 | modified |
+| utils/archive/fun_calc_vi_stats.R | +154 -0 | modified |
+| utils/archive/fun_clean_wnv_s.R | +436 -0 | modified |
+| utils/fun_calc_all.R | +15 -3 | modified |
+| wnv-ss_weekly_report_v2.html | +45 -108 | modified |
+| wnv-ss_weekly_report_v2.qmd | +2 -1 | modified |
+
+**Summary:** `utils/fun_calc_all.R`'s `calc_vi()` call now passes `complete = TRUE, zone_complete = unique(grp_zones)` explicitly, since the wnvSurv version of `calc_vi()` defaults differ from the archived local copy and `grp_zones` has a duplicate `"BC"` entry that `unique()` must absorb; `wnv_s_clean(rm_col = ...)` gains `"spp0"` so the aggregated `zone_stats.csv` doesn't pick up a spurious 18th column. `config/load_packages.R` replaces the old unconditional `devtools::install_github()` calls (which reinstalled `wnvSurv` from GitHub main on every render, silently overwriting local fixes) with `ensure_pkg()`: installs only if missing, and warns if the local `../wnv-ss_functions` checkout is newer than the installed build. `tests/testthat/test-calc_pir.R` replaces the `skip()`'d single-mosquito-pool test with regression tests for the actual bug (`filter(total > 1)` dropped real positive single-mosquito pools, e.g. CSU23480) and adds coverage for the imputed-row exclusion (`total == 0`, `test_code` NA) that the old filter was protecting against. `wnv-ss_weekly_report_v2.qmd` removes a hand-rolled `mutate(spp0 = spp)` now that `wnv_s_clean()` snapshots `spp0` itself.
+
+**RSE Assessment:**
+- Improved: Reproducibility (`ensure_pkg()` stops silent GitHub-main pinning), Testable (regression tests target the actual historical bug instead of skipping it), Trackable (comments explain *why* explicit args are needed, not just what they do)
+- Worsened: none
+
+**Suggestion:** `config/config_weekly.R:252` still defines `grp_zones` with `"BC"` listed twice; `unique(grp_zones)` in `fun_calc_all.R` papers over it but the duplicate should be removed at the source so a future caller that doesn't `unique()` doesn't reintroduce the bug.
+
+---
