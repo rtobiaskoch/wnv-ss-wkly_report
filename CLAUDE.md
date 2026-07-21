@@ -40,10 +40,10 @@ Calculating VI:
 
 ```bash
 # 1. Generate config (run once per week — sets all pipeline parameters)
-bash config/run_config.sh --week <N> --year <YYYY> --download T --update F --push F
+Rscript config/config_weekly.R --year 2026 --week 29 --download T --update F --push F
 
 # 2. Render the main pipeline
-quarto render wnv-s_weekly_report_pipeline_v2.qmd
+quarto render wnv-ss_weekly_report_v2.qmd
 
 # Run unit tests
 Rscript tests/run_tests.R

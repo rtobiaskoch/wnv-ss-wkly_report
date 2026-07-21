@@ -7,7 +7,7 @@
 #
 # Both ingestion sites must therefore use the SINGLE shared week rule
 # wnvSurv::calc_season_week():
-#   * counts path -> utils/fun_clean_wnv_s.R       (wnv_s_clean, ADD WEEK block)
+#   * counts path -> wnvSurv::wnv_s_clean()        (ADD WEEK block)
 #   * pools  path -> utils/fun_clean_4_weekly_input.R (Week = calc_season_week(`Trap Date`))
 #
 # These tests (a) run the counts path for real and prove its week equals the
@@ -15,7 +15,8 @@
 # iso/epi boundary correctly, and (c) guard the source of BOTH files so a future
 # edit cannot silently revert one path to isoweek/epiweek and re-open the split.
 
-source(here::here("utils/fun_clean_wnv_s.R"))
+# wnv_s_clean() comes from wnvSurv (loaded in helper-setup.R); the utils copy
+# was archived to utils/archive/.
 
 # Dates chosen to expose the two ways the rules used to diverge:
 #   2023-07-30 (Sun): isoweek 30 vs season 31  -> old counts rule (isoweek) differs
@@ -99,7 +100,10 @@ test_that("both ingestion sources use the shared rule and neither reverts to iso
   # Source-level guard for the pools path, which is not runnable in isolation
   # (reads an RDS, needs a join + globals). If a future edit swaps the week rule
   # in either file, these assertions fail and point at the regression.
-  counts_src <- readLines(here::here("utils/fun_clean_wnv_s.R"), warn = FALSE)
+  # Counts path now lives in wnvSurv. Guard the INSTALLED function body rather
+  # than a source file: that is what actually runs, and it also catches a stale
+  # install where the package source is correct but the built copy is not.
+  counts_src <- deparse(body(wnvSurv::wnv_s_clean))
   pools_src  <- readLines(here::here("utils/fun_clean_4_weekly_input.R"), warn = FALSE)
 
   # Counts path: ADD WEEK must use calc_season_week, not isoweek.

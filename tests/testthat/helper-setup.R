@@ -19,12 +19,12 @@ suppressMessages({
 
 # Source calc utilities in dependency order
 source(here::here("utils/fun_calc_abund.R"))
-source(here::here("utils/fun_calc_pir.R"))
-source(here::here("utils/fun_calc_vi.R"))
-
-# Source the standardizing cleaner (provides wnv_s_clean + clean_summary).
-# Needed for test-clean_wnv_s.R, which exercises the force_recompute branch.
-source(here::here("utils/fun_clean_wnv_s.R"))
+# calc_pir(), calc_vi(), and wnv_s_clean() (+ clean_summary) now come from
+# wnvSurv, loaded above; the utils copies were archived to utils/archive/.
+# test-calc_pir.R, test-calc_vi.R and test-clean_wnv_s.R therefore exercise the
+# INSTALLED package, which doubles as a guard that the installed wnvSurv is
+# current -- if it goes stale, these tests fail loudly instead of the pipeline
+# quietly producing wrong numbers.
 
 # Source table-building utilities
 source(here::here("utils/fun_insert_blank_row.R"))

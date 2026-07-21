@@ -95,14 +95,10 @@ OUTPUT: config/config_weekly_settings/config_weekly_[sys.time].RData</p>
 <pre><code>[1] "/Users/user/Programming_Directory/Ebel_Lab/wnv-ss-wkly_report"</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: `install_github()` was deprecated in devtools 2.5.0.
-ℹ Please use pak::pak("user/repo") instead.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
 <pre><code>No Google email set (GARGLE_OAUTH_EMAIL unset and non-interactive). A GSheet push (update = T) will fail until you set GARGLE_OAUTH_EMAIL in ~/.Renviron and authenticate once with drive_auth()/gs4_auth().</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>3 file(s) found from current week</code></pre>
+<pre><code>5 file(s) found from current week</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
@@ -118,6 +114,50 @@ OUTPUT: config/config_weekly_settings/config_weekly_[sys.time].RData</p>
 <strong>OUTPUT:</strong> <strong>[dir_input]/wnv-s_database.csv</strong> | | <strong>[dir_input]/foco_trap.csv<br>
 [dir_input]/standards_input.csv</strong> | | <strong>[dir_input]/key_rename.csv</strong><br>
 </p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/wnv-s_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/wnv-s_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/slev-s_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/slev-s_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/culex_sheet_database.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/culex_sheet_database.csv' exists and `force = FALSE`; skipping download.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/key_rename.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/key_rename.csv' exists and `force = FALSE`; skipping download.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/foco_trap.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/foco_trap.csv' exists and `force = FALSE`; skipping download.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/standards_input.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/standards_input.csv' exists and `force = FALSE`; skipping download.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/amp_inconclusive_negatives.csv' exists; running non-interactively, not overwriting (use `force_update = TRUE` to override).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ '1_input/2026/w29/amp_inconclusive_negatives.csv' exists and `force = FALSE`; skipping download.</code></pre>
+</div>
+</div>
 </section>
 <section id="database-check" class="level3">
 <h3 class="anchored" data-anchor-id="database-check">DATABASE CHECK</h3>
@@ -170,24 +210,6 @@ OUTPUT:</p>
 <p><img src="wnv-ss_weekly_report_v2_files/figure-html/pcr%20plot-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Local file:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• '3_output/2026/w29/plots/y2026_w29_pcr_plot.png'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Uploaded into Drive file:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• 'y2026_w29_pcr_plot.png' &lt;id: 1RP15XHnRLF2LUdJ1zdvARCeNn92YyARw&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>With MIME type:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• 'image/png'</code></pre>
 </div>
 </div>
 </section>
@@ -274,63 +296,12 @@ OUTPUT:</p>
 <h3 class="anchored" data-anchor-id="trap-status-plot">TRAP STATUS PLOT</h3>
 <hr>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
- CLEANING DATAFRAME  . 
-
-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
- 
-        C H E C K I N G   C O L U M N S                 
- 
-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
-
- Notice. Following are not present for cleaning:  csu_id, spp0 
-Run key_rename to convert columns to standard naming convention.
- The Following columns are being cleaned:  trap_id, zone, zone2, trap_date, year, week, spp, method, trap_status, total </code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>No duplicate combinations found of: key, trap_id, zone, zone2, trap_date, year, week, spp, method, ... and 5 other variables</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
- 
-        C H E C K I N G   D U P L I C A T E S           
- 
-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
-
- No Duplicates found using key,trap_id,zone,zone2,trap_date,year,week,spp,method,trap_status,total,source,epiweek,week_submitted 
-
-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
- 
-        C L E A N I N G  C O L U M N S                 
- 
-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="wnv-ss_weekly_report_v2_files/figure-html/trap-status-plot-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Local file:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• '3_output/2026/w29/plots/y2026_w29_trap_status.png'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Uploaded into Drive file:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• 'y2026_w29_trap_status.png' &lt;id: 1U9KWCez0KMAu6m-Wj2ng6WkWABlpOJg4&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>With MIME type:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• 'image/png'</code></pre>
 </div>
 </div>
 </section>
@@ -347,15 +318,7 @@ Run key_rename to convert columns to standard naming convention.
 <hr>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 8 rows containing non-finite outside the scale range
-(`stat_align()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 1 row containing non-finite outside the scale range
-(`stat_align()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 8 rows containing non-finite outside the scale range
 (`stat_align()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -366,34 +329,8 @@ Run key_rename to convert columns to standard naming convention.
 </div>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 8 rows containing non-finite outside the scale range
-(`stat_align()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 1 row containing non-finite outside the scale range
 (`stat_align()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 8 rows containing non-finite outside the scale range
-(`stat_align()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Local file:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• '3_output/2026/w29/plots/y2026_w29_hx_plot_all.png'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Uploaded into Drive file:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• 'y2026_w29_hx_plot_all.png' &lt;id: 1y59c69SkJwGmfNC_bd_wMXFYasMAFlga&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>With MIME type:</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>• 'image/png'</code></pre>
 </div>
 </div>
 </section>

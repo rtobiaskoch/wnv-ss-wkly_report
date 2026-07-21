@@ -512,7 +512,8 @@ all_spp = all_spp0 %>%
                                                  orders = c("ymd", "mdy", "dmy", "Ymd"),
                                                  quiet = TRUE),
         trap_date = as.Date(trap_date)) %>%
-  mutate(spp0 = spp) %>% #keep original
+  # spp0 (the raw species text) is now snapshotted by wnv_s_clean() itself, so
+  # the hand-rolled mutate(spp0 = spp) that used to sit here is gone.
   wnv_s_clean(rm_col = c("trap_date"), force_recompute = TRUE) # raw provider input: derive week/year from trap_date, ignore typed values
 
 write_rds(all_spp, paste0(dir_mid_wk,"all_species_active_trap.RData"))

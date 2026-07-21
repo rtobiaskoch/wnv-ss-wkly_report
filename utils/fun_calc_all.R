@@ -51,10 +51,22 @@ calc_all = function(abund_input, pir_input) {
     arrange(year, week, zone, spp)
   
   #VI
+  # calc_vi() now comes from wnvSurv. Its defaults differ from the archived
+  # utils copy (complete = FALSE, zone_complete = wnvSurv::zone_lvls), so both
+  # are passed explicitly to keep zone_stats.csv byte-identical:
+  #   complete = TRUE       -- the local version completed by default
+  #   zone_complete         -- the local version read the `grp_zones` global
+  #                            directly; unique() drops the duplicated "BC" in
+  #                            config/config_weekly.R
   vi = calc_vi(abund, pir,
-          by = grp_vars) %>%
-   # see abund comment above - zone is already-derived here, "FC" must stay valid
-   wnv_s_clean(rm_col = c("trap_status"), zone_raw_lvls = zone_lvls, silence = T)
+          by = grp_vars,
+          complete = TRUE,
+          zone_complete = unique(grp_zones)) %>%
+   # see abund comment above - zone is already-derived here, "FC" must stay valid.
+   # spp0 is in rm_col because this is an AGGREGATED stats table, not trap-level
+   # data: wnv_s_clean() would otherwise snapshot the (already collapsed) spp
+   # into a spurious spp0 column and append it to zone_stats.csv.
+   wnv_s_clean(rm_col = c("trap_status", "spp0"), zone_raw_lvls = zone_lvls, silence = T)
   
   
   return(vi)

@@ -273,3 +273,27 @@ _AI summary unavailable — API call failed or timed out._
 _AI summary unavailable — API call failed or timed out._
 
 ---
+
+## Commit 7ccee56: 2026-07-20 11:36:23 -0600 — weekly commit after report generation for the week
+
+| File | Changes | What changed |
+|------|---------|--------------|
+| utils/fun_clean_wnv_s.R | +16 -7 | New `zone_raw_lvls` param excludes "FC" from the raw-zone regex |
+| utils/fun_calc_all.R | +12 -7 | `zone_raw_lvls = zone_lvls` override at 3 internal re-clean call sites |
+| tests/testthat/test-clean_wnv_s.R | +38 -0 | 2 regression tests for the zone-extraction fix |
+| utils/fun_bird_report.R | +32 -12 | Adds `year_filter`/`week_filter`, returns new `bird_report_current` |
+| wnv-ss_weekly_report_v2.qmd | +6 -6 | Writes `bird_report_current` (not full archive) to per-week bird GSheet tab |
+| tests/testthat/test-bird_report.R | +26 -1 | Tests `bird_report_current` filtering and the updated return shape |
+| wnv-ss_weekly_report_v2.html | +55 -144 | Rendered report artifact, regenerated as a side effect — not hand-authored |
+
+**Summary:** Fixes a week 29 zone-mapping bug where CSU/Larimer County's raw export started prefixing Fort Collins subzone codes ("NE" → "FC NE"); `wnv_s_clean()`'s zone-extraction regex previously included `"FC"` in its match pattern, and `str_extract()`'s leftmost-match behavior grabbed `"FC"` before reaching the subzone code, collapsing all four Fort Collins subzones into one `"FC"` bucket and producing `NA` abundance for `NW`/`NE`/`SE`/`SW`. `utils/fun_clean_wnv_s.R` adds a `zone_raw_lvls` parameter (default excludes `"FC"`, since it's never legitimate raw per-trap text) and `utils/fun_calc_all.R` passes `zone_raw_lvls = zone_lvls` at its three internal `wnv_s_clean()` re-clean calls, where `zone` already legitimately holds the literal `"FC"` rollup value from the `zone2`-based aggregate row (re-cleaning it with the new default would have wiped that literal value back to `NA` and broken the `abund_FC`/`abund_hx_FC` report columns). 
+
+Separately, `utils/fun_bird_report.R`'s `build_bird_report()` previously returned one `bird_report` spanning the full historical bird-testing archive, which was written wholesale to the per-week GSheet tab and leaked prior weeks' results into the current week's sheet; new `year_filter`/`week_filter` parameters produce a `bird_report_current` output filtered to just the current week, and the qmd now writes that instead of the full archive (the full `bird_report` still feeds the season-long trend plot).
+
+**RSE Assessment:**
+- Improved: Parameter-Driven (`zone_raw_lvls`, `year_filter`/`week_filter` replace hardcoded/implicit behavior), Testable (4 new regression tests across both fixes)
+- Worsened: Modularity, slightly — `wnv_s_clean()` now serves two different semantic purposes (cleaning raw provider text vs. re-cleaning already-derived data) distinguished only by a parameter flag, which is an abstraction leak rather than two clearly separated responsibilities
+
+**Suggestion:** Split `wnv_s_clean()`'s zone-cleaning into two explicit, named steps (e.g. `clean_raw_zone()` for provider text vs. a pass-through validator for already-derived `zone`/`zone2` values) instead of one function with a `zone_raw_lvls` escape hatch — the current design makes it easy for a future call site to forget which mode it needs. Also worth porting the `zone_raw_lvls` fix to `wnvSurv::wnv_s_clean()` (already fixes the same bug differently, via an inline `setdiff(wnvSurv::zone_lvls, "FC")`) so this repo's local fork doesn't drift further from the shared package.
+
+---
