@@ -29,8 +29,9 @@
 - [ ] have culex_sheet apply same expand grid logic as in ../wnv-ss_trap_hx_combiner
 - [x] set email as an argument for the googleAuth
 - [x] in wnvSurv make trap_status plot that is in in ../wnv-s_trap_hx_combiner
-- [x] Change the historical vs current plot to be broken up by culex and pipiens as stacked geom_area using pal_mozzy from config for colors
-- [ ] save pools plot to googledrive plots
+- [x] Change the historical vs current plot to be broken up by culex and pipiens as stackedd geom_area using pal_mozzy from config for colors
+- [x] save pools plot to googledrive plots
+- [ ] have zone_stats.csv also save the number of positive pools for easier auditing of VI
 
 
 ## future directions
