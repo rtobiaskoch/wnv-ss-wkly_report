@@ -1,4 +1,4 @@
-plot_pools = function(df) {
+plot_pools <- function(df) {
   df %>%
     mutate(n_pools = n_pools - n_pos_pools) %>%
     pivot_longer(cols = c(n_pools, n_pos_pools)) %>%
@@ -40,8 +40,8 @@ plot_pools = function(df) {
 # }
 
 #claude
-plot_p_pool_pt = function(df) {
-  df = df %>%
+plot_p_pool_pt <- function(df) {
+  df <- df %>%
     mutate(
       test_code = as.factor(test_code),
       zone = factor(zone, levels = zone_lvls)
@@ -60,14 +60,14 @@ plot_p_pool_pt = function(df) {
     ungroup()
 
   # Create a factor for trap_id within each zone to control y-axis
-  df = df %>%
+  df <- df %>%
     group_by(zone) %>%
     mutate(
       trap_id_factor = factor(trap_id, levels = unique(trap_id))
     ) %>%
     ungroup()
 
-  p = df %>%
+  p <- df %>%
     ggplot(aes(
       x = trap_id_factor,
       y = n,
@@ -82,7 +82,7 @@ plot_p_pool_pt = function(df) {
       labels = c("0" = "Negative", "1" = "Positive")
     ) +
     scale_shape_manual(
-      values = c("Tarsalis" = 16, "Pipiens" = 1),
+      values = c("Tarsalis" = 16, "Pipiens" = 17),
       name = "Species"
     ) +
     facet_wrap(~zone, scales = "free_x", ncol = 4) + # Free y-axis scales
