@@ -19,7 +19,7 @@ Workflow Diagrams can be found here:
 Rscript config/config_weekly.R --year 2026 --week 35 --download T --update F --push F
 quarto render wnv-ss_weekly_report_v2.qmd
 #VALIDATE RESULTS VISUALLY
-Rscript config/config_weekly.R --year 2026 --week 34 --download F --update T --push T
+Rscript config/config_weekly.R --year 2026 --week 35 --download F --update T --push T
 quarto render wnv-ss_weekly_report_v2.qmd
 ```
 
