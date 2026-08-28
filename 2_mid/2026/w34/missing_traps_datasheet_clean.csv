@@ -1,0 +1,4 @@
+"","trap_id","method","zone","zone2","start","end","active","location_desc","lat","long","trap_status"
+"1","FC-053","L","SE","FC",2006,NA,1,"",40.49942,-105.01183,"datasheet_clean"
+"2","LC-054","L","BE","BE",2017,NA,1,"",40.343955,-105.10277,"datasheet_clean"
+"3","LV-069","L","LV","LV",2006,NA,1,"",40.428924,-105.05822,"datasheet_clean"

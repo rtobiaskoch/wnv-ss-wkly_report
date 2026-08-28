@@ -67,9 +67,31 @@ src_newest_time <- function(src_dir) {
   max(file.info(files)$mtime)
 }
 
+# Latest commit time on `remote`'s default branch, via the GitHub API. Used to
+# catch collaborators who have wnvSurv installed but no local checkout to
+# compare against (the src_dir check below only fires for people who have one).
+# Returns NA on any failure (offline, rate-limited) -- this check must never
+# break a render, only warn.
+gh_latest_commit_time <- function(remote) {
+  # `remote` may be "owner/repo" or a full "https://github.com/owner/repo" URL
+  # (both are used as `ensure_pkg()` call sites in this file) -- normalize to
+  # "owner/repo" for the API path.
+  repo_spec <- sub("^https?://github[.]com/", "", remote)
+  repo_spec <- sub("[.]git$", "", repo_spec)
+  resp <- tryCatch(
+    jsonlite::fromJSON(paste0("https://api.github.com/repos/", repo_spec, "/commits/HEAD")),
+    error = function(e) NULL
+  )
+  if (is.null(resp)) return(NA)
+  as.POSIXct(resp$commit$committer$date, format = "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+}
+
 # Install `pkg` from `remote` only if absent. If `src_dir` is a local checkout,
-# warn when it is newer than the installed build.
-ensure_pkg <- function(pkg, remote, src_dir = NULL) {
+# warn when it is newer than the installed build. If `check_github` is TRUE,
+# also warn (regardless of src_dir) when GitHub's latest commit is newer than
+# the installed build -- this is what catches collaborators who never git
+# pull/reinstall the shared package after `git pull`ing this repo.
+ensure_pkg <- function(pkg, remote, src_dir = NULL, check_github = FALSE) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
     message("Installing missing package '", pkg, "' from ", remote)
     devtools::install_github(remote, build_vignettes = TRUE)
@@ -94,6 +116,21 @@ ensure_pkg <- function(pkg, remote, src_dir = NULL) {
       )
     }
   }
+
+  if (isTRUE(check_github)) {
+    built <- pkg_built_time(pkg)
+    gh_time <- gh_latest_commit_time(remote)
+    if (!is.na(built) && !is.na(gh_time) && gh_time > built) {
+      warning(
+        "\n  '", pkg, "' on GitHub (", remote, ") has commits newer than your installed build.\n",
+        "  installed: ", format(built, usetz = TRUE),
+        "   GitHub HEAD: ", format(gh_time, usetz = TRUE), "\n",
+        "  You are likely running STALE shared functions. Reinstall with:\n",
+        "    devtools::install_github(\"", remote, "\", force = TRUE)\n",
+        call. = FALSE, immediate. = TRUE
+      )
+    }
+  }
   invisible(TRUE)
 }
 
@@ -104,7 +141,8 @@ ensure_pkg("PooledInfRate", "https://github.com/CDCgov/PooledInfRate")
 # than via pacman::p_load. The local checkout lives beside this repo.
 ensure_pkg("wnvSurv", "https://github.com/rtobiaskoch/wnv-ss_functions",
            src_dir = normalizePath(here::here("..", "wnv-ss_functions"),
-                                   mustWork = FALSE))
+                                   mustWork = FALSE),
+           check_github = TRUE)
 
 suppressMessages(library(wnvSurv))
 

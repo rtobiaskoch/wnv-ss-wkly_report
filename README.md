@@ -11,14 +11,16 @@ Workflow Diagrams can be found here:
 <https://docs.google.com/drawings/d/1UVtAzJrcSCYUQgDfj5BYL3X9ZKuU0JnDyr0SHTLvAag/edit?usp=sharing>\
 
 # TL;DR Run the Pipeline
-
+## 1. ENSURE ALL FILES IN GOOGLE DRIVE: https://drive.google.com/drive/u/0/folders/1VC1i8D-2_8WEapmW2hrBqMzdHz3vsbqW
+## 2. DOWNLOAD TO 1_input/YYYY/
+## 3. RUN THE CODE BELOW
 ```bash
-#download data from googledrive and drop it into 1_input/YYYY/
 # Keep --update F / --push F until the run is validated
-Rscript config/config_weekly.R --year 2026 --week 33 --download T --update F --push F
+Rscript config/config_weekly.R --year 2026 --week 35 --download T --update F --push F
 quarto render wnv-ss_weekly_report_v2.qmd
 #VALIDATE RESULTS VISUALLY
-Rscript config/config_weekly.R --year 2026 --week 31 --download F --update T --push T
+Rscript config/config_weekly.R --year 2026 --week 34 --download F --update T --push T
+quarto render wnv-ss_weekly_report_v2.qmd
 ```
 
 
