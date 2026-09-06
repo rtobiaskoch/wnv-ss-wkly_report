@@ -83,7 +83,7 @@ Always look in `utils/` for functions before searching `utils/archive/0_R/`.
 (`generate_report()` + `inject_graph_data()`), which are wired into the QMD's
 `format-A-tables` and `generate-report` chunks.
 
-## Write new functions to wnvSurv in ../wnv-ss_functions
+## Write new functions to wnvSurv in ../wnvSurv
 
 ## Testing
 

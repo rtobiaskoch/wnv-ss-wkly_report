@@ -139,8 +139,8 @@ ensure_pkg("PooledInfRate", "https://github.com/CDCgov/PooledInfRate")
 # wnvSurv: single source of truth for shared surveillance functions
 # (calc_pir, calc_season_week, etc). Not on CRAN, so loaded explicitly rather
 # than via pacman::p_load. The local checkout lives beside this repo.
-ensure_pkg("wnvSurv", "https://github.com/rtobiaskoch/wnv-ss_functions",
-           src_dir = normalizePath(here::here("..", "wnv-ss_functions"),
+ensure_pkg("wnvSurv", "https://github.com/rtobiaskoch/wnvSurv",
+           src_dir = normalizePath(here::here("..", "wnvSurv"),
                                    mustWork = FALSE),
            check_github = TRUE)
 
