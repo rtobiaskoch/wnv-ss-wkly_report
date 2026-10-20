@@ -29989,6 +29989,8 @@
 "LV110|Tarsalis|2026|37","LV-110","LV","LV",NA,2026,37,"Tarsalis","Tarsalis","L","missing",NA,NA,NA,NA
 "WC055|Pipiens|2026|37","WC-055","BE","BE",NA,2026,37,"Pipiens","Pipiens","L","missing",NA,NA,NA,NA
 "WC055|Tarsalis|2026|37","WC-055","BE","BE",NA,2026,37,"Tarsalis","Tarsalis","L","missing",NA,NA,NA,NA
+"|otherspp|2026|37","","BE","BE",NA,2026,37,"other spp","","L","missing",NA,NA,NA,NA
+"|otherspp|2026|37","","LV","LV",NA,2026,37,"other spp","","L","missing",NA,NA,NA,NA
 "|otherspp|2026|36","","BE","BE",NA,2026,36,"other spp","","L","missing",NA,NA,NA,NA
 "|otherspp|2026|36","","LV","LV",NA,2026,36,"other spp","","L","missing",NA,NA,NA,NA
 "BC01|Pipiens|2021|23","BC-01","BC","BC",NA,2021,23,"Pipiens","Pipiens","L","no trap",NA,NA,NA,NA
