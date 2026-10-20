@@ -19,6 +19,7 @@ suppressMessages({
 
 # Source calc utilities in dependency order
 source(here::here("utils/fun_calc_abund.R"))
+source(here::here("utils/fun_check_trap_cap.R"))
 # calc_pir(), calc_vi(), and wnv_s_clean() (+ clean_summary) now come from
 # wnvSurv, loaded above; the utils copies were archived to utils/archive/.
 # test-calc_pir.R, test-calc_vi.R and test-clean_wnv_s.R therefore exercise the

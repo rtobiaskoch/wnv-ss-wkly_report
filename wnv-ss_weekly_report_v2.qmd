@@ -123,6 +123,9 @@ check_data(df = database_slev, #data you want to check
 culex_database = read.csv(fn_gdrive_culex_sheet) %>%
  # filter(trap_status != "missing") %>% #TO DO add to wnv_s_clean and remove
   wnv_s_clean() %>%
+  # drop zone-only placeholder rows (blank trap_id) left in the master sheet by
+  # earlier runs; update_join() would otherwise carry them into every update
+  filter(!is.na(trap_id), trap_id != "") %>%
   # Build the same composite key as culex_new (trap_id|spp|year|week) so
   # wnvSurv::update_join()'s join on "key" (clean-update-all-spp-culex chunk
   # below) has matching keys on both sides. trap_key_cols defined in
@@ -553,6 +556,12 @@ trap_sum = trap_stat_sum(culex_new)
 
 ggsave(plot = trap_sum$p, filename = paste0(dir_mid_wk, "trap_status.png"))
 write.csv(trap_sum$df, paste0(dir_mid_wk,"trap_status_summary.csv"))
+
+# guard BEFORE anything is pushed/saved: the merge is the union of new + old rows,
+# so checking the union is equivalent to checking the merged table.
+dplyr::bind_rows(dplyr::mutate(culex_new, dplyr::across(dplyr::everything(), as.character)),
+                 dplyr::mutate(culex_database, dplyr::across(dplyr::everything(), as.character))) %>%
+  check_trap_cap(trap = foco_trap, year_filter = year_filter, week_filter = week_filter)
 
 if(update){
 update_gsheet(new = culex_new,
