@@ -58,8 +58,29 @@ trap_complete = function(df, #data you want to complete
     #remove superfluous non culex spp
     filter(spp %in% spp_cmplt | is.na(spp)) %>%
     arrange(year, week, zone, trap_id, spp)
-  
-  
+
+  # drop placeholder rows with no trap_id. complete(zone = ...) above creates a
+  # zone-only row (trap_id NA) for any zone absent from the data that week; it is
+  # not a real trap and inflates distinct trap counts downstream (e.g. BE = 11).
+  # Real traps for those zones are re-added later by joining the trap list.
+  is_blank_trap = is.na(df$trap_id) | df$trap_id == ""
+
+  if(any(is_blank_trap)) {
+    cat("\nMessage: dropped", sum(is_blank_trap),
+        "placeholder rows with blank trap_id from zone(s):",
+        paste0(unique(df$zone[is_blank_trap]), collapse = ","), "\n")
+  }
+
+  df = df[!is_blank_trap, ]
+
+  # anything left that is not in the trap list is unexpected -> warn, keep the row
+  unexpected = setdiff(unique(df$trap_id), trap)
+  if(length(unexpected) > 0) {
+    warning("trap_complete: trap_id(s) not in trap list: ",
+            paste0(unexpected, collapse = ","))
+  }
+
+
   #check missing traps
   if(any(df$trap_status == "missing")) {
     missing = df %>% filter(trap_status == "missing")
