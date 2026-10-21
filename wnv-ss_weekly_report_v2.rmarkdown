@@ -657,6 +657,7 @@ database_update = read.csv(fn_database_update) %>% wnv_s_clean(silence = T)
 #                       grp_var = c("zone", "year", "week", "spp")) %>%
 #     filter(year %in% year_filter_hx) 
 
+wnvSurv::check_zone_vs_registry(culex_update, foco_trap)
 all_hx = calc_all(culex_update, #input for abundance
                   database_update) %>%
   arrange(desc(year), desc(week), zone, spp) #input for pir
